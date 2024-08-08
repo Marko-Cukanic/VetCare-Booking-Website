@@ -13,7 +13,7 @@
 
 ## Records
 
-* Github repository: https://github.com/xxx
-* Github Project Board : https://xxxx
+* Github repository: https://github.com/cosc2299-2024/team-project-group-p08-07
+* Github Project Board : https://github.com/orgs/cosc2299-2024/projects/33/views/1
 
 See [Instructions](INSTRUCTIONS.md)
