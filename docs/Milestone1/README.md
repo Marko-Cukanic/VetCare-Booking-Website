@@ -15,6 +15,6 @@
 
 * Github repository: https://github.com/cosc2299-2024/team-project-group-p08-07
 * Github Project Board : https://github.com/orgs/cosc2299-2024/projects/33/views/1
-* Scrum Board:  https://github.com/orgs/cosc2299-2024/projects/36/views/1
+* Scrum Board:  https://github.com/orgs/cosc2299-2024/projects/38/views/1
 
 See [Instructions](INSTRUCTIONS.md)
