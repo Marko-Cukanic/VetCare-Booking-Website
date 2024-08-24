@@ -16,4 +16,5 @@
 * Github repository: https://github.com/cosc2299-2024/team-project-group-p08-07
 * Scrum Board:  https://github.com/orgs/cosc2299-2024/projects/38/views/1
 * Communication Tool: Microsoft Teams 
+
 See [Instructions](INSTRUCTIONS.md)
