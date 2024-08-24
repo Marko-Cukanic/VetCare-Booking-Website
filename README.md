@@ -6,10 +6,11 @@
 ## Group-P08-07
 
 ## Members
-* Student Name 1 (s4006031)
-* Student Name 2 (s4008040)
-* Student Name 3 (s4007708)
-* Student Name 4 (s4002970)
+* Thomas Saleh (s4006031)
+* Vincent Dao (s4008040)
+* Marko Cukanic (s4007708)
+* Tony Thai (s4002970)
+* Kenny Le (s4002811)
 
 ## Records
 
