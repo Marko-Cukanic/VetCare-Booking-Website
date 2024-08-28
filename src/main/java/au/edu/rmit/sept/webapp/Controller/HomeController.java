@@ -1,9 +1,9 @@
 package au.edu.rmit.sept.webapp.controller;
 
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-@Controller
+@controller
 public class HomeController {
 
     @GetMapping("/")
