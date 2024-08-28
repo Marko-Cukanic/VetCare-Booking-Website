@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>VetCare Login</title>
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+</head>
+<body>
+    <!-- Include the navbar at the top -->
+    <div th:insert="~{fragments/navbar :: navbar}"></div>
+
+    <div class="login-container">
+        <div class="form-container">
+            <div class="tab-container">
+                <button id="signup-tab" class="tab-button" onclick="window.location.href='/signup'">Sign-Up</button>
+                <button id="login-tab" class="tab-button active">Login</button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form">
+                <div class="input-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="input-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <a href="#" class="forgot-password">Forgot Password?</a>
+                <button type="submit" class="submit-button">Login</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<div th:fragment="navbar">
+    <header>
+        <!-- Wrap the title in an anchor tag to link back to the homepage -->
+        <h1><a th:href="@{/}" style="color: white; text-decoration: none;">VetCare</a></h1>
+        <nav>
+            <ul>
+                <li><a th:href="@{/booking}">Make a Booking</a></li>
+                <li><a th:href="@{/bookings}">My Booking/s</a></li>
+                <li><a th:href="@{/medical}">Medical</a></li>
+                <li><a th:href="@{/resources}">Educational Resources</a></li>
+                <li class="dropdown">
+                    <a href="#">Profile</a>
+                    <div class="dropdown-content">
+                        <a th:href="@{/signup}">Signup</a>
+                        <a th:href="@{/login}">Login</a>
+                        <a th:href="@{/logout}">Logout</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+</div>
