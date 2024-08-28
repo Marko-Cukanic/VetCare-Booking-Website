@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>VetCare Home</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <header>
+        <h1>VetCare</h1>
+        <nav>
+            <ul>
+                <li><a th:href="@{/booking}">Make a Booking</a></li>
+                <li><a th:href="@{/bookings}">My Booking/s</a></li>
+                <li><a th:href="@{/medical}">Medical</a></li>
+                <li><a th:href="@{/resources}">Educational Resources</a></li>
+                <li><a th:href="@{/login}">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section id="welcome">
+            <div>
+                <video controls>
+                    <source src="path/to/welcome-video.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p>Introductory text to welcome user and slogan</p>
+            </div>
+        </section>
+        <section id="appointments">
+            <h2>Upcoming Appointments:</h2>
+            <p>Booking for: Fluffy at 13:30 on 30/08/2024 with Dr. Cukanic</p>
+        </section>
+    </main>
+</body>
+</html>
