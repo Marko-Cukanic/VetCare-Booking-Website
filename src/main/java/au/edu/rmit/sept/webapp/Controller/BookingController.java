@@ -8,6 +8,6 @@ public class BookingController {
 
     @GetMapping("/makebooking")
     public String makeBooking() {
-        return "makeBooking"; // Ensure the template name is correct
+        return "makeBooking"; // This should match the name of your HTML file in the templates directory
     }
 }
