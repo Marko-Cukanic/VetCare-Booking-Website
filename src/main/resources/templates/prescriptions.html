@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Prescription Management</title>
+    <link rel="stylesheet" th:href="@{/css/prescriptions.css}">
+</head>
+<body>
+    <header>
+        <h1>Prescription Management</h1>
+        <nav>
+            <ul>
+                <li><a th:href="@{/prescriptions}">Prescription Listing</a></li>
+                <li><a th:href="@{/order-prescription}">Order Prescription</a></li>
+                <li><a th:href="@{/vet-prescriptions}">Vet Prescription Features</a></li>
+                <li><a th:href="@{/low-medication}">Low Medication Notifications</a></li>
+                <li><a th:href="@{/prescription-history}">Prescription History</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <section id="prescription-listing">
+            <h2>Prescription Listing</h2>
+            <!-- Prescription listing will be dynamically populated here -->
+        </section>
+        
+        <section id="order-prescription">
+            <h2>Order Prescription</h2>
+            <!-- Form to order prescription -->
+            <form action="#" method="post">
+                <label for="medication">Medication Name:</label>
+                <input type="text" id="medication" name="medication">
+                <label for="quantity">Quantity:</label>
+                <input type="number" id="quantity" name="quantity">
+                <button type="submit">Order</button>
+            </form>
+        </section>
+        
+        <section id="vet-prescriptions">
+            <h2>Vet Prescription Features</h2>
+            <!-- Feature related to vet's interaction with prescriptions -->
+        </section>
+        
+        <section id="low-medication-notification">
+            <h2>Low Medication Notifications</h2>
+            <!-- Display low medication notifications -->
+        </section>
+        
+        <section id="prescription-history">
+            <h2>Prescription History</h2>
+            <!-- Prescription history will be displayed here -->
+        </section>
+    </main>
+    
+    <footer>
+        <p>&copy; 2024 VetCare. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>
+    
