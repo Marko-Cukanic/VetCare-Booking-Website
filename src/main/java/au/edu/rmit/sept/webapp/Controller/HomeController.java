@@ -1,4 +1,4 @@
-package au.edu.rmit.sept.webapp.controller;
+package au.edu.rmit.sept.webapp.Controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,5 +15,7 @@ public class HomeController {
     public String login() {
         return "login";
     }
+
+    
 
 }
