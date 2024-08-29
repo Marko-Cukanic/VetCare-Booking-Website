@@ -4,7 +4,6 @@ header {
     color: #fff;
     padding: 20px;
     text-align: left;
-    position: fixed; /* Fix the navbar at the top */
     top: 0;
     left: 0;  /* Ensure the navbar starts from the left edge */
     right: 0; /* Ensure the navbar spans to the right edge */

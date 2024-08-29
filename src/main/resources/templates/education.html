@@ -4,19 +4,24 @@
     <meta charset="UTF-8">
     <title>Education Resources</title>
     <link rel="stylesheet" th:href="@{/css/education.css}">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
 </head>
 <body>
-    <div th:insert="~{fragments/navbar :: navbar}"></div>
+    <div th:replace="fragments/navbar :: navbar"></div>
+
     <header>
         <h1>Education Resources</h1>
     </header>
-    <nav>
+
+    <!-- Tabs Section -->
+    <nav class="tabs">
         <ul>
-            <li><a th:href="@{/}">Home</a></li>
-            <li><a th:href="@{/education}">Education</a></li>
-            <li><a th:href="@{/login}">Login</a></li>
+            <li><a th:href="@{/}" class="active">Articles</a></li>
+            <li><a th:href="@{/education}">Guides</a></li>
+            <li><a th:href="@{/login}">Videos</a></li>
         </ul>
     </nav>
+
     <main>
         <section>
             <h2>Articles</h2>
@@ -35,9 +40,9 @@
             <p>Stay updated on the latest trends in pet care and veterinary science.</p>
         </section>
     </main>
+    
     <footer>
         <p>&copy; 2024 VetCare. All rights reserved.</p>
     </footer>
 </body>
 </html>
-
