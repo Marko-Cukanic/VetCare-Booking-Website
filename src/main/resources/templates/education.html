@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Education Resources</title>
+    <link rel="stylesheet" th:href="@{/css/education.css}">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+</head>
+<body>
+    <div th:insert="~{fragments/navbar :: navbar}"></div>
+    <header>
+        <h1>Education Resources</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a th:href="@{/}">Home</a></li>
+            <li><a th:href="@{/education}">Education</a></li>
+            <li><a th:href="@{/login}">Login</a></li>
+        </ul>
+    </nav>
+    <main>
+        <section>
+            <h2>Articles</h2>
+            <p>Explore our collection of articles on pet care and veterinary medicine.</p>
+        </section>
+        <section>
+            <h2>Videos</h2>
+            <p>Watch educational videos to learn more about taking care of your pets.</p>
+        </section>
+        <section>
+            <h2>Guides</h2>
+            <p>Access detailed guides on various topics related to pet care.</p>
+        </section>
+        <section>
+            <h2>Trends</h2>
+            <p>Stay updated on the latest trends in pet care and veterinary science.</p>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 VetCare. All rights reserved.</p>
+    </footer>
+</body>
+</html>
+
