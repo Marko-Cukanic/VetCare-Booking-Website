@@ -6,9 +6,17 @@ body, html {
     height: 100vh;
 }
 
-.booking-container {
+.secondHeader{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.title-container {
+    margin-top: 8rem;
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
+    font-size: 150%;
 }
