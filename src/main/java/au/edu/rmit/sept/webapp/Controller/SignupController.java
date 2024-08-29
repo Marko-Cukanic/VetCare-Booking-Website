@@ -1,4 +1,4 @@
-package au.edu.rmit.sept.webapp.Controller;
+package au.edu.rmit.sept.webapp.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +15,7 @@ public class SignupController {
 
     @PostMapping("/signup")
     public String signupUser(@RequestParam String fullname, @RequestParam String email,
-                             @RequestParam String password, @RequestParam String confirmPassword) {
+            @RequestParam String password, @RequestParam String confirmPassword) {
         // Implement your signup logic here
         // For example, check if passwords match, and save the user to the database
 
@@ -24,8 +24,9 @@ public class SignupController {
             return "signup"; // Ideally, pass an error message to the view
         }
 
-        // Save the user to the database (assuming you have a User entity and repository)
+        // Save the user to the database (assuming you have a User entity and
+        // repository)
 
-        return "redirect:/login";  // Redirect to the login page after successful signup
+        return "redirect:/login"; // Redirect to the login page after successful signup
     }
 }
