@@ -5,6 +5,8 @@
     <title>Make a Booking</title>
     <link rel="stylesheet" th:href="@{/css/navbar.css}">
     <link rel="stylesheet" th:href="@{/css/makeBooking.css}">
+    <!-- FullCalendar CSS -->
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.min.css' rel='stylesheet' />
 </head>
 <body>
     <div th:insert="~{fragments/navbar :: navbar}"></div>
@@ -16,5 +18,35 @@
             <h1>Make a Booking</h1>
         </div>
     </secondHeader>
+
+    <!-- Calendar Container -->
+    <div id="calendar"></div>
+
+    <!-- FullCalendar JS -->
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.min.js'></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                dateClick: function(info) {
+                    // Remove the highlight from any previously selected date
+                    var previousSelected = document.querySelector('.selected-date');
+                    if (previousSelected) {
+                        previousSelected.classList.remove('selected-date');
+                    }
+
+                    // Add the highlight to the clicked date
+                    info.dayEl.classList.add('selected-date');
+
+                    // Optional: Display a message or do something else with the selected date
+                    alert('Selected date: ' + info.dateStr);
+                }
+            });
+
+            calendar.render();
+        });
+    </script>
 </body>
 </html>
