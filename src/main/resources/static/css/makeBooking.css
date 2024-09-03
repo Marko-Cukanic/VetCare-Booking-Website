@@ -1,22 +1,106 @@
+/* Reset and Base Styles */
 body, html {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
     background-color: #ffffff;
-    height: 100vh;
+    height: 100vh; /* Ensure the body takes the full viewport height */
+    display: flex;
+    flex-direction: column; /* Arrange children vertically */
 }
 
-.secondHeader{
+/* Header Styling */
+header {
+    flex: 0 0 auto; /* Prevent header from stretching */
+    /* Optional: Add padding or background color if needed */
+}
+
+/* Second Header Styling */
+.secondHeader {
+    flex: 0 0 auto; /* Prevent secondHeader from stretching */
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
+/* Title Container Styling */
 .title-container {
-    margin-top: 8rem;
+    margin-top: 6rem; /* Reduced top margin for better spacing */
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
-    font-size: 150%;
+    font-size: 1.5rem; /* 150% equivalent */
+    /* Optional: Add padding or background color if needed */
+}
+
+/* Calendar Container Styling */
+#calendar {
+    flex: 1 1 auto; /* Allow calendar to grow and fill available space */
+    max-width: 35%; /* Adjust the width as needed */
+    margin: 1rem 0 4rem 4rem; /* Adjust margins to fit within viewport */
+    padding: 0.5rem; /* Reduced padding for better fit */
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* Prevent internal scrolling */
+    
+    /* Optional: Add a responsive max-width for larger screens */
+    /* max-width: 600px; */
+}
+
+/* FullCalendar Specific Styles */
+.fc {
+    font-family: Arial, sans-serif;
+    height: 100%; /* Ensure FullCalendar fills the container */
+}
+
+.fc-toolbar h2 {
+    font-size: 1.5em;
+    color: #333;
+}
+
+.fc-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+.fc-button:hover {
+    background-color: #0056b3;
+}
+
+.fc-button-primary:not(:disabled).fc-button-active {
+    background-color: #0056b3;
+}
+
+.fc-today {
+    background-color: #e9ecef !important;
+}
+
+.fc-daygrid-day-number {
+    color: #007bff;
+    font-weight: bold;
+}
+
+.fc-event {
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    padding: 2px 4px;
+    color: white;
+    font-size: 0.85em;
+}
+
+/* Selected Date Styling */
+.selected-date {
+    background-color: #007bff !important; /* Blue background color */
+    color: white !important;             /* White text color */
+}
+
+.selected-date .fc-daygrid-day-number {
+    color: white !important; /* Ensure day number text is white */
 }

@@ -5,16 +5,48 @@
     <title>Make a Booking</title>
     <link rel="stylesheet" th:href="@{/css/navbar.css}">
     <link rel="stylesheet" th:href="@{/css/makeBooking.css}">
+    <!-- FullCalendar CSS -->
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.min.css' rel='stylesheet' />
 </head>
 <body>
-    <div th:insert="~{fragments/navbar :: navbar}"></div>
+    <!-- Header with Navbar -->
     <header>
         <div th:insert="~{fragments/navbar :: navbar}"></div>
     </header>
-    <secondHeader>
+    
+    <!-- Second Header with Title -->
+    <div class="secondHeader">
         <div class="title-container">
             <h1>Make a Booking</h1>
         </div>
-    </secondHeader>
+    </div>
+
+    <!-- Calendar Container -->
+    <div id="calendar"></div>
+
+    <!-- FullCalendar JS -->
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.min.js'></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                height: '100%', // Ensure calendar fills its container
+                dateClick: function(info) {
+                    // Remove highlight from any previously selected date
+                    var previousSelected = document.querySelector('.selected-date');
+                    if (previousSelected) {
+                        previousSelected.classList.remove('selected-date');
+                    }
+
+                    // Add highlight to the clicked date
+                    info.dayEl.classList.add('selected-date');
+                }
+            });
+
+            calendar.render();
+        });
+    </script>
 </body>
 </html>
