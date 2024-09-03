@@ -4,8 +4,55 @@
     <meta charset="UTF-8">
     <title>VetCare Home</title>
     <link rel="stylesheet" th:href="@{/css/home.css}">
+    <script type="text/javascript">
+        // JavaScript to hide the success message after 2 seconds
+        function hideSuccessMessage() {
+            const successMessageElement = document.getElementById('success-message');
+            if (successMessageElement) {
+                setTimeout(function() {
+                    successMessageElement.style.display = 'none';
+                }, 2000); // 2000 milliseconds = 2 seconds
+            }
+        }
+
+        // JavaScript to check for the session token on page load
+        function checkSessionToken() {
+            const sessionToken = localStorage.getItem('sessionToken');
+            const loginPrompt = document.getElementById('login-prompt');
+
+            if (!sessionToken && loginPrompt) {
+                // If no token exists, show login prompt
+                loginPrompt.style.display = 'block';
+            }
+        }
+
+        // JavaScript for handling logout
+        function handleLogout() {
+            const sessionToken = localStorage.getItem('sessionToken');
+            // Send a request to the server to invalidate the session token
+            fetch(`/logout?sessionToken=${encodeURIComponent(sessionToken)}`, {
+                method: 'GET',
+            })
+            .then(response => response.text())
+            .then(message => {
+                // Remove the session token from local storage
+                localStorage.removeItem('sessionToken');
+                // Display the success message
+                const successMessageElement = document.getElementById('success-message');
+                successMessageElement.textContent = message;
+                successMessageElement.style.display = 'block';
+                // Hide the success message after 2 seconds
+                setTimeout(function() {
+                    successMessageElement.style.display = 'none';
+                }, 2000);
+                // Optionally hide the user content
+                checkSessionToken();
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
 </head>
-<body>
+<body onload="hideSuccessMessage(); checkSessionToken();">
     <header>
         <h1>VetCare</h1>
         <nav>
@@ -19,14 +66,25 @@
                     <div class="dropdown-content">
                         <a th:href="@{/signup}">Signup</a>
                         <a th:href="@{/login}">Login</a>
-                        <a th:href="@{/logout}">Logout</a>
+                        <a href="#" onclick="handleLogout()">Logout</a>
                     </div>
                 </li>
-                
             </ul>
         </nav>
     </header>
+
+    <!-- Optional Login Prompt -->
+    <div id="login-prompt" style="display: none; background-color: #ffeb3b; padding: 10px; text-align: center;">
+        <p>Please <a th:href="@{/login}">log in</a> to access all features.</p>
+    </div>
+
+    <!-- Success Message Section -->
+    <div id="success-message" style="display: none; background-color: #4CAF50; color: white; padding: 10px; text-align: center;">
+        <!-- Success message will be injected here -->
+    </div>
+
     <main>
+        <!-- Welcome Section -->
         <section id="welcome">
             <div>
                 <video controls>
@@ -36,6 +94,8 @@
                 <p>Introductory text to welcome user and slogan</p>
             </div>
         </section>
+
+        <!-- Appointments Section -->
         <section id="appointments">
             <h2>Upcoming Appointments:</h2>
             <p>Booking for: Fluffy at 13:30 on 30/08/2024 with Dr. Cukanic</p>
