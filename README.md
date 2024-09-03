@@ -19,3 +19,6 @@
 * Communication Tool: Microsoft Teams 
 
 See [Instructions](INSTRUCTIONS.md)
+
+Run with ./mvnw clean spring-boot:run
+

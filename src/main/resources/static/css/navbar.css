@@ -12,7 +12,8 @@ header {
     box-sizing: border-box; /* Include padding in the element's width */
     display: flex; /* Use flexbox for layout */
     justify-content: space-between; /* Space out the title and nav links */
-    align-items: center; /* Vertically center the title and nav links */
+    align-items: center; /* Vertically center the title and nav links */    
+    position: fixed;
 }
 
 header h1 {
