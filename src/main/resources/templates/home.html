@@ -53,25 +53,9 @@
     </script>
 </head>
 <body onload="hideSuccessMessage(); checkSessionToken();">
-    <header>
-        <h1>VetCare</h1>
-        <nav>
-            <ul>
-                <li><a th:href="@{/makebooking}">Make a Booking</a></li>
-                <li><a th:href="@{/bookings}">My Booking/s</a></li>
-                <li><a th:href="@{/medical}">Medical</a></li>
-                <li><a th:href="@{/resources}">Educational Resources</a></li>
-                <li class="dropdown">
-                    <a href="#">Profile</a>
-                    <div class="dropdown-content">
-                        <a th:href="@{/signup}">Signup</a>
-                        <a th:href="@{/login}">Login</a>
-                        <a href="#" onclick="handleLogout()">Logout</a>
-                    </div>
-                </li>
-            </ul>
-        </nav>
-    </header>
+    
+    <div th:insert="~{fragments/navbar :: navbar}"></div>
+
 
     <!-- Optional Login Prompt -->
     <div id="login-prompt" style="display: none; background-color: #ffeb3b; padding: 10px; text-align: center;">
