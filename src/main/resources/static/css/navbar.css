@@ -10,19 +10,20 @@ header {
     width: 100%; /* Ensure the navbar spans the full width of the page */
     z-index: 1000; /* Ensure the navbar stays on top of other content */
     box-sizing: border-box; /* Include padding in the element's width */
+    display: flex; /* Use flexbox for layout */
+    justify-content: space-between; /* Space out the title and nav links */
+    align-items: center; /* Vertically center the title and nav links */
 }
 
 header h1 {
     font-family: 'Courier New', Courier, monospace;
     font-size: 2em;
     margin: 0;
-    display: inline-block;
 }
 
 nav {
-    width: 100%; /* Ensure the nav takes up the full width of the header */
     display: flex;
-    justify-content: flex-start; /* Align links to the left */
+    justify-content: flex-end; /* Align links to the right */
     align-items: center;
 }
 
@@ -31,7 +32,7 @@ nav ul {
     margin: 0;
     padding: 0;
     display: flex;
-    justify-content: flex-start; /* Ensure the ul aligns items to the left */
+    justify-content: flex-end; /* Ensure the ul aligns items to the right */
     align-items: center;
 }
 

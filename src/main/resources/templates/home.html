@@ -6,8 +6,26 @@
     <link rel="stylesheet" th:href="@{/css/home.css}">
 </head>
 <body>
-    <div th:replace="fragments/navbar :: navbar"></div>
-
+    <header>
+        <h1>VetCare</h1>
+        <nav>
+            <ul>
+                <li><a th:href="@{/makebooking}">Make a Booking</a></li>
+                <li><a th:href="@{/bookings}">My Booking/s</a></li>
+                <li><a th:href="@{/medical}">Medical</a></li>
+                <li><a th:href="@{/resources}">Educational Resources</a></li>
+                <li class="dropdown">
+                    <a href="#">Profile</a>
+                    <div class="dropdown-content">
+                        <a th:href="@{/signup}">Signup</a>
+                        <a th:href="@{/login}">Login</a>
+                        <a th:href="@{/logout}">Logout</a>
+                    </div>
+                </li>
+                
+            </ul>
+        </nav>
+    </header>
     <main>
         <section id="welcome">
             <div>
