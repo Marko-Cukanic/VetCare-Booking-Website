@@ -9,56 +9,42 @@
     <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.min.css' rel='stylesheet' />
 </head>
 <body>
-    <!-- Header with Navbar -->
-    <header>
-        <div th:insert="~{fragments/navbar :: navbar}"></div>
-    </header>
-    
+
     <!-- Second Header with Title -->
-    <div class="secondHeader">
+    <div class="Header">
+        <div th:insert="~{fragments/navbar :: navbar}"></div>
         <div class="title-container">
             <h1>Make a Booking</h1>
         </div>
     </div>
 
-    <!-- Date Display Container -->
-    <div id="selectedDateDisplay" style="text-align: center; font-size: 1.5rem; margin-bottom: 1rem;">
-        <!-- The current date will be displayed here -->
-    </div>
+    <!-- Main Container to align the Calendar and Time Slot Container side by side -->
+    <div class="booking-container">
+        <!-- Calendar Container -->
+        <div id="calendar"></div>
 
-    <!-- Calendar Container -->
-    <div id="calendar"></div>
+        <!-- Time Slot Container -->
+        <div id="timeSlotContainer">
+            <h3>Available Time Slots</h3>
+            <div class="time-slots">
+                <!-- Time slots will be dynamically generated here -->
+            </div>
+        </div>
+    </div>
 
     <!-- FullCalendar JS -->
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.min.js'></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');
-            var selectedDateDisplay = document.getElementById('selectedDateDisplay');
-            var selectedDate = null; // To store the selected date across views
-
-            // Function to format dates as dd/mm/yyyy
-            function formatDate(date) {
-                var day = String(date.getDate()).padStart(2, '0');
-                var month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-                var year = date.getFullYear();
-                return `${day}/${month}/${year}`;
-            }
-
-            // Set the initial display to the current date
-            var today = new Date();
-            selectedDateDisplay.textContent = `Today's Date: ${formatDate(today)}`;
-
-            // Calculate tomorrow's date
-            var tomorrow = new Date();
-            tomorrow.setDate(tomorrow.getDate() + 1); // Move to the next day
+            var selectedDate = null;
 
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
                 height: '100%', // Ensure calendar fills its container
                 headerToolbar: {
                     left: 'prev',
-                    center: 'title', // Display current month and year
+                    center: 'title',
                     right: 'next'
                 },
                 titleFormat: {
@@ -66,45 +52,12 @@
                     month: 'long'
                 },
                 validRange: {
-                    start: today // Disable past dates, but show today
+                    start: new Date() // Disable past dates
                 },
-                selectable: true, // Allow future dates to be selectable
-
-                // Event triggered when navigating to a different month
-                datesSet: function() {
-                    if (selectedDate) {
-                        // Highlight the previously selected date if it's still within the current view
-                        var selectedDateEl = document.querySelector(`[data-date="${selectedDate}"]`);
-                        if (selectedDateEl) {
-                            selectedDateEl.classList.add('selected-date');
-                        }
-                    }
-                },
+                selectable: true,
 
                 dateClick: function(info) {
                     var clickedDate = new Date(info.dateStr);
-                    var currentDate = calendar.getDate(); // Get the currently displayed date
-
-                    // If clicked date is from the previous month
-                    if (clickedDate.getMonth() < currentDate.getMonth() ||
-                        (clickedDate.getMonth() === 11 && currentDate.getMonth() === 0)) {
-                        calendar.prev(); // Navigate to the previous month
-                        calendar.gotoDate(clickedDate); // Go to the clicked date
-                        return; // Stop further execution
-                    }
-
-                    // If clicked date is from the next month
-                    if (clickedDate.getMonth() > currentDate.getMonth() ||
-                        (clickedDate.getMonth() === 0 && currentDate.getMonth() === 11)) {
-                        calendar.next(); // Navigate to the next month
-                        calendar.gotoDate(clickedDate); // Go to the clicked date
-                        return; // Stop further execution
-                    }
-
-                    // Prevent selection and highlighting of today's date
-                    if (clickedDate.toDateString() === today.toDateString()) {
-                        return; // Do nothing if today is clicked
-                    }
 
                     // Remove highlight from any previously selected date
                     var previousSelected = document.querySelector('.selected-date');
@@ -112,18 +65,44 @@
                         previousSelected.classList.remove('selected-date');
                     }
 
-                    // Save the selected date in `selectedDate` in `yyyy-mm-dd` format
+                    // Save the selected date in `selectedDate`
                     selectedDate = info.dateStr;
 
                     // Highlight the clicked date
                     info.dayEl.classList.add('selected-date');
 
-                    // Format the selected date and update the display
-                    selectedDateDisplay.textContent = `Selected Date: ${formatDate(clickedDate)}`;
+                    // Dynamically generate time slots when a date is selected
+                    generateTimeSlots();
                 }
             });
 
             calendar.render();
+
+            // Function to generate time slots
+            function generateTimeSlots() {
+                var timeSlotsContainer = document.querySelector('.time-slots');
+                timeSlotsContainer.innerHTML = ''; // Clear any existing slots
+                
+                // Define available time slots (20-minute intervals)
+                var startHour = 10;
+                var endHour = 18;
+                var timeSlots = [];
+
+                for (var hour = startHour; hour < endHour; hour++) {
+                    for (var minutes = 0; minutes < 60; minutes += 20) {
+                        var time = `${String(hour).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+                        timeSlots.push(time);
+                    }
+                }
+
+                // Add slots to the container
+                timeSlots.forEach(function(slot) {
+                    var slotElement = document.createElement('div');
+                    slotElement.classList.add('slot');
+                    slotElement.textContent = slot;
+                    timeSlotsContainer.appendChild(slotElement);
+                });
+            }
         });
     </script>
 </body>

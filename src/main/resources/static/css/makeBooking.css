@@ -10,55 +10,58 @@ body, html {
 }
 
 /* Header Styling */
-header {
-    flex: 0 0 auto; /* Prevent header from stretching */
-    /* Optional: Add padding or background color if needed */
-}
-
-/* Second Header Styling */
-.secondHeader {
-    flex: 0 0 auto; /* Prevent secondHeader from stretching */
+.Header {
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 1rem;
+    margin-bottom: -3.5rem;
 }
 
 /* Title Container Styling */
 .title-container {
-    margin-top: 6rem; /* Reduced top margin for better spacing */
+    margin-top: 3rem; /* Reduced top margin for better spacing */
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 0.5rem; /* Reduced padding to make the container smaller */
     width: 100%;
-    font-size: 1.5rem; /* 150% equivalent */
-    /* Optional: Add padding or background color if needed */
+    font-size: 1.25rem; /* Slightly smaller font size if needed */
 }
 
-/* Date Display Styling */
-#selectedDateDisplay {
-    text-align: center;
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-    margin-top: 1rem; /* Add some space above the date display */
-    padding: 0.5rem;
-    background-color: #f0f0f0;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+/* Flexbox container for layout */
+.booking-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* Aligns items at the top */
+    width: 100%;
+    height: 80vh; /* Ensure the container takes most of the page height */
+    padding: 1rem;
+    box-sizing: border-box;
 }
 
-/* Calendar Container Styling */
+/* Calendar Styling */
 #calendar {
-    flex: 1 1 auto; /* Allow calendar to grow and fill available space */
-    max-width: 35%; /* Adjust the width as needed */
-    margin: 1rem 0 4rem 4rem; /* Adjust margins to fit within viewport */
-    padding: 0.5rem; /* Reduced padding for better fit */
+    flex-shrink: 0;
+    width: 40%; /* Calendar will take up 40% of the width */
+    min-width: 400px; /* Ensure it doesn't shrink below this width */
+    height: auto; /* Adjust to fit its content */
+    margin: 1rem;
+    padding: 1rem;
     background-color: #f8f9fa;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    overflow: hidden; /* Prevent internal scrolling */
-    
-    /* Optional: Add a responsive max-width for larger screens */
-    /* max-width: 600px; */
+}
+
+/* TimeSlotContainer Styling */
+#timeSlotContainer {
+    flex-grow: 1; /* Allow TimeSlotContainer to take up the remaining space */
+    background-color: gray; /* Gray background to visualize the size */
+    padding: 1rem;
+    margin: 1rem; /* Add margin for spacing */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow-y: auto; /* Allow vertical scrolling if content overflows */
 }
 
 /* FullCalendar Specific Styles */
@@ -110,9 +113,26 @@ header {
 /* Selected Date Styling */
 .selected-date {
     background-color: #007bff !important; /* Blue background color */
-    color: white !important;             /* White text color */
+    color: white !important; /* White text color */
 }
 
 .selected-date .fc-daygrid-day-number {
     color: white !important; /* Ensure day number text is white */
+}
+
+/* New Time Slots Styling */
+.time-slots {
+    display: flex;
+    flex-wrap: wrap; /* Ensure time slots wrap into new rows */
+}
+
+.slot {
+    width: 45%; /* Set width for each slot */
+    padding: 0.5rem;
+    margin: 0.5rem;
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+    border-radius: 4px;
+    cursor: pointer;
 }
