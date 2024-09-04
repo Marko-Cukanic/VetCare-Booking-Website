@@ -62,6 +62,7 @@ body, html {
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow-y: auto; /* Allow vertical scrolling if content overflows */
+    text-align: center; /* Center the title and content */
 }
 
 /* FullCalendar Specific Styles */
@@ -120,15 +121,17 @@ body, html {
     color: white !important; /* Ensure day number text is white */
 }
 
-/* New Time Slots Styling */
+/* Time Slots Styling */
 .time-slots {
     display: flex;
     flex-wrap: wrap; /* Ensure time slots wrap into new rows */
+    justify-content: center; /* Center the time slots horizontally */
+    align-items: center; /* Center the time slots vertically */
 }
 
 .slot {
-    width: 45%; /* Set width for each slot */
-    padding: 0.5rem;
+    width: 25%; /* Set width for each slot */
+    padding: 1rem;
     margin: 0.5rem;
     background-color: #007bff;
     color: white;
