@@ -32,78 +32,101 @@
         </div>
     </div>
 
-    <!-- FullCalendar JS -->
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.min.js'></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var calendarEl = document.getElementById('calendar');
-            var selectedDate = null;
+<!-- FullCalendar JS -->
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.min.js'></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var selectedDate = null;
 
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                height: '100%', // Ensure calendar fills its container
-                headerToolbar: {
-                    left: 'prev',
-                    center: 'title',
-                    right: 'next'
-                },
-                titleFormat: {
-                    year: 'numeric',
-                    month: 'long'
-                },
-                validRange: {
-                    start: new Date() // Disable past dates
-                },
-                selectable: true,
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            height: '100%', // Ensure calendar fills its container
+            headerToolbar: {
+                left: 'prev',
+                center: 'title',
+                right: 'next'
+            },
+            titleFormat: {
+                year: 'numeric',
+                month: 'long'
+            },
+            validRange: {
+                start: new Date() // Disable past dates
+            },
+            selectable: true,
 
-                dateClick: function(info) {
-                    var clickedDate = new Date(info.dateStr);
+            dateClick: function(info) {
+                var clickedDate = new Date(info.dateStr);
+                var today = new Date(); // Get today's date
 
-                    // Remove highlight from any previously selected date
-                    var previousSelected = document.querySelector('.selected-date');
-                    if (previousSelected) {
-                        previousSelected.classList.remove('selected-date');
-                    }
-
-                    // Save the selected date in `selectedDate`
-                    selectedDate = info.dateStr;
-
-                    // Highlight the clicked date
-                    info.dayEl.classList.add('selected-date');
-
-                    // Dynamically generate time slots when a date is selected
-                    generateTimeSlots();
-                }
-            });
-
-            calendar.render();
-
-            // Function to generate time slots
-            function generateTimeSlots() {
-                var timeSlotsContainer = document.querySelector('.time-slots');
-                timeSlotsContainer.innerHTML = ''; // Clear any existing slots
-                
-                // Define available time slots (20-minute intervals)
-                var startHour = 10;
-                var endHour = 18;
-                var timeSlots = [];
-
-                for (var hour = startHour; hour < endHour; hour++) {
-                    for (var minutes = 0; minutes < 60; minutes += 20) {
-                        var time = `${String(hour).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
-                        timeSlots.push(time);
-                    }
+                // If the clicked date is today, do not allow selection
+                if (clickedDate.toDateString() === today.toDateString()) {
+                    return; // Do nothing if today is clicked, but still visually show it
                 }
 
-                // Add slots to the container
-                timeSlots.forEach(function(slot) {
-                    var slotElement = document.createElement('div');
-                    slotElement.classList.add('slot');
-                    slotElement.textContent = slot;
-                    timeSlotsContainer.appendChild(slotElement);
-                });
+                var currentDate = calendar.getDate(); // Get the currently displayed date
+
+                // Check if clicked date is from a previous or next month
+                if (clickedDate.getMonth() < currentDate.getMonth() ||
+                    (clickedDate.getMonth() === 11 && currentDate.getMonth() === 0)) {
+                    calendar.prev(); // Navigate to the previous month
+                    calendar.gotoDate(clickedDate); // Go to the clicked date
+                    return; // Stop further execution
+                }
+
+                if (clickedDate.getMonth() > currentDate.getMonth() ||
+                    (clickedDate.getMonth() === 0 && currentDate.getMonth() === 11)) {
+                    calendar.next(); // Navigate to the next month
+                    calendar.gotoDate(clickedDate); // Go to the clicked date
+                    return; // Stop further execution
+                }
+
+                // Remove highlight from any previously selected date
+                var previousSelected = document.querySelector('.selected-date');
+                if (previousSelected) {
+                    previousSelected.classList.remove('selected-date');
+                }
+
+                // Save the selected date in `selectedDate`
+                selectedDate = info.dateStr;
+
+                // Highlight the clicked date
+                info.dayEl.classList.add('selected-date');
+
+                // Dynamically generate time slots when a date is selected
+                generateTimeSlots();
             }
         });
-    </script>
+
+        calendar.render();
+
+        // Function to generate time slots
+        function generateTimeSlots() {
+            var timeSlotsContainer = document.querySelector('.time-slots');
+            timeSlotsContainer.innerHTML = ''; // Clear any existing slots
+            
+            // Define available time slots (20-minute intervals)
+            var startHour = 10;
+            var endHour = 18;
+            var timeSlots = [];
+
+            for (var hour = startHour; hour < endHour; hour++) {
+                for (var minutes = 0; minutes < 60; minutes += 20) {
+                    var time = `${String(hour).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+                    timeSlots.push(time);
+                }
+            }
+
+            // Add slots to the container
+            timeSlots.forEach(function(slot) {
+                var slotElement = document.createElement('div');
+                slotElement.classList.add('slot');
+                slotElement.textContent = slot;
+                timeSlotsContainer.appendChild(slotElement);
+            });
+        }
+    });
+</script>
 </body>
 </html>
