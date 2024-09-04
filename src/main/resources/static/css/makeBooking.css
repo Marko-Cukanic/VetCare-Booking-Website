@@ -34,6 +34,18 @@ header {
     /* Optional: Add padding or background color if needed */
 }
 
+/* Date Display Styling */
+#selectedDateDisplay {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    margin-top: 1rem; /* Add some space above the date display */
+    padding: 0.5rem;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 /* Calendar Container Styling */
 #calendar {
     flex: 1 1 auto; /* Allow calendar to grow and fill available space */
