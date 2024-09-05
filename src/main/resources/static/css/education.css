@@ -6,55 +6,55 @@ body {
     background-color: #e9ecef;
     line-height: 1.6;
     color: #333;
-}
-
-a {
+ }
+ 
+ a {
     text-decoration: none;
     color: #007bff;
     transition: color 0.3s ease;
-}
-
-a:hover {
+ }
+ 
+ a:hover {
     color: #0056b3;
-}
-
-/* Main Navigation Styles (from navbar.css) */
-nav.main-nav {
+ }
+ 
+ /* Main Navigation Styles (from navbar.css) */
+ nav.main-nav {
     background-color: #343a40;
     padding: 15px 0;
     z-index: 10000; /* High z-index to ensure it stays above other elements */
     position: fixed;
     width: 100%;
     top: 0;
-}
-
-nav.main-nav ul {
+ }
+ 
+ nav.main-nav ul {
     list-style: none;
     margin: 0;
     padding: 0;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-}
-
-nav.main-nav ul li {
+ }
+ 
+ nav.main-nav ul li {
     margin: 0 15px;
     position: relative; /* Relative position to handle dropdown */
-}
-
-nav.main-nav ul li a {
+ }
+ 
+ nav.main-nav ul li a {
     color: white;
     padding: 10px 20px;
     border-radius: 5px;
     font-weight: bold;
-}
-
-nav.main-nav ul li a:hover {
+ }
+ 
+ nav.main-nav ul li a:hover {
     background-color: #495057;
-}
-
-/* Dropdown Styles */
-nav.main-nav ul li .dropdown-content {
+ }
+ 
+ /* Dropdown Styles */
+ nav.main-nav ul li .dropdown-content {
     display: none;
     position: absolute;
     background-color: #f1f1f1;
@@ -64,66 +64,62 @@ nav.main-nav ul li .dropdown-content {
     top: 100%; /* Ensure dropdown appears below the parent list item */
     left: 0;
     border-radius: 4px;
-}
-
-nav.main-nav ul li:hover .dropdown-content {
+ }
+ 
+ nav.main-nav ul li:hover .dropdown-content {
     display: block;
-}
-
-nav.main-nav ul li .dropdown-content a {
+ }
+ 
+ nav.main-nav ul li .dropdown-content a {
     color: black;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
     z-index: 10001; /* Ensures each item is above the header */
-}
-
-nav.main-nav ul li .dropdown-content a:hover {
+ }
+ 
+ nav.main-nav ul li .dropdown-content a:hover {
     background-color: #ddd;
-}
-
-/* Header Styles */
-header {
-    background: linear-gradient(90deg, #007bff, #6610f2);
+ }
+ 
+ /* Header Styles */
+ header {
+    background-color: #343a40; /* Same background color as the login page */
     color: white;
-    padding: 40px 0 20px; /* Adjusted padding */
+    padding: 20px 0;
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    position: relative;
-    margin-top: 60px; /* Ensure it's below the navbar */
-    z-index: 1; /* Lower z-index so dropdowns appear above */
-}
-
-header h1 {
+ }
+ 
+ header h1 {
     font-size: 2.5rem;
     margin: 0;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Added text shadow for a nicer look */
-}
-
-/* Tabs Styles */
-nav.tabs {
+    font-family: 'Cursive', sans-serif; /* Match the font style of the login page */
+ }
+ 
+ /* Tabs Styles */
+ nav.tabs {
     display: flex;
     justify-content: center;
-    margin: 0 auto 30px auto; /* Adjusted margins */
+    margin: 30px auto; /* Adjusted margins to create space between the header and tabs */
     background-color: #f8f9fa;
     border-bottom: 2px solid #dee2e6;
-    padding: 10px 0; /* Adjusted padding for better spacing */
-    z-index: 1;
+    padding: 10px 0;
     position: relative; /* Ensures tabs are visible and not overlapped */
-}
-
-nav.tabs ul {
+ }
+ 
+ nav.tabs ul {
     list-style: none;
     padding: 0;
     margin: 0;
     display: flex;
-}
-
-nav.tabs ul li {
+ }
+ 
+ nav.tabs ul li {
     margin: 0 10px;
-}
-
-nav.tabs ul li a {
+ }
+ 
+ nav.tabs ul li a {
     display: inline-block;
     padding: 10px 20px;
     color: #007bff;
@@ -132,76 +128,73 @@ nav.tabs ul li a {
     background-color: #e9ecef;
     font-weight: bold;
     text-decoration: none;
-}
-
-nav.tabs ul li a.active, nav.tabs ul li a:hover {
+ }
+ 
+ nav.tabs ul li a.active, nav.tabs ul li a:hover {
     background-color: white;
     border-color: #dee2e6 #dee2e6 #fff; /* Top and sides bordered, no bottom */
     color: #495057;
-}
-
-nav.tabs ul li a:hover {
-    color: #007bff;
-}
-
-/* Main Content Styles */
-main {
+ }
+ 
+ /* Main Content Styles */
+ main {
     padding: 20px;
     background-color: #ffffff;
     max-width: 1200px;
     margin: 30px auto; /* Adjusted margin */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
-}
-
-section {
+ }
+ 
+ section {
     margin-bottom: 30px;
-}
-
-section h2 {
+ }
+ 
+ section h2 {
     font-size: 2rem;
     color: #343a40;
     margin-bottom: 10px;
     border-bottom: 2px solid #007bff;
     padding-bottom: 5px;
-}
-
-section p {
+ }
+ 
+ section p {
     font-size: 1.1rem;
     color: #555;
-}
-
-/* Footer Styles */
-footer {
+ }
+ 
+ /* Footer Styles */
+ footer {
     background-color: #343a40;
     color: white;
     text-align: center;
     padding: 20px 0;
     box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
     z-index: 1;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
+ }
+ 
+ /* Responsive Design */
+ @media (max-width: 768px) {
     header h1 {
         font-size: 2rem;
     }
-
+ 
     nav.main-nav ul {
         flex-direction: column;
         padding: 10px 0;
     }
-
+ 
     nav.main-nav ul li {
         margin: 5px 0;
     }
-
+ 
     main {
         padding: 20px;
         margin-top: 60px; /* Ensure margin-top is sufficient for mobile screens */
     }
-
+ 
     section h2 {
         font-size: 1.75rem;
     }
-}
+ }
+ 
