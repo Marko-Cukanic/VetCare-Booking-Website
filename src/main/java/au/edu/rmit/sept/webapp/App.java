@@ -9,7 +9,7 @@ import java.sql.SQLException;
 public class App {
     public static void main(String[] args) {
         // MySQL connection details
-        String url = "jdbc:mysql://localhost:3306/vetcaredb";
+        String url = "jdbc:mysql://118.102.125.111:3306/vetcaredb";
         String user = "vetuser";
         String password = "1234";
 
