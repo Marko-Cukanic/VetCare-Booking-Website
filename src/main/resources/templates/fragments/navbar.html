@@ -24,12 +24,38 @@
                         <div class="dropdown-content">
                             <a th:href="@{/signup}">Signup</a>
                             <a th:href="@{/login}">Login</a>
+                            <!-- Logout link -->
                             <a href="#" onclick="handleLogout()">Logout</a>
+                            <script>
+                                document.addEventListener('DOMContentLoaded', (event) => {
+                            function handleLogout() {
+                                const sessionToken = localStorage.getItem('sessionToken');
+                                if (sessionToken) {
+                                    fetch('/logout?sessionToken=' + sessionToken, { method: 'GET' })
+                                        .then(response => response.text())
+                                        .then(data => {
+                                            alert(data); // Show the logout message
+                                            localStorage.removeItem('sessionToken'); // Remove the session token from local storage
+                                            window.location.href = '/login'; // Redirect to the login page
+                                        })
+                                        .catch(error => {
+                                            console.error('Error during logout:', error);
+                                        });
+                                } else {
+                                    alert('No active session found.');
+                                }
+                            }
+                            window.handleLogout = handleLogout; // Attach the function to the global window object
+                        });
+                        
+                            </script>
                         </div>
                     </li>
                 </ul>
             </nav>
         </header>
     </div>
+
+    <!-- Move the script to the bottom of the body -->
 </body>
 </html>
