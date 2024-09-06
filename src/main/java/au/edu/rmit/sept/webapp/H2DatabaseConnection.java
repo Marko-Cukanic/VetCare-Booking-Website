@@ -1,4 +1,4 @@
-package au.edu.rmit.sept.webapp;
+/*package au.edu.rmit.sept.webapp;
 
     
 import java.sql.Connection;
@@ -18,4 +18,4 @@ public class H2DatabaseConnection {
     }
 }
 
- 
+ */
