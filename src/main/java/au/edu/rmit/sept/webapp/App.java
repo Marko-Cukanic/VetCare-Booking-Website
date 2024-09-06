@@ -1,15 +1,21 @@
 package au.edu.rmit.sept.webapp;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class App {
     public static void main(String[] args) {
+        // MySQL connection details
+        String url = "jdbc:mysql://118.102.125.111:3306/vetcaredb";
+        String user = "vetuser";
+        String password = "1234";
+
         try {
-            // Step 1: Establish a connection to the H2 database
-            Connection connection = H2DatabaseConnection.getConnection();
+            // Step 1: Establish a connection to the MySQL database
+            Connection connection = DriverManager.getConnection(url, user, password);
 
             // Step 2: Create a table named 'users' if it doesn't exist
             String createTableSQL = "CREATE TABLE IF NOT EXISTS users (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255))";
@@ -33,6 +39,13 @@ public class App {
                 String name = resultSet.getString("name");
                 System.out.println("ID: " + id + ", Name: " + name);
             }
+
+            // Closing the resources
+            resultSet.close();
+            selectDataStatement.close();
+            insertDataStatement.close();
+            createTableStatement.close();
+            connection.close();
 
         } catch (SQLException e) {
             e.printStackTrace();

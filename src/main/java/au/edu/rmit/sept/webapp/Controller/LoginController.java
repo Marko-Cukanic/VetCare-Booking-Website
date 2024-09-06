@@ -34,19 +34,20 @@ public class LoginController {
         if (sessionToken != null && sessionTokens.containsKey(sessionToken)) {
             return "You are already logged in!";
         }
-
+    
         // Find the user by email
         User user = userRepository.findByEmail(email);
-
-        if (user == null || !user.password().equals(password)) {
+    
+        // Fix: use getPassword() instead of password()
+        if (user == null || !user.getPassword().equals(password)) {
             // If no user is found or password doesn't match, return an error message
             return "Invalid email or password.";
         }
-
+    
         // Generate a new session token
         String newSessionToken = UUID.randomUUID().toString();
         sessionTokens.put(newSessionToken, email); // Store the token with the user's email
-
+    
         // Return the session token to the client
         return newSessionToken;
     }
