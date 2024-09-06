@@ -91,3 +91,18 @@ body {
     padding-top: 80px; /* Adjust this value based on the height of the navbar */
     margin: 0;
 }
+/* Flex container for the logo and icon */
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.logo-container h1 {
+    margin-right: 10px; /* Adds some space between the text and the icon */
+}
+
+/* Style the paw icon */
+.paw-icon {
+    width: 30px; /* Adjust the size as needed */
+    height: auto;
+}

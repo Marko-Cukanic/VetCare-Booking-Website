@@ -3,7 +3,10 @@
 <body>
     <div th:fragment="navbar">
         <header>
-            <h1><a th:href="@{/}" style="color: white; text-decoration: none;">VetCare</a></h1>
+            <div class="logo-container">
+                <h1><a th:href="@{/}" style="color: white; text-decoration: none;">VetCare</a></h1>
+                <img src="/images/dog-paw.png" alt="Paw icon" class="paw-icon">
+            </div>
             <nav>
                 <ul>
                     <li><a th:href="@{/makebooking}">Make a Booking</a></li>
