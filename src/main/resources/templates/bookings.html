@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>My Booking/s</title>
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/bookings.css}">
+</head>
+<body>
+
+    <!-- Second Header with Title -->
+    <div class="Header">
+        <div th:insert="~{fragments/navbar :: navbar}"></div>
+        <div class="title-container">
+            <h1>My Booking/s</h1>
+        </div>
+    </div>
