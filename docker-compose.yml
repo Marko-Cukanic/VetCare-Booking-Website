@@ -1,0 +1,27 @@
+version: '3'
+services:
+  db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: vetcaredb
+      MYSQL_USER: vetuser
+      MYSQL_PASSWORD: 1234
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      retries: 5
+      timeout: 10s
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/vetcaredb
+      SPRING_DATASOURCE_USERNAME: vetuser
+      SPRING_DATASOURCE_PASSWORD: 1234
+    depends_on:
+      db:
+        condition: service_healthy
