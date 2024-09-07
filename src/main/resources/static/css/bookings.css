@@ -1,0 +1,30 @@
+/* Reset and Base Styles */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #ffffff;
+    height: 100vh; /* Ensure the body takes the full viewport height */
+    display: flex;
+    flex-direction: column; /* Arrange children vertically */
+}
+
+/* Header Styling */
+.Header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    margin-bottom: -3.5rem;
+}
+
+/* Title Container Styling */
+.title-container {
+    margin-top: 3rem; /* Reduced top margin for better spacing */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem; /* Reduced padding to make the container smaller */
+    width: 100%;
+    font-size: 1.25rem; /* Slightly smaller font size if needed */
+}
