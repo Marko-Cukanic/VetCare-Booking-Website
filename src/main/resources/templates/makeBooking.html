@@ -19,127 +19,137 @@
     </div>
 
     <!-- Main Container to align the Calendar and Time Slot Container side by side -->
-<div class="booking-container">
-    <!-- Calendar Container -->
-    <div id="calendar"></div>
+    <div class="booking-container">
+        <!-- Calendar Container -->
+        <div id="calendar"></div>
 
-    <!-- Time Slot Container -->
-    <div id="timeSlotContainer">
-        <h3>Available Time Slots</h3>
-        <div class="time-slots">
-            <!-- Time slots will be dynamically generated here -->
+        <!-- Time Slot Container -->
+        <div id="timeSlotContainer">
+            <h3>Available Time Slots</h3>
+            <div class="time-slots">
+                <!-- Time slots will be dynamically generated here -->
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Select Button at the bottom right -->
-<button id="selectButton" disabled>Select</button>
+    <!-- Booking Form -->
+    <form id="bookingForm" action="/createBooking" method="post">
+        <!-- Hidden inputs to store the selected date and time slot -->
+        <input type="hidden" name="bookingDate" id="selectedDateInput" required />
+        <input type="hidden" name="timeSlot" id="selectedTimeSlotInput" required />
+        
+        <!-- Select Button at the bottom right -->
+        <button id="selectButton" type="submit" disabled>Select</button>
+    </form>
 
-<!-- FullCalendar JS -->
-<script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.min.js'></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var calendarEl = document.getElementById('calendar');
-        var selectedDate = null;
-        var selectedSlot = null; // To store the selected time slot
-        var selectButton = document.getElementById('selectButton'); // Get the Select button
+    <!-- FullCalendar JS -->
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.min.js'></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+            var selectedDate = null;
+            var selectedSlot = null; // To store the selected time slot
+            var selectButton = document.getElementById('selectButton'); // Get the Select button
+            var selectedDateInput = document.getElementById('selectedDateInput'); // Hidden input for selected date
+            var selectedTimeSlotInput = document.getElementById('selectedTimeSlotInput'); // Hidden input for selected slot
 
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth',
-            height: '100%', // Ensure calendar fills its container
-            headerToolbar: {
-                left: 'prev',
-                center: 'title',
-                right: 'next'
-            },
-            titleFormat: {
-                year: 'numeric',
-                month: 'long'
-            },
-            validRange: {
-                start: new Date() // Disable past dates
-            },
-            selectable: true,
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                height: '100%', // Ensure calendar fills its container
+                headerToolbar: {
+                    left: 'prev',
+                    center: 'title',
+                    right: 'next'
+                },
+                titleFormat: {
+                    year: 'numeric',
+                    month: 'long'
+                },
+                validRange: {
+                    start: new Date() // Disable past dates
+                },
+                selectable: true,
 
-            dateClick: function(info) {
-                var clickedDate = new Date(info.dateStr);
-                var today = new Date(); // Get today's date
+                dateClick: function(info) {
+                    var clickedDate = new Date(info.dateStr);
+                    var today = new Date(); // Get today's date
 
-                // If the clicked date is today, do not allow selection
-                if (clickedDate.toDateString() === today.toDateString()) {
-                    return; // Do nothing if today is clicked, but still visually show it
-                }
-
-                // Remove highlight from any previously selected date
-                var previousSelected = document.querySelector('.selected-date');
-                if (previousSelected) {
-                    previousSelected.classList.remove('selected-date');
-                }
-
-                // Save the selected date in `selectedDate`
-                selectedDate = info.dateStr;
-
-                // Highlight the clicked date
-                info.dayEl.classList.add('selected-date');
-
-                // Enable button if both a date and slot are selected
-                if (selectedDate && selectedSlot) {
-                    selectButton.removeAttribute('disabled');
-                }
-
-                // Dynamically generate time slots when a date is selected
-                generateTimeSlots();
-            }
-        });
-
-        calendar.render();
-
-        // Function to generate time slots
-        function generateTimeSlots() {
-            var timeSlotsContainer = document.querySelector('.time-slots');
-            timeSlotsContainer.innerHTML = ''; // Clear any existing slots
-
-            // Define available time slots (20-minute intervals)
-            var startHour = 10;
-            var endHour = 18;
-            var timeSlots = [];
-
-            for (var hour = startHour; hour < endHour; hour++) {
-                for (var minutes = 0; minutes < 60; minutes += 20) {
-                    var time = `${String(hour).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
-                    timeSlots.push(time);
-                }
-            }
-
-            // Add slots to the container and add click event listener
-            timeSlots.forEach(function(slot) {
-                var slotElement = document.createElement('div');
-                slotElement.classList.add('slot');
-                slotElement.textContent = slot;
-
-                // Add click event listener to make the slot selectable
-                slotElement.addEventListener('click', function() {
-                    // Deselect previously selected slot
-                    if (selectedSlot) {
-                        selectedSlot.classList.remove('selected-slot');
+                    // If the clicked date is today, do not allow selection
+                    if (clickedDate.toDateString() === today.toDateString()) {
+                        return; // Do nothing if today is clicked, but still visually show it
                     }
 
-                    // Mark the clicked slot as selected
-                    slotElement.classList.add('selected-slot');
-                    selectedSlot = slotElement; // Store the selected slot
+                    // Remove highlight from any previously selected date
+                    var previousSelected = document.querySelector('.selected-date');
+                    if (previousSelected) {
+                        previousSelected.classList.remove('selected-date');
+                    }
+
+                    // Save the selected date in `selectedDate`
+                    selectedDate = info.dateStr;
+                    selectedDateInput.value = selectedDate; // Set the hidden input
+
+                    // Highlight the clicked date
+                    info.dayEl.classList.add('selected-date');
 
                     // Enable button if both a date and slot are selected
                     if (selectedDate && selectedSlot) {
                         selectButton.removeAttribute('disabled');
                     }
-                });
 
-                timeSlotsContainer.appendChild(slotElement);
+                    // Dynamically generate time slots when a date is selected
+                    generateTimeSlots();
+                }
             });
-        }
-    });
-</script>
 
+            calendar.render();
+
+            // Function to generate time slots
+            function generateTimeSlots() {
+                var timeSlotsContainer = document.querySelector('.time-slots');
+                timeSlotsContainer.innerHTML = ''; // Clear any existing slots
+
+                // Define available time slots (20-minute intervals)
+                var startHour = 10;
+                var endHour = 18;
+                var timeSlots = [];
+
+                for (var hour = startHour; hour < endHour; hour++) {
+                    for (var minutes = 0; minutes < 60; minutes += 20) {
+                        var time = `${String(hour).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+                        timeSlots.push(time);
+                    }
+                }
+
+                // Add slots to the container and add click event listener
+                timeSlots.forEach(function(slot) {
+                    var slotElement = document.createElement('div');
+                    slotElement.classList.add('slot');
+                    slotElement.textContent = slot;
+
+                    // Add click event listener to make the slot selectable
+                    slotElement.addEventListener('click', function() {
+                        // Deselect previously selected slot
+                        if (selectedSlot) {
+                            selectedSlot.classList.remove('selected-slot');
+                        }
+
+                        // Mark the clicked slot as selected
+                        slotElement.classList.add('selected-slot');
+                        selectedSlot = slotElement; // Store the selected slot
+                        selectedTimeSlotInput.value = selectedSlot.textContent; // Set hidden input
+
+                        // Enable button if both a date and slot are selected
+                        if (selectedDate && selectedSlot) {
+                            selectButton.removeAttribute('disabled');
+                        }
+                    });
+
+                    timeSlotsContainer.appendChild(slotElement);
+                });
+            }
+        });
+    </script>
 
 </body>
 </html>

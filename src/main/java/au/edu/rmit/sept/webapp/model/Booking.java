@@ -1,9 +1,11 @@
 package au.edu.rmit.sept.webapp.model;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "bookings")  // Ensure it maps to the 'bookings' table in MySQL
 public class Booking {
 
     @Id
@@ -17,18 +19,18 @@ public class Booking {
     private String timeSlot;
 
     @Column(name = "created_at", nullable = false, updatable = false)
-    private java.time.LocalDateTime createdAt;
+    private LocalDateTime createdAt;
 
     // Constructors, getters, and setters
 
     public Booking() {
-        this.createdAt = java.time.LocalDateTime.now();
+        this.createdAt = LocalDateTime.now();
     }
 
     public Booking(LocalDate bookingDate, String timeSlot) {
         this.bookingDate = bookingDate;
         this.timeSlot = timeSlot;
-        this.createdAt = java.time.LocalDateTime.now();
+        this.createdAt = LocalDateTime.now();
     }
 
     public Long getId() {
