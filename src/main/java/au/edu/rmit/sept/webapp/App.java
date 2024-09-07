@@ -18,18 +18,18 @@ public class App {
             Connection connection = DriverManager.getConnection(url, user, password);
 
             // Step 2: Create a table named 'users' if it doesn't exist
-            String createTableSQL = "CREATE TABLE IF NOT EXISTS users (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255))";
+            String createTableSQL = "CREATE TABLE IF NOT EXISTS user (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255))";
             PreparedStatement createTableStatement = connection.prepareStatement(createTableSQL);
             createTableStatement.executeUpdate();
 
             // Step 3: Insert a new user into the 'users' table
-            String insertDataSQL = "INSERT INTO users (name) VALUES (?)";
+            String insertDataSQL = "INSERT INTO user (name) VALUES (?)";
             PreparedStatement insertDataStatement = connection.prepareStatement(insertDataSQL);
             insertDataStatement.setString(1, "John Doe");
             insertDataStatement.executeUpdate();
 
             // Step 4: Query the data from the 'users' table
-            String selectDataSQL = "SELECT * FROM users";
+            String selectDataSQL = "SELECT * FROM user";
             PreparedStatement selectDataStatement = connection.prepareStatement(selectDataSQL);
             ResultSet resultSet = selectDataStatement.executeQuery();
 

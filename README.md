@@ -23,3 +23,4 @@ See [Instructions](INSTRUCTIONS.md)
 Run with 
 ./mvnw clean spring-boot:run
 
+docker-compose up --build
