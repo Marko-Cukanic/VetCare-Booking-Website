@@ -11,23 +11,71 @@
 
   <!-- Tabs Section -->
   <nav class="tabs">
-     <ul>
-         <li><a th:href="@{/resources}">Articles</a></li>
-         <li><a th:href="@{/guides}">Guides</a></li>
-         <li><a th:href="@{/videos}">Videos</a></li>
-         <li><a th:href="@{/trends}" class="active">Trends</a></li>
-     </ul>
+    <ul>
+      <li><a th:href="@{/resources}">Articles</a></li>
+      <li><a th:href="@{/guides}">Guides</a></li>
+      <li><a th:href="@{/videos}">Videos</a></li>
+      <li><a th:href="@{/trends}" class="active">Trends</a></li>
+    </ul>
   </nav>
 
   <main>
-      <section>
-          <h2>Trends</h2>
-          <p>Stay updated with the latest trends in pet care and veterinary science.</p>
-      </section>
+    <section>
+      <h2>Trends</h2>
+      <p>Stay updated with the latest trends in pet care and veterinary science.</p>
+
+      <!-- Trend 1 -->
+      <div class="trend-preview">
+        <h3>Shelter Veterinarian Scholarship</h3>
+        <iframe id="iframe1" src="https://www.veterinarypracticenews.com/shelter-veterinarian-scholarship/" title="Shelter Veterinarian Scholarship Preview"></iframe>
+        <button class="full-screen-btn" onclick="openFullScreen('iframe1')">View Full Screen</button>
+      </div>
+
+      <!-- Trend 2 -->
+      <div class="trend-preview">
+        <h3>Bovine Anaplasmosis Vaccine</h3>
+        <iframe id="iframe2" src="https://www.veterinarypracticenews.com/bovine-anaplasmosis-vaccine/" title="Bovine Anaplasmosis Vaccine Preview"></iframe>
+        <button class="full-screen-btn" onclick="openFullScreen('iframe2')">View Full Screen</button>
+      </div>
+
+      <!-- Trend 3 -->
+      <div class="trend-preview">
+        <h3>Collecting Deposits for Appointments</h3>
+        <iframe id="iframe3" src="https://www.veterinarypracticenews.com/collecting-deposits-appointments/" title="Collecting Deposits Preview"></iframe>
+        <button class="full-screen-btn" onclick="openFullScreen('iframe3')">View Full Screen</button>
+      </div>
+    </section>
   </main>
 
   <footer>
-      <p>&copy; 2024 VetCare. All rights reserved.</p>
+    <p>&copy; 2024 VetCare. All rights reserved.</p>
   </footer>
+
+  <script>
+    // Function to open an iframe in full screen
+    function openFullScreen(iframeId) {
+      const iframe = document.getElementById(iframeId);
+      const fullScreenIframe = document.createElement('iframe');
+      fullScreenIframe.src = iframe.src;
+      fullScreenIframe.className = 'fullscreen-iframe';
+
+      // Close full-screen on click or press escape key
+      fullScreenIframe.onclick = function() {
+        fullScreenIframe.remove();
+      };
+
+      document.body.appendChild(fullScreenIframe);
+    }
+
+    // Close iframe on Escape key press
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape') {
+        const fullScreenIframe = document.querySelector('.fullscreen-iframe');
+        if (fullScreenIframe) {
+          fullScreenIframe.remove();
+        }
+      }
+    });
+  </script>
 </body>
 </html>
