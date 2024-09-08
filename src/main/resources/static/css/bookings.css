@@ -15,18 +15,6 @@ body, html {
     justify-content: center;
     align-items: center;
     padding: 1rem;
-    margin-bottom: -3.5rem;
-}
-
-/* Title Container Styling */
-.title-container {
-    margin-top: 3rem; /* Reduced top margin for better spacing */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0.5rem; /* Reduced padding to make the container smaller */
-    width: 100%;
-    font-size: 1.25rem; /* Slightly smaller font size if needed */
 }
 
 /* Bookings Container */
@@ -38,23 +26,37 @@ body, html {
 .booking-list {
     display: flex;
     flex-direction: column;
+    width: 96%;
+    padding: 0 2rem; /*Small gaps on the sides for bookings */
 }
 
 /* Booking Bar Styling */
 .booking-bar {
-    background-color: #007bff; /* Blue background */
-    color: white; /* White text */
+    background-color: #ffffff; /* White background */
+    color: black; /* Black text */
     padding: 1rem;
     margin: 0.5rem 0;
     border-radius: 5px;
     width: 100%; /* Full width */
+    box-sizing: border-box;
     display: flex;
-    justify-content: space-between; /* Space between date and time */
-    font-size: 1.2rem;
+    flex-direction: column; /* Stack content vertically */
+    justify-content: space-between; /* Space between elements */
+    font-size: 1.8rem;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.booking-date, .booking-time {
-    margin: 0;
-    padding: 0;
+/* Booking Date and Time Styling */
+.booking-info-top, .booking-info-bottom {
+    display: block;
+}
+
+.booking-info-top {
+    font-weight: bold;
+}
+
+.booking-info-bottom {
+    color: #555; /* Gray text for bottom info */
+    margin-top: 0.5rem;
+    font-size: 1.5rem;
 }

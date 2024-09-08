@@ -23,8 +23,10 @@
         <div class="booking-list">
             <!-- Loop through each booking and display it as a horizontal bar -->
             <div th:each="booking : ${bookings}" class="booking-bar">
-                <span class="booking-date" th:text="${booking.bookingDate}">Date</span> - 
-                <span class="booking-time" th:text="${booking.timeSlot}">Time</span>
+                <span class="booking-info-top">Booking for:</span>
+                <span class="booking-info-bottom">
+                    At <span th:text="${booking.timeSlot}">Time</span> on <span th:text="${booking.bookingDate}">Date</span> with Dr. Unknown
+                </span>
             </div>
         </div>
     </div>
