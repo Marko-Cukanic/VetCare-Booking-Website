@@ -24,3 +24,7 @@ Run with
 ./mvnw clean spring-boot:run
 
 docker-compose up --build
+
+docker exec -it team-project-group-p08-07-db-1 mysql -u vetuser -p
+username vetuser
+password for mysql 1234
