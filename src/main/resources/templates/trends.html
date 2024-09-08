@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Trends</title>
+  <link rel="stylesheet" th:href="@{/css/trends.css}">
+  <link rel="stylesheet" th:href="@{/css/navbar.css}">
+</head>
+<body>
+  <div th:insert="~{fragments/navbar :: navbar}"></div>
+
+  <!-- Tabs Section -->
+  <nav class="tabs">
+     <ul>
+         <li><a th:href="@{/resources}">Articles</a></li>
+         <li><a th:href="@{/guides}">Guides</a></li>
+         <li><a th:href="@{/videos}">Videos</a></li>
+         <li><a th:href="@{/trends}" class="active">Trends</a></li>
+     </ul>
+  </nav>
+
+  <main>
+      <section>
+          <h2>Trends</h2>
+          <p>Stay updated with the latest trends in pet care and veterinary science.</p>
+      </section>
+  </main>
+
+  <footer>
+      <p>&copy; 2024 VetCare. All rights reserved.</p>
+  </footer>
+</body>
+</html>
