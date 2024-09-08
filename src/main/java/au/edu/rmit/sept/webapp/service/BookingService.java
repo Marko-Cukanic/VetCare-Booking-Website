@@ -22,4 +22,13 @@ public class BookingService {
     public List<Booking> getAllBookings() {
         return bookingRepository.findAll(); // Fetch all bookings from the database
     }
+
+    public void deleteBookingById(Long id) {
+        bookingRepository.deleteById(id);
+    }
+
+    public void deleteBooking(Long bookingId) {
+        bookingRepository.deleteById(bookingId);
+    }
+
 }

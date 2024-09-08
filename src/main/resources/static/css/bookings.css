@@ -39,9 +39,7 @@ body, html {
     border-radius: 5px;
     width: 100%; /* Full width */
     box-sizing: border-box;
-    display: flex;
-    flex-direction: column; /* Stack content vertically */
-    justify-content: space-between; /* Space between elements */
+    position: relative; /* Ensure the buttons can be positioned */
     font-size: 1.8rem;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -60,3 +58,47 @@ body, html {
     margin-top: 0.5rem;
     font-size: 1.5rem;
 }
+
+/* Container for the reschedule and cancel buttons */
+.booking-actions {
+    display: flex;
+    flex-direction: column; /* Vertically stack the buttons if needed */
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%); /* Vertically center the buttons */
+    gap: 1rem; /* Add some space between the buttons */
+}
+
+/* Style for the reschedule and cancel buttons */
+.reschedule-button, .cancel-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.reschedule-button img, .cancel-button img {
+    width: 24px; /* Set the size of the icons */
+    height: 24px;
+}
+
+/* Hover effect for the Reschedule button */
+.reschedule-button:hover {
+    background-color: #FFA500; /* Orangey-yellow background */
+    border-radius: 50%; /* Optional: make the background a circle */
+    padding: 0.3rem; /* Adds a little padding to make the background visible */
+}
+
+/* Hover effect for the Cancel button */
+.cancel-button:hover {
+    background-color: #FF0000; /* Pure red background */
+    border-radius: 50%; /* Optional: make the background a circle */
+    padding: 0.3rem; /* Adds a little padding to make the background visible */
+}
+
+/* Adjust the image visibility on hover (optional, if you want the icon to stand out less) */
+.reschedule-button:hover img, .cancel-button:hover img {
+    opacity: 0.9;
+}
+

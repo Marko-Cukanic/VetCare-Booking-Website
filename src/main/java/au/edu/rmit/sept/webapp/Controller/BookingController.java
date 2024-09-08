@@ -9,6 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -35,5 +37,26 @@ public class BookingController {
 
         // Redirect to bookings.html after booking is created
         return "redirect:/bookings"; 
+    }
+
+    @GetMapping("/rescheduleBooking/{id}")
+    public String rescheduleBooking(@PathVariable Long id) {
+        // Delete the existing booking by ID
+        bookingService.deleteBookingById(id);
+
+        // Redirect to the make booking page
+        return "redirect:/makebooking";
+    }
+
+    @GetMapping("/cancelBooking/{id}")
+    public String cancelBooking(@PathVariable("id") Long bookingId, RedirectAttributes redirectAttributes) {
+        // Call the service to delete the booking
+        bookingService.deleteBooking(bookingId);
+
+        // Add a flash message for confirmation (optional)
+        redirectAttributes.addFlashAttribute("message", "Booking cancelled successfully!");
+
+        // Redirect to the bookings page
+        return "redirect:/bookings";
     }
 }
