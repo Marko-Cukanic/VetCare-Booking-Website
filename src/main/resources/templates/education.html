@@ -1,34 +1,103 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-   <meta charset="UTF-8">
-   <title>Education Resources</title>
-   <link rel="stylesheet" th:href="@{/css/education.css}">
-   <link rel="stylesheet" th:href="@{/css/navbar.css}">
+  <meta charset="UTF-8">
+  <title>Education Resources</title>
+  <link rel="stylesheet" th:href="@{/css/education.css}">
+  <link rel="stylesheet" th:href="@{/css/navbar.css}">
 </head>
 <body>
-   <!-- Include the same navbar fragment used in login.html -->
-   <div th:insert="~{fragments/navbar :: navbar}"></div>
+  <!-- Include the same navbar fragment used in login.html -->
+  <div th:insert="~{fragments/navbar :: navbar}"></div>
 
-   <!-- Tabs Section -->
-   <nav class="tabs">
-       <ul>
-           <li><a th:href="@{/resources}" class="active">Articles</a></li>
-           <li><a th:href="@{/guides}">Guides</a></li>
-           <li><a th:href="@{/videos}">Videos</a></li>
-           <li><a th:href="@{/trends}">Trends</a></li>
-       </ul>
-   </nav>
+  <!-- Tabs Section -->
+  <nav class="tabs">
+    <ul>
+      <li><a th:href="@{/resources}" class="active">Articles</a></li>
+      <li><a th:href="@{/guides}">Guides</a></li>
+      <li><a th:href="@{/videos}">Videos</a></li>
+      <li><a th:href="@{/trends}">Trends</a></li>
+    </ul>
+  </nav>
 
-   <main>
-       <section>
-           <h2>Articles</h2>
-           <p>Explore our collection of articles on pet care and veterinary medicine.</p>
-       </section>
-   </main>
-  
-   <footer>
-       <p>&copy; 2024 VetCare. All rights reserved.</p>
-   </footer>
+  <main>
+    <section>
+      <h2>Articles</h2>
+      <p>Explore our collection of articles on pet care and veterinary medicine.</p>
+
+      <!-- Article 1 -->
+      <div class="article-preview">
+        <h3>Emergency Care for Your Pet</h3>
+        <iframe id="article1" src="https://www.aspca.org/pet-care/general-pet-care/emergency-care-your-pet" title="Emergency Care for Your Pet"></iframe>
+        <button class="full-screen-btn" onclick="openFullScreen('article1')">View Full Screen</button>
+      </div>
+
+      <!-- Article 2 -->
+      <div class="article-preview">
+        <h3>Pet Care Tasks Easily Overlooked by Pet Parents</h3>
+        <iframe id="article2" src="https://www.petmd.com/dog/general-health/pet-care-tasks-easily-overlooked-by-pet-parents" title="Pet Care Tasks"></iframe>
+        <button class="full-screen-btn" onclick="openFullScreen('article2')">View Full Screen</button>
+      </div>
+
+      <!-- Article 3 -->
+      <div class="article-preview">
+        <h3>Teach Your Dog to Trade Items with You</h3>
+        <iframe id="article3" src="https://www.akc.org/expert-advice/training/teach-dog-to-trade-items-with-you/" title="Teach Your Dog to Trade Items"></iframe>
+        <button class="full-screen-btn" onclick="openFullScreen('article3')">View Full Screen</button>
+      </div>
+
+      <!-- Article 4 -->
+      <div class="article-preview">
+        <h3>Vaccines for Dogs</h3>
+        <iframe id="article4" src="https://vcahospitals.com/know-your-pet/vaccines-for-dogs" title="Vaccines for Dogs"></iframe>
+        <button class="full-screen-btn" onclick="openFullScreen('article4')">View Full Screen</button>
+      </div>
+
+      <!-- Article 5 -->
+      <div class="article-preview">
+        <h3>Dog Behavior Problems - Aggression</h3>
+        <iframe id="article5" src="https://vcahospitals.com/know-your-pet/dog-behavior-problems---aggression---getting-started---safety-and-management" title="Dog Aggression Problems"></iframe>
+        <button class="full-screen-btn" onclick="openFullScreen('article5')">View Full Screen</button>
+      </div>
+
+      <!-- Article 6 -->
+      <div class="article-preview">
+        <h3>How Old Is Your Cat in People Years?</h3>
+        <iframe id="article6" src="https://www.pethealthnetwork.com/cat-health/cat-checkups-preventive-care/how-old-your-cat-people-years" title="How Old Is Your Cat"></iframe>
+        <button class="full-screen-btn" onclick="openFullScreen('article6')">View Full Screen</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2024 VetCare. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Function to open an iframe in full screen
+    function openFullScreen(iframeId) {
+      const iframe = document.getElementById(iframeId);
+      const fullScreenIframe = document.createElement('iframe');
+      fullScreenIframe.src = iframe.src;
+      fullScreenIframe.className = 'fullscreen-iframe';
+
+      // Close full-screen on click or press escape key
+      fullScreenIframe.onclick = function() {
+        fullScreenIframe.remove();
+      };
+
+      document.body.appendChild(fullScreenIframe);
+    }
+
+    // Close iframe on Escape key press
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape') {
+        const fullScreenIframe = document.querySelector('.fullscreen-iframe');
+        if (fullScreenIframe) {
+          fullScreenIframe.remove();
+        }
+      }
+    });
+  </script>
 </body>
 </html>
