@@ -23,8 +23,10 @@ See [Instructions](INSTRUCTIONS.md)
 Run with 
 ./mvnw clean spring-boot:run
 
-docker-compose up --build
+docker-compose up
 
+database details:
 docker exec -it team-project-group-p08-07-db-1 mysql -u vetuser -p
+use vetcaredb
 username vetuser
 password for mysql 1234

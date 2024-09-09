@@ -3,8 +3,9 @@ body {
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f8f8f8;
+    background-color: #f4f4f9;
     color: #333;
+    padding-top: 70px; /* Adjusted to account for fixed navbar height */
 }
 
 /* Header styles */
@@ -44,20 +45,56 @@ nav ul li a:hover {
     text-decoration: underline;
 }
 
+
 /* Main content area */
 main {
     padding: 20px;
+    margin-top: 20px;
 }
 
+/* Section styles */
 section {
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 section h2 {
-    font-size: 1.5em;
+    font-size: 1.8em;
     border-bottom: 2px solid #ddd;
     padding-bottom: 10px;
     margin-bottom: 20px;
+    color: #555;
+}
+
+/* Form styles */
+form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+form button {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #218838;
 }
 
 /* Footer styles */
@@ -65,8 +102,8 @@ footer {
     background-color: #333;
     color: #fff;
     text-align: center;
-    padding: 10px;
-    position: fixed;
+    padding: 15px;
+    position: relative;
     width: 100%;
     bottom: 0;
 }

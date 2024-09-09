@@ -18,6 +18,8 @@ services:
     build: .
     ports:
       - "8080:8080"
+    volumes:
+      - db_data:/var/lib/mysql 
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/vetcaredb
       SPRING_DATASOURCE_USERNAME: vetuser
@@ -25,3 +27,5 @@ services:
     depends_on:
       db:
         condition: service_healthy
+volumes:
+  db_data: 
