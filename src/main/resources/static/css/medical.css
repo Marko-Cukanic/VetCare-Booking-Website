@@ -1,0 +1,108 @@
+/* General body styles */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f8f8;
+    color: #333;
+}
+
+/* Banner section */
+#banner {
+    background-color: #4CAF50;  /* Green background */
+    color: white;
+    text-align: center;
+    padding: 50px 0;
+    margin-top: 80px; /* Adjust this value according to the height of your navbar */
+}
+
+nav {
+    position: relative;  /* Ensure it's not using absolute or fixed positioning */
+    z-index: 1;
+}
+
+
+#banner h2 {
+    font-size: 3em;
+    margin: 0;
+}
+
+#banner p {
+    font-size: 1.5em;
+    margin: 10px 0;
+}
+
+/* Main content area */
+main {
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+#medical-record, #vaccination-history, #medical-conditions {
+    flex: 1 1 30%;
+    background-color: #eee;
+    padding: 20px;
+    margin-right: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center;
+}
+
+#medical-record h2, #vaccination-history h2, #medical-conditions h2 {
+    margin-top: 0;
+}
+
+#medical-record p, #vaccination-history ul, #medical-conditions ul {
+    font-size: 1.2em;
+    line-height: 1.6;
+}
+
+/* Footer section */
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Success message styling */
+.success-message {
+    background-color: #dff0d8;
+    color: #3c763d;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    text-align: center;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 500px;
+    z-index: 1000;
+}
+
+/* Responsive styling */
+@media (max-width: 768px) {
+    #banner h2 {
+        font-size: 2.5em;
+    }
+
+    #banner p {
+        font-size: 1.2em;
+    }
+
+    main {
+        flex-direction: column;
+    }
+
+    #medical-record, #vaccination-history, #medical-conditions {
+        flex: 1 1 100%;
+        margin: 10px 0;
+    }
+}
