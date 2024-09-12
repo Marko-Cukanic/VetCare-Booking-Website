@@ -1,32 +1,89 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-   <meta charset="UTF-8">
-   <title>Videos</title>
-   <link rel="stylesheet" th:href="@{/css/videos.css}">
-   <link rel="stylesheet" th:href="@{/css/navbar.css}">
+  <meta charset="UTF-8">
+  <title>Videos</title>
+  <link rel="stylesheet" th:href="@{/css/videos.css}">
+  <link rel="stylesheet" th:href="@{/css/navbar.css}">
 </head>
 <body>
-   <div th:insert="~{fragments/navbar :: navbar}"></div>
+  <div th:insert="~{fragments/navbar :: navbar}"></div>
 
-   <!-- Tabs Section -->
-   <nav class="tabs">
-      <ul>
-          <li><a th:href="@{/resources}">Articles</a></li>
-          <li><a th:href="@{/guides}">Guides</a></li>
-          <li><a th:href="@{/videos}" class="active">Videos</a></li>
-      </ul>
-   </nav>
+  <!-- Tabs Section -->
+  <nav class="tabs">
+    <ul>
+      <li><a th:href="@{/resources}">Articles</a></li>
+      <li><a th:href="@{/guides}">Guides</a></li>
+      <li><a th:href="@{/videos}" class="active">Videos</a></li>
+      <li><a th:href="@{/trends}">Trends</a></li>
+    </ul>
+  </nav>
 
-   <main>
-       <section>
-           <h2>Videos</h2>
-           <p>Watch educational videos to learn more about taking care of your pets.</p>
-       </section>
-   </main>
+  <main>
+    <section>
+      <h2>Videos</h2>
+      <p>Watch educational videos to learn more about taking care of your pets.</p>
 
-   <footer>
-       <p>&copy; 2024 VetCare. All rights reserved.</p>
-   </footer>
+      <!-- Video 1 -->
+      <div class="video-preview">
+        <h3>Pet Care Video 1</h3>
+        <iframe id="video1" src="https://www.youtube.com/embed/PsNlLLSBWLU" title="Pet Care Video 1" allowfullscreen></iframe>
+        <button class="full-screen-btn" onclick="openFullScreen('video1')">View Full Screen</button>
+      </div>
+
+      <!-- Video 2 -->
+      <div class="video-preview">
+        <h3>Pet Care Video 2</h3>
+        <iframe id="video2" src="https://www.youtube.com/embed/Yzv0gXqoCkc" title="Pet Care Video 2" allowfullscreen></iframe>
+        <button class="full-screen-btn" onclick="openFullScreen('video2')">View Full Screen</button>
+      </div>
+
+      <!-- Video 3 -->
+      <div class="video-preview">
+        <h3>Pet Care Video 3</h3>
+        <iframe id="video3" src="https://www.youtube.com/embed/tNu4-G0SmRU" title="Pet Care Video 3" allowfullscreen></iframe>
+        <button class="full-screen-btn" onclick="openFullScreen('video3')">View Full Screen</button>
+      </div>
+
+      <!-- Video 4 -->
+      <div class="video-preview">
+        <h3>Pet Care Video 4</h3>
+        <iframe id="video4" src="https://www.youtube.com/embed/gqG8IZW0oi4" title="Pet Care Video 4" allowfullscreen></iframe>
+        <button class="full-screen-btn" onclick="openFullScreen('video4')">View Full Screen</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2024 VetCare. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Function to open an iframe in full screen
+    function openFullScreen(iframeId) {
+      const iframe = document.getElementById(iframeId);
+      const fullScreenIframe = document.createElement('iframe');
+      fullScreenIframe.src = iframe.src;
+      fullScreenIframe.className = 'fullscreen-iframe';
+      fullScreenIframe.setAttribute('allowfullscreen', '');
+
+      // Close full-screen on click or press escape key
+      fullScreenIframe.onclick = function() {
+        fullScreenIframe.remove();
+      };
+
+      document.body.appendChild(fullScreenIframe);
+    }
+
+    // Close iframe on Escape key press
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape') {
+        const fullScreenIframe = document.querySelector('.fullscreen-iframe');
+        if (fullScreenIframe) {
+          fullScreenIframe.remove();
+        }
+      }
+    });
+  </script>
 </body>
 </html>
