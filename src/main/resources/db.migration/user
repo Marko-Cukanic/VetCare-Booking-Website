@@ -3,4 +3,4 @@ CREATE TABLE IF NOT EXISTS user (
     fullname VARCHAR(255),
     email VARCHAR(255) UNIQUE,
     password VARCHAR(255)
-);
+); 
