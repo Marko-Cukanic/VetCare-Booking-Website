@@ -1,89 +1,100 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Guides</title>
-  <link rel="stylesheet" th:href="@{/css/guides.css}">
-  <link rel="stylesheet" th:href="@{/css/navbar.css}">
+ <meta charset="UTF-8">
+ <title>Guides</title>
+ <link rel="stylesheet" th:href="@{/css/guides.css}">
+ <link rel="stylesheet" th:href="@{/css/navbar.css}">
 </head>
 <body>
-  <div th:insert="~{fragments/navbar :: navbar}"></div>
+ <div th:insert="~{fragments/navbar :: navbar}"></div>
 
-  <nav class="tabs">
-    <ul>
-      <li><a th:href="@{/resources}">Articles</a></li>
-      <li><a th:href="@{/guides}" class="active">Guides</a></li>
-      <li><a th:href="@{/videos}">Videos</a></li>
-      <li><a th:href="@{/trends}">Trends</a></li>
-    </ul>
-  </nav>
+ <!-- Search Bar Section -->
+ <div class="search-bar">
+   <input type="text" id="search-input" placeholder="Search Guides..." oninput="filterContent()">
+ </div>
 
-  <main>
-    <section>
-      <h2>Guides</h2>
-      <p>Access detailed guides on various topics related to pet care.</p>
+ <nav class="tabs">
+   <ul>
+     <li><a th:href="@{/resources}">Articles</a></li>
+     <li><a th:href="@{/guides}" class="active">Guides</a></li>
+     <li><a th:href="@{/videos}">Videos</a></li>
+     <li><a th:href="@{/trends}">Trends</a></li>
+   </ul>
+ </nav>
 
-      <!-- Guide 1 -->
-      <div class="guide-preview">
-        <h3>Cataracts in Dogs</h3>
-        <iframe id="guide1" src="https://bestfriends.org/pet-care-resources/cataracts-dogs-signs-causes-diagnosis-and-treatment" title="Cataracts in Dogs"></iframe>
-        <button class="full-screen-btn" onclick="openFullScreen('guide1')">View Full Screen</button>
-      </div>
+ <main>
+   <section id="content-list">
+     <h2>Guides</h2>
+     <p>Access detailed guides on various topics related to pet care.</p>
 
-      <!-- Guide 2 -->
-      <div class="guide-preview">
-        <h3>How to Take Care of Your Pet</h3>
-        <iframe id="guide2" src="https://www.wikihow.com/Take-Care-of-Your-Pet" title="How to Take Care of Your Pet"></iframe>
-        <button class="full-screen-btn" onclick="openFullScreen('guide2')">View Full Screen</button>
-      </div>
+     <!-- Guide 1 -->
+     <div class="guide-preview content-item" data-title="Cataracts in Dogs" data-type="Guide">
+       <h3>Cataracts in Dogs</h3>
+       <iframe id="guide1" src="https://bestfriends.org/pet-care-resources/cataracts-dogs-signs-causes-diagnosis-and-treatment" title="Cataracts in Dogs"></iframe>
+       <button class="full-screen-btn" onclick="openFullScreen('guide1')">View Full Screen</button>
+     </div>
 
-      <!-- Guide 3 -->
-      <div class="guide-preview">
-        <h3>Hamster Care</h3>
-        <iframe id="guide3" src="https://www.bluecross.org.uk/advice/hamster/hamster-care" title="Hamster Care"></iframe>
-        <button class="full-screen-btn" onclick="openFullScreen('guide3')">View Full Screen</button>
-      </div>
+     <!-- Guide 2 -->
+     <div class="guide-preview content-item" data-title="How to Take Care of Your Pet" data-type="Guide">
+       <h3>How to Take Care of Your Pet</h3>
+       <iframe id="guide2" src="https://www.wikihow.com/Take-Care-of-Your-Pet" title="How to Take Care of Your Pet"></iframe>
+       <button class="full-screen-btn" onclick="openFullScreen('guide2')">View Full Screen</button>
+     </div>
 
-      <!-- Guide 4 -->
-      <div class="guide-preview">
-        <h3>Things You Learn from Your Pet</h3>
-        <iframe id="guide4" src="https://www.webmd.com/pets/ss/slideshow-things-you-learn-from-your-pet" title="Things You Learn from Your Pet"></iframe>
-        <button class="full-screen-btn" onclick="openFullScreen('guide4')">View Full Screen</button>
-      </div>
-    </section>
-  </main>
+     <!-- Guide 3 -->
+     <div class="guide-preview content-item" data-title="Hamster Care" data-type="Guide">
+       <h3>Hamster Care</h3>
+       <iframe id="guide3" src="https://www.bluecross.org.uk/advice/hamster/hamster-care" title="Hamster Care"></iframe>
+       <button class="full-screen-btn" onclick="openFullScreen('guide3')">View Full Screen</button>
+     </div>
 
-  <footer>
-    <p>&copy; 2024 VetCare. All rights reserved.</p>
-  </footer>
+     <!-- Guide 4 -->
+     <div class="guide-preview content-item" data-title="Things You Learn from Your Pet" data-type="Guide">
+       <h3>Things You Learn from Your Pet</h3>
+       <iframe id="guide4" src="https://www.webmd.com/pets/ss/slideshow-things-you-learn-from-your-pet" title="Things You Learn from Your Pet"></iframe>
+       <button class="full-screen-btn" onclick="openFullScreen('guide4')">View Full Screen</button>
+     </div>
+   </section>
+ </main>
 
-  <script>
-    function openFullScreen(iframeId) {
-      const iframe = document.getElementById(iframeId);
-      const fullScreenIframe = document.createElement('iframe');
-      fullScreenIframe.src = iframe.src;
-      fullScreenIframe.className = 'fullscreen-iframe';
+ <footer>
+   <p>&copy; 2024 VetCare. All rights reserved.</p>
+ </footer>
 
-      const exitButton = document.createElement('button');
-      exitButton.className = 'exit-fullscreen-btn';
-      exitButton.textContent = 'Exit Full Screen';
-      exitButton.onclick = function() {
-        fullScreenIframe.remove();
-        exitButton.remove();
-      };
+ <script>
+   // Same full-screen function
+   function openFullScreen(iframeId) {
+     const iframe = document.getElementById(iframeId);
+     const fullScreenIframe = document.createElement('iframe');
+     fullScreenIframe.src = iframe.src;
+     fullScreenIframe.className = 'fullscreen-iframe';
 
-      document.body.appendChild(fullScreenIframe);
-      document.body.appendChild(exitButton);
-    }
+     const exitButton = document.createElement('button');
+     exitButton.className = 'exit-fullscreen-btn';
+     exitButton.textContent = 'Exit Full Screen';
+     exitButton.onclick = function() {
+       fullScreenIframe.remove();
+       exitButton.remove();
+     };
 
-    document.addEventListener('keydown', function(event) {
-      if (event.key === 'Escape') {
-        const fullScreenIframe = document.querySelector('.fullscreen-iframe');
-        const exitButton = document.querySelector('.exit-fullscreen-btn');
-        if (fullScreenIframe) fullScreenIframe.remove();
-        if (exitButton) exitButton.remove();
-      }
-    });
-  </script>
+     document.body.appendChild(fullScreenIframe);
+     document.body.appendChild(exitButton);
+   }
+
+   // Search Filter Functionality
+   function filterContent() {
+     const searchValue = document.getElementById('search-input').value.toLowerCase();
+     const items = document.querySelectorAll('.content-item');
+     items.forEach(item => {
+       const title = item.getAttribute('data-title').toLowerCase();
+       if (title.includes(searchValue)) {
+         item.style.display = 'block';
+       } else {
+         item.style.display = 'none';
+       }
+     });
+   }
+ </script>
 </body>
 </html>
