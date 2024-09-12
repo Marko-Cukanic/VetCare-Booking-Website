@@ -7,7 +7,6 @@
   <link rel="stylesheet" th:href="@{/css/navbar.css}">
 </head>
 <body>
-  <!-- Include the same navbar fragment used in login.html -->
   <div th:insert="~{fragments/navbar :: navbar}"></div>
 
   <!-- Tabs Section -->
@@ -74,28 +73,30 @@
   </footer>
 
   <script>
-    // Function to open an iframe in full screen
     function openFullScreen(iframeId) {
       const iframe = document.getElementById(iframeId);
       const fullScreenIframe = document.createElement('iframe');
       fullScreenIframe.src = iframe.src;
       fullScreenIframe.className = 'fullscreen-iframe';
-
-      // Close full-screen on click or press escape key
-      fullScreenIframe.onclick = function() {
+      
+      const exitButton = document.createElement('button');
+      exitButton.className = 'exit-fullscreen-btn';
+      exitButton.textContent = 'Exit Full Screen';
+      exitButton.onclick = function() {
         fullScreenIframe.remove();
+        exitButton.remove();
       };
 
       document.body.appendChild(fullScreenIframe);
+      document.body.appendChild(exitButton);
     }
 
-    // Close iframe on Escape key press
     document.addEventListener('keydown', function(event) {
       if (event.key === 'Escape') {
         const fullScreenIframe = document.querySelector('.fullscreen-iframe');
-        if (fullScreenIframe) {
-          fullScreenIframe.remove();
-        }
+        const exitButton = document.querySelector('.exit-fullscreen-btn');
+        if (fullScreenIframe) fullScreenIframe.remove();
+        if (exitButton) exitButton.remove();
       }
     });
   </script>

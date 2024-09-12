@@ -9,7 +9,6 @@
 <body>
   <div th:insert="~{fragments/navbar :: navbar}"></div>
 
-  <!-- Tabs Section -->
   <nav class="tabs">
     <ul>
       <li><a th:href="@{/resources}">Articles</a></li>
@@ -26,7 +25,7 @@
 
       <!-- Guide 1 -->
       <div class="guide-preview">
-        <h3>Cataracts in Dogs: Signs, Causes, Diagnosis, and Treatment</h3>
+        <h3>Cataracts in Dogs</h3>
         <iframe id="guide1" src="https://bestfriends.org/pet-care-resources/cataracts-dogs-signs-causes-diagnosis-and-treatment" title="Cataracts in Dogs"></iframe>
         <button class="full-screen-btn" onclick="openFullScreen('guide1')">View Full Screen</button>
       </div>
@@ -59,28 +58,30 @@
   </footer>
 
   <script>
-    // Function to open an iframe in full screen
     function openFullScreen(iframeId) {
       const iframe = document.getElementById(iframeId);
       const fullScreenIframe = document.createElement('iframe');
       fullScreenIframe.src = iframe.src;
       fullScreenIframe.className = 'fullscreen-iframe';
 
-      // Close full-screen on click or press escape key
-      fullScreenIframe.onclick = function() {
+      const exitButton = document.createElement('button');
+      exitButton.className = 'exit-fullscreen-btn';
+      exitButton.textContent = 'Exit Full Screen';
+      exitButton.onclick = function() {
         fullScreenIframe.remove();
+        exitButton.remove();
       };
 
       document.body.appendChild(fullScreenIframe);
+      document.body.appendChild(exitButton);
     }
 
-    // Close iframe on Escape key press
     document.addEventListener('keydown', function(event) {
       if (event.key === 'Escape') {
         const fullScreenIframe = document.querySelector('.fullscreen-iframe');
-        if (fullScreenIframe) {
-          fullScreenIframe.remove();
-        }
+        const exitButton = document.querySelector('.exit-fullscreen-btn');
+        if (fullScreenIframe) fullScreenIframe.remove();
+        if (exitButton) exitButton.remove();
       }
     });
   </script>

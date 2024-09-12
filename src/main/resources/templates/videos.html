@@ -9,7 +9,6 @@
 <body>
   <div th:insert="~{fragments/navbar :: navbar}"></div>
 
-  <!-- Tabs Section -->
   <nav class="tabs">
     <ul>
       <li><a th:href="@{/resources}">Articles</a></li>
@@ -27,28 +26,28 @@
       <!-- Video 1 -->
       <div class="video-preview">
         <h3>Pet Care Video 1</h3>
-        <iframe id="video1" src="https://www.youtube.com/embed/PsNlLLSBWLU" title="Pet Care Video 1" allowfullscreen></iframe>
+        <iframe id="video1" src="https://www.youtube.com/embed/PsNlLLSBWLU" title="Pet Care Video 1"></iframe>
         <button class="full-screen-btn" onclick="openFullScreen('video1')">View Full Screen</button>
       </div>
 
       <!-- Video 2 -->
       <div class="video-preview">
         <h3>Pet Care Video 2</h3>
-        <iframe id="video2" src="https://www.youtube.com/embed/Yzv0gXqoCkc" title="Pet Care Video 2" allowfullscreen></iframe>
+        <iframe id="video2" src="https://www.youtube.com/embed/Yzv0gXqoCkc" title="Pet Care Video 2"></iframe>
         <button class="full-screen-btn" onclick="openFullScreen('video2')">View Full Screen</button>
       </div>
 
       <!-- Video 3 -->
       <div class="video-preview">
         <h3>Pet Care Video 3</h3>
-        <iframe id="video3" src="https://www.youtube.com/embed/tNu4-G0SmRU" title="Pet Care Video 3" allowfullscreen></iframe>
+        <iframe id="video3" src="https://www.youtube.com/embed/tNu4-G0SmRU" title="Pet Care Video 3"></iframe>
         <button class="full-screen-btn" onclick="openFullScreen('video3')">View Full Screen</button>
       </div>
 
       <!-- Video 4 -->
       <div class="video-preview">
         <h3>Pet Care Video 4</h3>
-        <iframe id="video4" src="https://www.youtube.com/embed/gqG8IZW0oi4" title="Pet Care Video 4" allowfullscreen></iframe>
+        <iframe id="video4" src="https://www.youtube.com/embed/gqG8IZW0oi4" title="Pet Care Video 4"></iframe>
         <button class="full-screen-btn" onclick="openFullScreen('video4')">View Full Screen</button>
       </div>
     </section>
@@ -59,29 +58,30 @@
   </footer>
 
   <script>
-    // Function to open an iframe in full screen
     function openFullScreen(iframeId) {
       const iframe = document.getElementById(iframeId);
       const fullScreenIframe = document.createElement('iframe');
       fullScreenIframe.src = iframe.src;
       fullScreenIframe.className = 'fullscreen-iframe';
-      fullScreenIframe.setAttribute('allowfullscreen', '');
 
-      // Close full-screen on click or press escape key
-      fullScreenIframe.onclick = function() {
+      const exitButton = document.createElement('button');
+      exitButton.className = 'exit-fullscreen-btn';
+      exitButton.textContent = 'Exit Full Screen';
+      exitButton.onclick = function() {
         fullScreenIframe.remove();
+        exitButton.remove();
       };
 
       document.body.appendChild(fullScreenIframe);
+      document.body.appendChild(exitButton);
     }
 
-    // Close iframe on Escape key press
     document.addEventListener('keydown', function(event) {
       if (event.key === 'Escape') {
         const fullScreenIframe = document.querySelector('.fullscreen-iframe');
-        if (fullScreenIframe) {
-          fullScreenIframe.remove();
-        }
+        const exitButton = document.querySelector('.exit-fullscreen-btn');
+        if (fullScreenIframe) fullScreenIframe.remove();
+        if (exitButton) exitButton.remove();
       }
     });
   </script>

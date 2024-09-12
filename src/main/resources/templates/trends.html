@@ -9,7 +9,6 @@
 <body>
   <div th:insert="~{fragments/navbar :: navbar}"></div>
 
-  <!-- Tabs Section -->
   <nav class="tabs">
     <ul>
       <li><a th:href="@{/resources}">Articles</a></li>
@@ -27,22 +26,22 @@
       <!-- Trend 1 -->
       <div class="trend-preview">
         <h3>Shelter Veterinarian Scholarship</h3>
-        <iframe id="iframe1" src="https://www.veterinarypracticenews.com/shelter-veterinarian-scholarship/" title="Shelter Veterinarian Scholarship Preview"></iframe>
-        <button class="full-screen-btn" onclick="openFullScreen('iframe1')">View Full Screen</button>
+        <iframe id="trend1" src="https://www.veterinarypracticenews.com/shelter-veterinarian-scholarship/" title="Shelter Veterinarian Scholarship Preview"></iframe>
+        <button class="full-screen-btn" onclick="openFullScreen('trend1')">View Full Screen</button>
       </div>
 
       <!-- Trend 2 -->
       <div class="trend-preview">
         <h3>Bovine Anaplasmosis Vaccine</h3>
-        <iframe id="iframe2" src="https://www.veterinarypracticenews.com/bovine-anaplasmosis-vaccine/" title="Bovine Anaplasmosis Vaccine Preview"></iframe>
-        <button class="full-screen-btn" onclick="openFullScreen('iframe2')">View Full Screen</button>
+        <iframe id="trend2" src="https://www.veterinarypracticenews.com/bovine-anaplasmosis-vaccine/" title="Bovine Anaplasmosis Vaccine Preview"></iframe>
+        <button class="full-screen-btn" onclick="openFullScreen('trend2')">View Full Screen</button>
       </div>
 
       <!-- Trend 3 -->
       <div class="trend-preview">
         <h3>Collecting Deposits for Appointments</h3>
-        <iframe id="iframe3" src="https://www.veterinarypracticenews.com/collecting-deposits-appointments/" title="Collecting Deposits Preview"></iframe>
-        <button class="full-screen-btn" onclick="openFullScreen('iframe3')">View Full Screen</button>
+        <iframe id="trend3" src="https://www.veterinarypracticenews.com/collecting-deposits-appointments/" title="Collecting Deposits Preview"></iframe>
+        <button class="full-screen-btn" onclick="openFullScreen('trend3')">View Full Screen</button>
       </div>
     </section>
   </main>
@@ -52,28 +51,30 @@
   </footer>
 
   <script>
-    // Function to open an iframe in full screen
     function openFullScreen(iframeId) {
       const iframe = document.getElementById(iframeId);
       const fullScreenIframe = document.createElement('iframe');
       fullScreenIframe.src = iframe.src;
       fullScreenIframe.className = 'fullscreen-iframe';
 
-      // Close full-screen on click or press escape key
-      fullScreenIframe.onclick = function() {
+      const exitButton = document.createElement('button');
+      exitButton.className = 'exit-fullscreen-btn';
+      exitButton.textContent = 'Exit Full Screen';
+      exitButton.onclick = function() {
         fullScreenIframe.remove();
+        exitButton.remove();
       };
 
       document.body.appendChild(fullScreenIframe);
+      document.body.appendChild(exitButton);
     }
 
-    // Close iframe on Escape key press
     document.addEventListener('keydown', function(event) {
       if (event.key === 'Escape') {
         const fullScreenIframe = document.querySelector('.fullscreen-iframe');
-        if (fullScreenIframe) {
-          fullScreenIframe.remove();
-        }
+        const exitButton = document.querySelector('.exit-fullscreen-btn');
+        if (fullScreenIframe) fullScreenIframe.remove();
+        if (exitButton) exitButton.remove();
       }
     });
   </script>
