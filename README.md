@@ -24,6 +24,8 @@ Run with
 ./mvnw clean spring-boot:run
 
 docker-compose up
+if you make changes to code
+docker-compose up --build
 
 database details:
 docker exec -it team-project-group-p08-07-db-1 mysql -u vetuser -p
