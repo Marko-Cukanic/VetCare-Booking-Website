@@ -5,6 +5,7 @@
     <title>VetCare Home</title>
     
     <link rel="stylesheet" th:href="@{/css/home.css}">
+    <link rel="stylesheet" th:href="@{/css/bookings.css}">
 </head>
 <body onload="hideSuccessMessage(); checkSessionToken();">
 
@@ -32,7 +33,27 @@
     <main>
         <section id="appointments">
             <h2>Upcoming Appointments:</h2>
-            <p>Booking for: Fluffy at 13:30 on 30/08/2024 with Dr. Cukanic</p>
+            <!-- Loop through the bookings and display each one like the My Booking/s page -->
+            <div class="booking-list">
+                <div th:each="booking : ${bookings}" class="booking-bar">
+                    <span class="booking-info-top">Booking for:</span>
+                    <span class="booking-info-bottom">
+                        At <span th:text="${booking.timeSlot}">Time</span> on 
+                        <span th:text="${booking.bookingDate}">Date</span> with Dr. Unknown
+                    </span>
+                    <!-- Add Reschedule and Cancel Buttons -->
+                    <div class="booking-actions">
+                        <!-- Reschedule Button -->
+                        <button class="reschedule-button" th:onclick="'confirmReschedule(' + ${booking.id} + ');'">
+                            <img th:src="@{/images/reschedule.png}" alt="Reschedule" />
+                        </button>
+                        <!-- Cancel Button -->
+                        <button class="cancel-button" th:onclick="confirmCancel([[${booking.id}]])">
+                            <img th:src="@{/images/cancel.png}" alt="Cancel" />
+                        </button>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <!-- Welcome Section with the Image -->
@@ -54,5 +75,19 @@
         <p>&copy; 2024 VetCare. All rights reserved.</p>
     </footer>
 
+    <script>
+        function confirmReschedule(bookingId) {
+            if (confirm("Are you sure you want to reschedule this booking?")) {
+                // Redirect to the reschedule endpoint
+                window.location.href = "/rescheduleBooking/" + bookingId;
+            }
+        }
+        function confirmCancel(bookingId) {
+            if (confirm("Are you sure you want to cancel this booking?")) {
+                // Redirect to the cancel endpoint
+                window.location.href = "/cancelBooking/" + bookingId;
+            }
+        }
+    </script>
 </body>
 </html>
