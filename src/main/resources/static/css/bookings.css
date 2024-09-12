@@ -15,16 +15,90 @@ body, html {
     justify-content: center;
     align-items: center;
     padding: 1rem;
-    margin-bottom: -3.5rem;
 }
 
-/* Title Container Styling */
-.title-container {
-    margin-top: 3rem; /* Reduced top margin for better spacing */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0.5rem; /* Reduced padding to make the container smaller */
-    width: 100%;
-    font-size: 1.25rem; /* Slightly smaller font size if needed */
+/* Bookings Container */
+.bookings-container {
+    padding: 2rem;
+    margin-top: 2rem;
 }
+
+.booking-list {
+    display: flex;
+    flex-direction: column;
+    width: 96%;
+    padding: 0 2rem; /*Small gaps on the sides for bookings */
+}
+
+/* Booking Bar Styling */
+.booking-bar {
+    background-color: #ffffff; /* White background */
+    color: black; /* Black text */
+    padding: 1rem;
+    margin: 0.5rem 0;
+    border-radius: 5px;
+    width: 100%; /* Full width */
+    box-sizing: border-box;
+    position: relative; /* Ensure the buttons can be positioned */
+    font-size: 1.8rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Booking Date and Time Styling */
+.booking-info-top, .booking-info-bottom {
+    display: block;
+}
+
+.booking-info-top {
+    font-weight: bold;
+}
+
+.booking-info-bottom {
+    color: #555; /* Gray text for bottom info */
+    margin-top: 0.5rem;
+    font-size: 1.5rem;
+}
+
+/* Container for the reschedule and cancel buttons */
+.booking-actions {
+    display: flex;
+    flex-direction: column; /* Vertically stack the buttons if needed */
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%); /* Vertically center the buttons */
+    gap: 1rem; /* Add some space between the buttons */
+}
+
+/* Style for the reschedule and cancel buttons */
+.reschedule-button, .cancel-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.reschedule-button img, .cancel-button img {
+    width: 24px; /* Set the size of the icons */
+    height: 24px;
+}
+
+/* Hover effect for the Reschedule button */
+.reschedule-button:hover {
+    background-color: #FFA500; /* Orangey-yellow background */
+    border-radius: 50%; /* Optional: make the background a circle */
+    padding: 0.3rem; /* Adds a little padding to make the background visible */
+}
+
+/* Hover effect for the Cancel button */
+.cancel-button:hover {
+    background-color: #FF0000; /* Pure red background */
+    border-radius: 50%; /* Optional: make the background a circle */
+    padding: 0.3rem; /* Adds a little padding to make the background visible */
+}
+
+/* Adjust the image visibility on hover (optional, if you want the icon to stand out less) */
+.reschedule-button:hover img, .cancel-button:hover img {
+    opacity: 0.9;
+}
+

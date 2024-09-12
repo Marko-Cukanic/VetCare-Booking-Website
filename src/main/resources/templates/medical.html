@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Medical History</title>
+    <!-- Link the main CSS and navbar styles -->
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/medical.css}">
+</head>
+<body onload="hideSuccessMessage(); checkSessionToken();">
+
+    <!-- Navbar remains consistent -->
+    <div th:insert="~{fragments/navbar :: navbar}"></div>
+
+    <!-- Optional Login Prompt -->
+    <div id="login-prompt" style="display: none; background-color: #a5ffa7; padding: 1px; text-align: center;">
+        <p>Please <a th:href="@{/login}">log in</a> to access all features.</p>
+    </div>
+
+    <!-- Success Message Section -->
+    <div id="success-message" class="success-message" style="display: none;">
+        <!-- Success message will be injected here -->
+    </div>
+
+    <!-- Main Medical History Section -->
+    <div id="banner">
+        <h2>Medical History</h2>
+        <p>Manage and review your pet's medical records</p>
+    </div>
+
+    <main>
+        <!-- Medical Record Section -->
+        <section id="medical-record">
+            <h2>Medical Record for Fluffy</h2>
+            <p><strong>Sex:</strong> Male</p>
+            <p><strong>Weight:</strong> 40kg</p>
+            <p><strong>Animal Type:</strong> Dog</p>
+            <p><strong>Breed:</strong> Foxhound (Mixed)</p>
+        </section>
+
+        <!-- Vaccination History Section -->
+        <section id="vaccination-history">
+            <h2>Vaccination History</h2>
+            <ul>
+                <li><input type="checkbox" checked disabled> Distemper</li>
+                <li><input type="checkbox" checked disabled> Canine Parvovirus</li>
+                <li><input type="checkbox" checked disabled> Bordetella</li>
+                <li><input type="checkbox" checked disabled> Lyme Disease</li>
+                <li><input type="checkbox" checked disabled> Rabies</li>
+            </ul>
+        </section>
+
+        <!-- Medical Conditions Section -->
+        <section id="medical-conditions">
+            <h2>Medical Conditions</h2>
+            <ul>
+                <li>Arthritis</li>
+                <li>Obesity</li>
+                <li>Diarrhea</li>
+            </ul>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2024 VetCare. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function shareMedicalRecord() {
+            const email = prompt("Enter the email address to share the medical record:");
+            if (email) {
+                alert(`Medical record shared with ${email}`);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -15,3 +15,46 @@
             <h1>My Booking/s</h1>
         </div>
     </div>
+
+    <!-- Container to hold all the bookings -->
+    <div class="booking-list">
+        <!-- Loop through each booking and display it as a horizontal bar -->
+        <div th:each="booking : ${bookings}" class="booking-bar">
+            <span class="booking-info-top">Booking for:</span>
+            <span class="booking-info-bottom">
+                At <span th:text="${booking.timeSlot}">Time</span> on 
+                <span th:text="${booking.bookingDate}">Date</span> with Dr. Unknown
+            </span>
+            <!-- Add Reschedule and Cancel Buttons -->
+            <div class="booking-actions">
+                <!-- Reschedule Button -->
+                <button class="reschedule-button" th:onclick="'confirmReschedule(' + ${booking.id} + ');'">
+                    <img th:src="@{/images/reschedule.png}" alt="Reschedule" />
+                </button>
+                <!-- Cancel Button -->
+                <button class="cancel-button" th:onclick="confirmCancel([[${booking.id}]])">
+                    <img th:src="@{/images/cancel.png}" alt="Cancel" />
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function confirmReschedule(bookingId) {
+            if (confirm("Are you sure you want to reschedule this booking?")) {
+                // Redirect to the reschedule endpoint, which will handle booking deletion
+                window.location.href = "/rescheduleBooking/" + bookingId;
+            }
+        }
+    </script>
+    <script>
+        function confirmCancel(bookingId) {
+            if (confirm("Are you sure you want to cancel this booking?")) {
+                // Redirect to the cancel endpoint, which will handle booking deletion
+                window.location.href = "/cancelBooking/" + bookingId;
+            }
+        }
+    </script>
+
+</body>
+</html>

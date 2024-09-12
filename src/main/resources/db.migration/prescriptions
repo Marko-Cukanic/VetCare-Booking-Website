@@ -1,0 +1,8 @@
+CREATE TABLE prescriptions (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    medication_name VARCHAR(255),
+    quantity INT,
+    prescription_date DATE,
+    pet_name VARCHAR(255),
+    vet_name VARCHAR(255)
+);

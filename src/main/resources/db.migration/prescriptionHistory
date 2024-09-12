@@ -1,0 +1,8 @@
+CREATE TABLE prescription_history (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    medication_name VARCHAR(255),
+    pet_name VARCHAR(255),
+    start_date DATE,
+    end_date DATE,
+    vet_name VARCHAR(255)
+);

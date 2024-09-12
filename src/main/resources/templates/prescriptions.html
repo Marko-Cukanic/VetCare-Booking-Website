@@ -3,26 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <title>Prescription Management</title>
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
     <link rel="stylesheet" th:href="@{/css/prescriptions.css}">
 </head>
 <body>
-    <header>
-        <h1>Prescription Management</h1>
-        <nav>
-            <ul>
-                <li><a th:href="@{/prescriptions}">Prescription Listing</a></li>
-                <li><a th:href="@{/order-prescription}">Order Prescription</a></li>
-                <li><a th:href="@{/vet-prescriptions}">Vet Prescription Features</a></li>
-                <li><a th:href="@{/low-medication}">Low Medication Notifications</a></li>
-                <li><a th:href="@{/prescription-history}">Prescription History</a></li>
-            </ul>
-        </nav>
-    </header>
+    <div th:insert="~{fragments/navbar :: navbar}"></div> <!-- Inserted navbar -->
     
     <main>
         <section id="prescription-listing">
             <h2>Prescription Listing</h2>
-            <!-- Prescription listing will be dynamically populated here -->
+            <!-- Prescription table -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Medication Name</th>
+                        <th>Quantity</th>
+                        <th>Prescription Date</th>
+                        <th>Pet Name</th>
+                        <th>Vet Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="prescription : ${prescriptions}">
+                        <td th:text="${prescription.medicationName}"></td>
+                        <td th:text="${prescription.quantity}"></td>
+                        <td th:text="${#dates.format(prescription.prescriptionDate, 'yyyy-MM-dd')}"></td>
+                        <td th:text="${prescription.petName}"></td>
+                        <td th:text="${prescription.vetName}"></td>
+                    </tr>
+                </tbody>
+            </table>
         </section>
         
         <section id="order-prescription">
@@ -37,19 +47,29 @@
             </form>
         </section>
         
-        <section id="vet-prescriptions">
-            <h2>Vet Prescription Features</h2>
-            <!-- Feature related to vet's interaction with prescriptions -->
-        </section>
-        
-        <section id="low-medication-notification">
-            <h2>Low Medication Notifications</h2>
-            <!-- Display low medication notifications -->
-        </section>
-        
         <section id="prescription-history">
             <h2>Prescription History</h2>
-            <!-- Prescription history will be displayed here -->
+            <!-- Prescription history table -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Medication Name</th>
+                        <th>Pet Name</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Vet Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="history : ${histories}">
+                        <td th:text="${history.medicationName}"></td>
+                        <td th:text="${history.petName}"></td>
+                        <td th:text="${#dates.format(history.startDate, 'yyyy-MM-dd')}"></td>
+                        <td th:text="${#dates.format(history.endDate, 'yyyy-MM-dd')}"></td>
+                        <td th:text="${history.vetName}"></td>
+                    </tr>
+                </tbody>
+            </table>
         </section>
     </main>
     
@@ -58,4 +78,3 @@
     </footer>
 </body>
 </html>
-    
