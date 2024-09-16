@@ -30,6 +30,24 @@ body, html {
     padding: 0 2rem; /*Small gaps on the sides for bookings */
 }
 
+.noAppointmentCondition {
+    display: flex;                  /* Enable flexbox for centering */
+    justify-content: center;         /* Center the text horizontally */
+    align-items: center;             /* Center the text vertically */
+    padding: 1rem;                   /* Add padding around the message */
+    margin-top: 2rem;                /* Add space above the message */
+    font-size: 1.5rem;               /* Adjust font size to make it readable */
+    color: #555;                     /* Subtle gray for text color */
+    background-color: #f9f9f9;       /* Light background color */
+    border: 1px solid #ddd;          /* Light border to define the message box */
+    border-radius: 10px;             /* Soft rounded corners */
+    text-align: center;              /* Center the text itself */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+    max-width: 600px;                /* Limit the width to avoid stretching on large screens */
+    margin-left: auto;               /* Center the message horizontally */
+    margin-right: auto;              /* Center the message horizontally */
+}
+
 /* Booking Bar Styling */
 .booking-bar {
     background-color: #ffffff; /* White background */

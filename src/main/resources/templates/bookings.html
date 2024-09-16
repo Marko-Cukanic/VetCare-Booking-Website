@@ -18,6 +18,12 @@
 
     <!-- Container to hold all the bookings -->
     <div class="booking-list">
+
+        <!-- Conditional to check if bookings list is empty -->
+        <div th:if="${#lists.isEmpty(bookings)}">
+            <p class="noAppointmentCondition">You have no upcoming appointments.</p>
+        </div>
+
         <!-- Loop through each booking and display it as a horizontal bar -->
         <div th:each="booking : ${bookings}" class="booking-bar">
             <span class="booking-info-top">Booking for:</span>
