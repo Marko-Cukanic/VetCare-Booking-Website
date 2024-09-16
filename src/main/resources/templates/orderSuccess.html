@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Success</title>
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/orderSuccess.css}">
+</head>
+<body>
+    <div th:insert="~{fragments/navbar :: navbar}"></div>
+    
+    <main>
+        <h2>Order Successful!</h2>
+        <p>Your order for <strong th:text="${prescription.medicationName}"></strong> has been placed successfully.</p>
+        <p>Quantity: <strong th:text="${quantity}"></strong></p>
+        <a th:href="@{/prescriptions}">Go back to prescription list</a>
+    </main>
+    
+    <footer>
+        <p>&copy; 2024 VetCare. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirm Prescription Order</title>
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/confirmorder.css}">
+</head>
+<body>
+    <div th:insert="~{fragments/navbar :: navbar}"></div>
+    
+    <main>
+        <h2>Confirm Prescription Order</h2>
+        <p>Prescription: <span th:text="${prescription.medicationName}"></span></p>
+        <p>Quantity: <span th:text="${quantity}"></span></p>
+        
+        <form th:action="@{/finaliseOrder}" method="post">
+            <input type="hidden" name="medicationId" th:value="${prescription.id}">
+            <input type="hidden" name="quantity" th:value="${quantity}">
+            <button type="submit">Confirm Order</button>
+        </form>
+    </main>
+    
+    <footer>
+        <p>&copy; 2024 VetCare. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>

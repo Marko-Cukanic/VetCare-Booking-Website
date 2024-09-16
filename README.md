@@ -22,7 +22,7 @@ See [Instructions](INSTRUCTIONS.md)
 
 Run with 
 ./mvnw clean spring-boot:run
-
+to run
 docker-compose up
 if you make changes to code
 docker-compose up --build

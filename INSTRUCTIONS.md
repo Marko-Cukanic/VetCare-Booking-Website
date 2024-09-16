@@ -27,6 +27,16 @@ Other tools will be required to complete the project (e.g., Docker)
 
 - You can use the lectorials material to start developing your web application.
 
+to run
+docker-compose up
+if you make changes to code
+docker-compose up --build
+
+database details:
+docker exec -it team-project-group-p08-07-db-1 mysql -u vetuser -p
+use vetcaredb
+username vetuser
+password for mysql 1234
 
 
 

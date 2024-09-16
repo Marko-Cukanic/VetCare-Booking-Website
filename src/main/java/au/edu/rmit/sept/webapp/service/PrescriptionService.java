@@ -13,6 +13,11 @@ public class PrescriptionService {
 
     @Autowired
     private PrescriptionRepository prescriptionRepository;
+    
+    public Prescription getPrescriptionById(Long id) {
+        return prescriptionRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid prescription ID: " + id));
+    }
 
     public List<Prescription> getAllPrescriptions() {
         return prescriptionRepository.findAll();

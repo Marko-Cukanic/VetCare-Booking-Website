@@ -16,4 +16,6 @@ public class PrescriptionHistoryService {
     public List<PrescriptionHistory> getAllPrescriptionHistories() {
         return prescriptionHistoryRepository.findAll();
     }
+
+    
 }
