@@ -40,7 +40,33 @@ main {
     justify-content: space-between;
 }
 
-#medical-record, #vaccination-history, #medical-conditions {
+/* Medical Record Section */
+#medical-record {
+    flex: 1 1 100%;
+    background-color: #eee;
+    padding: 20px;
+    margin: 10px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center;
+}
+
+#medical-record h2 {
+    margin-top: 0;
+    font-size: 1.5em;
+}
+
+#medical-record select {
+    font-size: 1em;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+}
+
+/* Vaccination History Section */
+#vaccination-history {
     flex: 1 1 30%;
     background-color: #eee;
     padding: 20px;
@@ -50,13 +76,55 @@ main {
     text-align: center;
 }
 
-#medical-record h2, #vaccination-history h2, #medical-conditions h2 {
+#vaccination-history h2 {
     margin-top: 0;
 }
 
-#medical-record p, #vaccination-history ul, #medical-conditions ul {
-    font-size: 1.2em;
-    line-height: 1.6;
+.list-container {
+    display: flex; 
+    justify-content: space-between; 
+}
+
+#vaccination-history ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    width: 45%; 
+}
+
+#vaccination-history li {
+    margin: 10px 0;
+    display: flex;
+    align-items: center; 
+}
+
+#vaccination-history input[type="checkbox"] {
+    margin-right: 10px; 
+}
+
+
+/* Medical Conditions Section */
+#medical-conditions {
+    flex: 1 1 30%;
+    background-color: #eee;
+    padding: 20px;
+    margin-right: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center;
+}
+
+#medical-conditions h2 {
+    margin-top: 0;
+}
+
+#medical-conditions ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+#medical-conditions li {
+    margin: 10px 0;
 }
 
 /* Footer section */

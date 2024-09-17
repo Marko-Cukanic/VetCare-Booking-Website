@@ -3,23 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <title>Medical History</title>
-    <!-- Link the main CSS and navbar styles -->
+     <!-- Link the main CSS and navbar styles -->
     <link rel="stylesheet" th:href="@{/css/navbar.css}">
     <link rel="stylesheet" th:href="@{/css/medical.css}">
 </head>
-<body onload="hideSuccessMessage(); checkSessionToken();">
 
-    <!-- Navbar remains consistent -->
+<!-- Session Token Verification Script -->
+<script>
+    function checkSessionToken() {
+        const sessionToken = localStorage.getItem('sessionToken');
+        const currentUrl = window.location.href;
+
+        // Check if the current URL already contains the session token
+        if (sessionToken && !currentUrl.includes('sessionToken')) {
+            // Redirect to /medical with the session token as a query parameter if not already present
+            window.location.href = `/medical?sessionToken=${encodeURIComponent(sessionToken)}`;
+        } else if (!sessionToken) {
+            // If no session token, show the login prompt
+            document.getElementById('login-prompt').style.display = 'block';
+        }
+    }
+
+    function onPetChange() {
+        const petName = document.getElementById("pet-name").value;
+        const sessionToken = localStorage.getItem('sessionToken');
+        if (sessionToken && petName) {
+            window.location.href = `/medical?sessionToken=${encodeURIComponent(sessionToken)}&petName=${encodeURIComponent(petName)}`;
+    }
+}
+
+</script>
+
+<body onload="checkSessionToken();">
+
     <div th:insert="~{fragments/navbar :: navbar}"></div>
-
     <!-- Optional Login Prompt -->
     <div id="login-prompt" style="display: none; background-color: #a5ffa7; padding: 1px; text-align: center;">
         <p>Please <a th:href="@{/login}">log in</a> to access all features.</p>
-    </div>
-
-    <!-- Success Message Section -->
-    <div id="success-message" class="success-message" style="display: none;">
-        <!-- Success message will be injected here -->
     </div>
 
     <!-- Main Medical History Section -->
@@ -29,43 +49,76 @@
     </div>
 
     <main>
-        <!-- Medical Record Section -->
-        <section id="medical-record">
-            <h2>Medical Record for Fluffy</h2>
-            <p><strong>Sex:</strong> Male</p>
-            <p><strong>Weight:</strong> 40kg</p>
-            <p><strong>Animal Type:</strong> Dog</p>
-            <p><strong>Breed:</strong> Foxhound (Mixed)</p>
-        </section>
+        <!------------------- Default Medical Page (Not Logged In) ----------------------->
+         <div th:if="${!isLoggedIn}">
+            <p>No details recorded. Please <a th:href="@{/login}">log in</a> to view the medical history.</p>
+        </div>
 
-        <!-- Vaccination History Section -->
-        <section id="vaccination-history">
-            <h2>Vaccination History</h2>
-            <ul>
-                <li><input type="checkbox" checked disabled> Distemper</li>
-                <li><input type="checkbox" checked disabled> Canine Parvovirus</li>
-                <li><input type="checkbox" checked disabled> Bordetella</li>
-                <li><input type="checkbox" checked disabled> Lyme Disease</li>
-                <li><input type="checkbox" checked disabled> Rabies</li>
-            </ul>
-        </section>
+        <!------------------------------ Logged In Medical Page -------------------------->
+            <!-- Medical Record Section -->
+            <section id="medical-record" th:if="${isLoggedIn}">
+                <h2>Medical Record for 
+                    <select id="pet-name" name="pet-name" onchange="onPetChange()">
+                        <option value="" disabled selected>Please select a pet</option>
+                        <option th:each="pet : ${petNames}" th:value="${pet}" th:text="${pet}"></option>
+                    </select>
+                </h2>
+                
+                <!-- Show medical record details only if medicalRecord is present -->
+                <div th:if="${medicalRecord != null}">
+                    <p><strong>Pet ID:</strong> <span th:text="${medicalRecord.petID ?: 'No data'}"></span></p>
+                    <p><strong>Age:</strong> <span th:text="${medicalRecord.petAge ?: 'No data'}"></span></p>
+                    <p><strong>Sex:</strong> <span th:text="${medicalRecord.petSex ?: 'No data'}"></span></p>
+                    <p><strong>Weight:</strong> <span th:text="${medicalRecord.petWeight ?: 'No data'}"></span></p>
+                    <p><strong>Animal Type:</strong> <span th:text="${medicalRecord.petType ?: 'No data'}"></span></p>
+                    <p><strong>Breed:</strong> <span th:text="${medicalRecord.petBreed ?: 'No data'}"></span></p>
+                </div>
+                <!-- Message if no medical record is found -->
+                <div th:if="${medicalRecord == null}">
+                    <p>No medical records found for the selected pet.</p>
+                </div>
+            </section>
 
-        <!-- Medical Conditions Section -->
-        <section id="medical-conditions">
-            <h2>Medical Conditions</h2>
-            <ul>
-                <li>Arthritis</li>
-                <li>Obesity</li>
-                <li>Diarrhea</li>
-            </ul>
-        </section>
+
+            <!-- Vaccination History Section -->
+            <section id="vaccination-history" th:if="${isLoggedIn}">
+                <h2>Vaccination History</h2>
+                <div class="list-container">
+                    <ul>
+                        <li><input type="checkbox" checked disabled> Distemper</li>
+                        <li><input type="checkbox" checked disabled> Canine Parvovirus</li>
+                        <li><input type="checkbox" checked disabled> Bordetella</li>
+                        <li><input type="checkbox" checked disabled> Lyme Disease</li>
+                        <li><input type="checkbox" checked disabled> Rabies</li>
+                    </ul>
+
+                    <ul>
+                        <li><input type="checkbox" checked disabled> Distemper</li>
+                        <li><input type="checkbox" checked disabled> Canine Parvovirus</li>
+                        <li><input type="checkbox" checked disabled> Bordetella</li>
+                        <li><input type="checkbox" checked disabled> Lyme Disease</li>
+                        <li><input type="checkbox" checked disabled> Rabies</li>
+                    </ul>
+                </div>
+            </section>
+
+
+            <!-- Medical Conditions Section -->
+            <section id="medical-conditions" th:if="${isLoggedIn}">
+                <h2>Medical Conditions</h2>
+                <ul>
+                    <li>Arthritis</li>
+                    <li>Obesity</li>
+                    <li>Diarrhea</li>
+                </ul>
+            </section>
     </main>
 
-    <!-- Footer Section -->
     <footer>
         <p>&copy; 2024 VetCare. All rights reserved.</p>
     </footer>
 
+    <!-- Sharing Medical Record Function -->
     <script>
         function shareMedicalRecord() {
             const email = prompt("Enter the email address to share the medical record:");
@@ -74,5 +127,6 @@
             }
         }
     </script>
+
 </body>
 </html>
