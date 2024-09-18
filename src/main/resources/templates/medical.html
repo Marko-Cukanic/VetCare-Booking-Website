@@ -3,23 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <title>Medical History</title>
-    <!-- Link the main CSS and navbar styles -->
+     <!-- Link the main CSS and navbar styles -->
     <link rel="stylesheet" th:href="@{/css/navbar.css}">
     <link rel="stylesheet" th:href="@{/css/medical.css}">
 </head>
-<body onload="hideSuccessMessage(); checkSessionToken();">
 
-    <!-- Navbar remains consistent -->
+
+<script>
+    //Session Token Verification Script 
+    function checkSessionToken() {
+        const sessionToken = localStorage.getItem('sessionToken');
+        const currentUrl = window.location.href;
+
+        // Check if the current URL already contains the session token
+        if (sessionToken && !currentUrl.includes('sessionToken')) {
+            // Redirect to /medical with the session token as a query parameter if not already present
+            window.location.href = `/medical?sessionToken=${encodeURIComponent(sessionToken)}`;
+        } else if (!sessionToken) {
+            // If no session token, show the login prompt
+            document.getElementById('login-prompt').style.display = 'block';
+        }
+    }
+
+    //Pet Name Script
+    function onPetChange() {
+        const petName = document.getElementById("pet-name").value;
+        const sessionToken = localStorage.getItem('sessionToken');
+        if (sessionToken && petName) {
+            // Redirect to update the medical and vaccination records for the selected pet
+            window.location.href = `/medical?sessionToken=${encodeURIComponent(sessionToken)}&petName=${encodeURIComponent(petName)}`;
+        }
+    }
+
+    //Add Button Page Script
+    function addReport() {
+        const sessionToken = localStorage.getItem('sessionToken');
+        if (sessionToken) {
+            window.location.href = `/addReport?sessionToken=${encodeURIComponent(sessionToken)}`;
+        } else {
+            alert('Session token not found. Please log in.');
+            window.location.href = '/login'; 
+        }
+    }
+
+    //Download report txt script
+    function downloadReport() {
+        const medicalReport = document.getElementById('medical-record').innerText;
+        const vaccinationHistory = document.getElementById('vaccination-history').innerText;
+        const medicalConditions = document.getElementById('medical-conditions').innerText;
+
+        const reportContent = `${medicalReport}
+                            \n\n${vaccinationHistory}
+                            \n\n${medicalConditions}`;
+
+        const blob = new Blob([reportContent], { type: 'text/plain' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'medical_report.txt';
+        link.click();
+    }
+
+</script>
+
+<body onload="checkSessionToken();">
+
     <div th:insert="~{fragments/navbar :: navbar}"></div>
-
     <!-- Optional Login Prompt -->
-    <div id="login-prompt" style="display: none; background-color: #a5ffa7; padding: 1px; text-align: center;">
+    <div id="login-prompt">
         <p>Please <a th:href="@{/login}">log in</a> to access all features.</p>
-    </div>
-
-    <!-- Success Message Section -->
-    <div id="success-message" class="success-message" style="display: none;">
-        <!-- Success message will be injected here -->
     </div>
 
     <!-- Main Medical History Section -->
@@ -28,44 +79,90 @@
         <p>Manage and review your pet's medical records</p>
     </div>
 
+    <!------------------------------ Action Buttons -------------------------->
+    <section th:if="${isLoggedIn}">
+        <div id="action-buttons">
+            <button id="add-report" onclick="addReport()">Add Report</button>
+            <button id="download-report" onclick="downloadReport()">Download Report</button>
+        </div>
+    </section>
+
     <main>
-        <!-- Medical Record Section -->
-        <section id="medical-record">
-            <h2>Medical Record for Fluffy</h2>
-            <p><strong>Sex:</strong> Male</p>
-            <p><strong>Weight:</strong> 40kg</p>
-            <p><strong>Animal Type:</strong> Dog</p>
-            <p><strong>Breed:</strong> Foxhound (Mixed)</p>
-        </section>
+        <!------------------- Default Medical Page (Not Logged In) ----------------------->
+         <div th:if="${!isLoggedIn}">
+            <p>No details recorded. Please <a th:href="@{/login}">log in</a> to view the medical history.</p>
+        </div>
 
-        <!-- Vaccination History Section -->
-        <section id="vaccination-history">
-            <h2>Vaccination History</h2>
-            <ul>
-                <li><input type="checkbox" checked disabled> Distemper</li>
-                <li><input type="checkbox" checked disabled> Canine Parvovirus</li>
-                <li><input type="checkbox" checked disabled> Bordetella</li>
-                <li><input type="checkbox" checked disabled> Lyme Disease</li>
-                <li><input type="checkbox" checked disabled> Rabies</li>
-            </ul>
-        </section>
+        <!------------------------------ Logged In Medical Page -------------------------->
+            <!-- Medical Record Section -->
+            <section id="medical-record" th:if="${isLoggedIn}">
+                <h2>Medical Record for 
+                    <select id="pet-name" name="pet-name" onchange="onPetChange()">
+                        <option value="" disabled selected>Please select a pet</option>
+                        <option th:each="pet : ${petNames}" th:value="${pet}" th:text="${pet}" th:selected="${pet == selectedPetName}"></option>
+                    </select>
+                </h2>
+                
+                <!-- Show medical record details only if medicalRecord is present -->
+                <div th:if="${medicalRecord != null}">
+                    <p><strong>Pet ID:</strong> <span th:text="${medicalRecord.petID ?: 'No data'}"></span></p>
+                    <p><strong>Age:</strong> <span th:text="${medicalRecord.petAge ?: 'No data'}"></span></p>
+                    <p><strong>Sex:</strong> <span th:text="${medicalRecord.petSex ?: 'No data'}"></span></p>
+                    <p><strong>Weight:</strong> <span th:text="${medicalRecord.petWeight ?: 'No data'}"></span> Kg</p>
+                    <p><strong>Species:</strong> <span th:text="${medicalRecord.petType ?: 'No data'}"></span></p>
+                    <p><strong>Breed:</strong> <span th:text="${medicalRecord.petBreed ?: 'No data'}"></span></p>
+                </div>
+                
+                <!-- Message if no medical record is found -->
+                <div th:if="${medicalRecord == null}">
+                    <p>No medical records found for the selected pet.</p>
+                </div>
+            </section>
 
-        <!-- Medical Conditions Section -->
-        <section id="medical-conditions">
-            <h2>Medical Conditions</h2>
-            <ul>
-                <li>Arthritis</li>
-                <li>Obesity</li>
-                <li>Diarrhea</li>
-            </ul>
-        </section>
+
+            <!-- Vaccination History Section -->
+            <section id="vaccination-history" th:if="${isLoggedIn}">
+                <h2>Vaccination History for <span th:text="${selectedPetName}">Selected Pet</span></h2>
+                <div class="list-container">
+                    <ul>
+                        <li><input type="checkbox" th:checked="${vaccinationRecord?.distemper}" disabled> Distemper</li>
+                        <li><input type="checkbox" th:checked="${vaccinationRecord?.canineParvovirus}" disabled> Canine Parvovirus</li>
+                        <li><input type="checkbox" th:checked="${vaccinationRecord?.bordetella}" disabled> Bordetella</li>
+                        <li><input type="checkbox" th:checked="${vaccinationRecord?.lymeDisease}" disabled> Lyme Disease</li>
+                        <li><input type="checkbox" th:checked="${vaccinationRecord?.rabies}" disabled> Rabies</li>
+                    </ul>
+
+                    <ul>
+                        <li><input type="checkbox" th:checked="${vaccinationRecord?.panleukopenia}" disabled> Panleukopenia</li>
+                        <li><input type="checkbox" th:checked="${vaccinationRecord?.caliciVirus}" disabled> Calicivirus </li>
+                        <li><input type="checkbox" th:checked="${vaccinationRecord?.immunodeficiencyVirus}" disabled> Immunodeficiency Virus</li>
+                        <li><input type="checkbox" th:checked="${vaccinationRecord?.chlamydiaFelis}" disabled> Chlamydia felis</li>
+                        <li><input type="checkbox" th:checked="${vaccinationRecord?.leukemiaVirus}" disabled> Leukemia Virus</li>
+                    </ul>
+                </div>
+
+                <!-- Message when no vaccination record is found -->
+                <div th:if="${vaccinationRecord == null}">
+                    <p>No vaccination records found for the selected pet.</p>
+                </div>
+            </section>
+
+            <!-- Medical Conditions Section -->
+            <section id="medical-conditions" th:if="${isLoggedIn}">
+                <h2>Medical Conditions</h2>
+                <ul>
+                    <li>Arthritis</li>
+                    <li>Obesity</li>
+                    <li>Diarrhea</li>
+                </ul>
+            </section>
     </main>
 
-    <!-- Footer Section -->
     <footer>
         <p>&copy; 2024 VetCare. All rights reserved.</p>
     </footer>
 
+    <!-- Sharing Medical Record Function -->
     <script>
         function shareMedicalRecord() {
             const email = prompt("Enter the email address to share the medical record:");
@@ -74,5 +171,6 @@
             }
         }
     </script>
+
 </body>
 </html>

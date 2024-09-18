@@ -53,13 +53,18 @@ public class LoginController {
     }
 
     @GetMapping("/logout")
-@ResponseBody
-public String logout(@RequestParam(required = false) String sessionToken) {
-    // Invalidate the session token
-    if (sessionToken != null && sessionTokens.containsKey(sessionToken)) {
-        sessionTokens.remove(sessionToken);
+    @ResponseBody
+    public String logout(@RequestParam(required = false) String sessionToken) {
+        // Invalidate the session token
+        if (sessionToken != null && sessionTokens.containsKey(sessionToken)) {
+            sessionTokens.remove(sessionToken);
+        }
+        // Return a success message
+        return "You have successfully logged out.";
     }
-    // Return a success message
-    return "You have successfully logged out.";
-}
+
+    // Getter for sessionTokens
+    public Map<String, String> getSessionTokens() {
+        return sessionTokens;
+    }
 }

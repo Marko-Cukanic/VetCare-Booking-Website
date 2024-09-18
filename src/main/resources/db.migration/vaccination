@@ -1,0 +1,16 @@
+CREATE TABLE IF NOT EXISTS vaccination (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) NOT NULL,
+    petName VARCHAR(255) NOT NULL,
+    distemper TINYINT(1) NOT NULL DEFAULT 0,
+    canine_parvovirus TINYINT(1) NOT NULL DEFAULT 0,
+    bordetella TINYINT(1) NOT NULL DEFAULT 0,
+    lyme_disease TINYINT(1) NOT NULL DEFAULT 0,
+    rabies TINYINT(1) NOT NULL DEFAULT 0,
+    panleukopenia TINYINT(1) NOT NULL DEFAULT 0,
+    caliciVirus TINYINT(1) NOT NULL DEFAULT 0,
+    immunodeficiencyVirus TINYINT(1) NOT NULL DEFAULT 0,
+    chlamydiaFelis TINYINT(1) NOT NULL DEFAULT 0,
+    leukemiaVirus TINYINT(1) NOT NULL DEFAULT 0,
+    UNIQUE KEY unique_vaccination (email, petName)
+);

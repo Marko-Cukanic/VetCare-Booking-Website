@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Report</title>
+    <link rel="stylesheet" th:href="@{/css/addReport.css}">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+</head>
+<body>
+
+    <div th:insert="~{fragments/navbar :: navbar}"></div>
+
+    <div id="banner">
+        <h2>Add Medical and Vaccination Report</h2>
+        <p>Enter the details for your pet below</p>
+    </div>
+
+    <main>
+        <form th:action="@{/addReport}" th:method="post">
+            <div class="form-section">
+                <h3>Medical Report</h3>
+                <label for="email">Email:</label>
+                <input type="text" id="email" name="email" th:value="${email}" required>
+                
+                <label for="petName">Pet Name:</label>
+                <input type="text" id="petName" name="petName" required>
+
+                <label for="petID">Pet ID:</label>
+                <input type="number" id="petID" name="petID" required>
+
+                <label for="petAge">Age:</label>
+                <select id="petAge" name="petAge" required>
+                    <option value="">Select Age</option>
+                    <th:block th:each="age : ${#numbers.sequence(0, 99)}">
+                        <option th:value="${age}" th:text="${age}">0</option>
+                    </th:block>
+                </select>
+
+                <label>Sex:</label>
+                <label for="male">
+                    <input type="radio" id="male" name="petSex" value="Male">
+                    Male
+                </label>
+                <label for="female">
+                    <input type="radio" id="female" name="petSex" value="Female">
+                    Female
+                </label>
+
+                <span class="new-line"></span> 
+
+                <label for="petType">Species:</label>
+                <label for="cat">
+                    <input type="radio" id="cat" name="petType" value="Cat">
+                    Cat
+                </label>
+                <label for="dog">
+                    <input type="radio" id="dog" name="petType" value="Dog">
+                    Dog
+                </label>
+
+                <span class="new-line"></span> 
+
+                <label for="petWeight">Weight (KG):</label>
+                <input type="number" id="petWeight" name="petWeight" required>
+
+                <label for="petBreed">Breed:</label>
+                <input type="text" id="petBreed" name="petBreed" required>
+            </div>
+
+            <div class="form-section">
+                <h3>Vaccination Report</h3>
+                <div class="vaccine-section">
+                    <label for="distemper">
+                        <input type="checkbox" id="distemper" name="distemper">
+                        Distemper
+                    </label>
+
+                    <label for="canineParvovirus">
+                        <input type="checkbox" id="canineParvovirus" name="canineParvovirus">
+                        Canine Parvovirus
+                    </label>
+
+                    <label for="bordetella">
+                        <input type="checkbox" id="bordetella" name="bordetella">
+                        Bordetella
+                    </label>
+
+                    <label for="lymeDisease">
+                        <input type="checkbox" id="lymeDisease" name="lymeDisease">
+                        Lyme Disease
+                    </label>
+
+                    <label for="rabies">
+                        <input type="checkbox" id="rabies" name="rabies">
+                        Rabies
+                    </label>
+
+                    <label for="panleukopenia">
+                        <input type="checkbox" id="panleukopenia" name="panleukopenia">
+                        Panleukopenia
+                    </label>
+
+                    <label for="caliciVirus">
+                        <input type="checkbox" id="caliciVirus" name="caliciVirus">
+                        Calicivirus
+                    </label>
+
+                    <label for="immunodeficiencyVirus">
+                        <input type="checkbox" id="immunodeficiencyVirus" name="immunodeficiencyVirus">
+                        Immunodeficiency Virus
+                    </label>
+
+                    <label for="chlamydiaFelis">
+                        <input type="checkbox" id="chlamydiaFelis" name="chlamydiaFelis">
+                        Chlamydia felis
+                    </label>
+
+                    <label for="leukemiaVirus">
+                        <input type="checkbox" id="leukemiaVirus" name="leukemiaVirus">
+                        Leukemia Virus
+                    </label>
+                </div>
+            </div>
+
+            <button type="button" class="cancel-button" onclick="window.location.href='/medical'">Cancel</button>
+            <button type="submit">Save Report</button>
+        </form>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 VetCare. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
