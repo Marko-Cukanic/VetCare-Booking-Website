@@ -2,6 +2,8 @@ package au.edu.rmit.sept.webapp.repository;
 
 import au.edu.rmit.sept.webapp.model.Booking;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
 
 import java.time.LocalDate;
 import java.util.List;
