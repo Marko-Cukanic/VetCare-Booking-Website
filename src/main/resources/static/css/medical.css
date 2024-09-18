@@ -32,6 +32,35 @@ nav {
     margin: 10px 0;
 }
 
+/* Login prompt */
+#login-prompt {
+    display: none; 
+    background-color: #a5ffa7; 
+    padding: 1px; 
+    text-align: center;
+}
+
+/* Action Buttons Section */
+#action-buttons {
+    text-align: center;
+    margin: 20px 0;
+}
+
+#action-buttons button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 0 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+#action-buttons button:hover {
+    background-color: #45a049;
+}
+
 /* Main content area */
 main {
     padding: 20px;

@@ -14,12 +14,17 @@ public class MedicalService {
     private MedicalRepository medicalRepository;
 
     public List<Medical> getMedicalRecordsByEmail(String email) {
-        return medicalRepository.findByEmail(email);  // Fetch all medical records for the user
+        return medicalRepository.findByEmail(email);
     }
 
+    //Getting Records 
     public Medical getMedicalRecordByEmailAndPetName(String email, String petName) {
-        // Fetch a single medical record based on email and pet name
         return medicalRepository.findByEmailAndPetName(email, petName)
                 .stream().findFirst().orElse(null);
+    }
+
+    //Saving/adding records
+    public void saveMedicalRecord(Medical medicalRecord) {
+        medicalRepository.save(medicalRecord);
     }
 }

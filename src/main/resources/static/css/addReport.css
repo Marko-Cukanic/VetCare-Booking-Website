@@ -1,0 +1,141 @@
+/* General body styles */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f8f8;
+    color: #333;
+}
+
+/* Banner section */
+#banner {
+    background-color: #4CAF50;  
+    color: white;
+    text-align: center;
+    padding: 50px 0;
+    margin-top: 20px;
+}
+
+#banner h2 {
+    font-size: 3em;
+    margin: 0;
+}
+
+#banner p {
+    font-size: 1.5em;
+    margin: 10px 0;
+}
+
+/* Main content area */
+main {
+    padding: 20px;
+}
+
+/* Form section */
+.form-section {
+    background-color: #eee;
+    padding: 20px;
+    margin: 10px 0px 50px 0px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.form-section h3 {
+    margin-top: 0;
+}
+
+.form-section label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+/* Input styles */
+.form-section input[type="text"],
+.form-section input[type="number"],
+.form-section select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.form-section input[type="checkbox"] {
+    width: auto;
+    margin-right: 10px;
+}
+
+.form-section fieldset {
+    border: none;
+    padding: 0;
+    margin: 10px 0;
+}
+
+.form-section legend {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.form-section label {
+    display: inline-block;
+    margin-right: 15px;
+    line-height: 2; 
+}
+
+.form-section input[type="radio"] {
+    margin-right: 5px;
+}
+
+.new-line {
+    clear: both;
+    display: block;
+    margin-top: 15px;
+}
+
+/* vaccine checkboxes */
+.vaccine-section {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 10px;
+}
+
+.vaccine-section label {
+    display: flex;
+    align-items: center;
+}
+
+/* Button styles */
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 20px 10px 20px 0;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.cancel-button {
+    background-color: #f44336; 
+}
+
+.cancel-button:hover {
+    background-color: #d32f2f;
+}
+
+/* Footer section */
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}

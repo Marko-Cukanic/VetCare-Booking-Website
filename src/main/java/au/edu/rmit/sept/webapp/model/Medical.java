@@ -21,7 +21,7 @@ public class Medical {
     private String petType;
     private String petBreed;
 
-    //Setters
+    //Getters
     public String getEmail() {
         return email;
     }
@@ -54,7 +54,7 @@ public class Medical {
         return petBreed;
     }
 
-    //Getters
+    //Setters
     public void setEmail(String email) {
         this.email = email;
     }

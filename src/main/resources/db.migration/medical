@@ -8,4 +8,5 @@ CREATE TABLE IF NOT EXISTS medical (
     pet_weight INT,
     pet_type VARCHAR(255),
     pet_breed VARCHAR(255)
+    UNIQUE(email, petName)
 );
