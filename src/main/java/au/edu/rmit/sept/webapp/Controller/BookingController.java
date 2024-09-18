@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 
 import java.time.LocalDate;
 
@@ -23,17 +25,31 @@ public class BookingController {
         return "makeBooking"; // This should match the name of your HTML file in the templates directory
     }
 
+    // Endpoint to get available time slots for a given date
+    @GetMapping("/availableTimeSlots")
+    @ResponseBody
+    public List<String> getAvailableTimeSlots(@RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
+        // Call the service method to get available time slots for the selected date
+        return bookingService.getAvailableTimeSlots(date);
+    }
+
     // New POST mapping to handle the booking creation
     @PostMapping("/createBooking")
     public String createBooking(
             @RequestParam("bookingDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate bookingDate,
-            @RequestParam("timeSlot") String timeSlot) {
+            @RequestParam("timeSlot") String timeSlot,
+            RedirectAttributes redirectAttributes) {
 
-        // Save the booking with the selected date and time slot
-        bookingService.createBooking(bookingDate, timeSlot);
-
-        // Redirect to bookings.html after booking is created
-        return "redirect:/bookings"; 
+        // Check if the time slot is already booked
+        if (bookingService.isTimeSlotAvailable(bookingDate, timeSlot)) {
+            // Save the booking if the time slot is available
+            bookingService.createBooking(bookingDate, timeSlot);
+            return "redirect:/bookings";
+        } else {
+            // Redirect back to the make booking page with an error message if the time slot is taken
+            redirectAttributes.addFlashAttribute("error", "Time slot is already booked.");
+            return "redirect:/makebooking";
+        }
     }
 
     @GetMapping("/rescheduleBooking/{id}")

@@ -109,45 +109,50 @@
                 var timeSlotsContainer = document.querySelector('.time-slots');
                 timeSlotsContainer.innerHTML = ''; // Clear any existing slots
 
-                // Define available time slots (20-minute intervals)
-                var startHour = 10;
-                var endHour = 18;
-                var timeSlots = [];
-
-                for (var hour = startHour; hour < endHour; hour++) {
-                    for (var minutes = 0; minutes < 60; minutes += 20) {
-                        var time = `${String(hour).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
-                        timeSlots.push(time);
-                    }
-                }
-
-                // Add slots to the container and add click event listener
-                timeSlots.forEach(function(slot) {
-                    var slotElement = document.createElement('div');
-                    slotElement.classList.add('slot');
-                    slotElement.textContent = slot;
-
-                    // Add click event listener to make the slot selectable
-                    slotElement.addEventListener('click', function() {
-                        // Deselect previously selected slot
-                        if (selectedSlot) {
-                            selectedSlot.classList.remove('selected-slot');
+                // Make AJAX request to fetch available time slots for the selected date
+                fetch(`/availableTimeSlots?date=${selectedDate}`)
+                    .then(response => response.json())
+                    .then(availableTimeSlots => {
+                        // If no available slots, display a message
+                        if (availableTimeSlots.length === 0) {
+                            var noSlotsMessage = document.createElement('div');
+                            noSlotsMessage.textContent = 'No available time slots for this date.';
+                            timeSlotsContainer.appendChild(noSlotsMessage);
+                            return;
                         }
 
-                        // Mark the clicked slot as selected
-                        slotElement.classList.add('selected-slot');
-                        selectedSlot = slotElement; // Store the selected slot
-                        selectedTimeSlotInput.value = selectedSlot.textContent; // Set hidden input
+                        // Add available slots to the container and add click event listener
+                        availableTimeSlots.forEach(function(slot) {
+                            var slotElement = document.createElement('div');
+                            slotElement.classList.add('slot');
+                            slotElement.textContent = slot;
 
-                        // Enable button if both a date and slot are selected
-                        if (selectedDate && selectedSlot) {
-                            selectButton.removeAttribute('disabled');
-                        }
+                            // Add click event listener to make the slot selectable
+                            slotElement.addEventListener('click', function() {
+                                // Deselect previously selected slot
+                                if (selectedSlot) {
+                                    selectedSlot.classList.remove('selected-slot');
+                                }
+
+                                // Mark the clicked slot as selected
+                                slotElement.classList.add('selected-slot');
+                                selectedSlot = slotElement; // Store the selected slot
+                                selectedTimeSlotInput.value = selectedSlot.textContent; // Set hidden input
+
+                                // Enable button if both a date and slot are selected
+                                if (selectedDate && selectedSlot) {
+                                    selectButton.removeAttribute('disabled');
+                                }
+                            });
+
+                            timeSlotsContainer.appendChild(slotElement);
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error fetching available time slots:', error);
                     });
-
-                    timeSlotsContainer.appendChild(slotElement);
-                });
             }
+
         });
     </script>
 
