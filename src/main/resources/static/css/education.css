@@ -230,3 +230,41 @@ footer {
    z-index: 9999;
    background-color: white;
 }
+
+.exit-fullscreen-btn {
+   position: fixed;
+   top: 20px;
+   right: 20px;
+   background-color: #007bff;
+   color: white;
+   border: none;
+   padding: 10px 20px;
+   font-size: 1rem;
+   border-radius: 4px;
+   cursor: pointer;
+   z-index: 10000;
+ }
+ 
+ .exit-fullscreen-btn:hover {
+   background-color: #0056b3;
+ }
+ 
+ /* Search Bar Styles */
+.search-bar {
+   text-align: center;
+   margin: 20px 0;
+ }
+ 
+ .search-bar input[type="text"] {
+   width: 50%;
+   padding: 10px;
+   font-size: 1.1rem;
+   border: 2px solid #007bff;
+   border-radius: 5px;
+ }
+ 
+ .search-bar input[type="text"]:focus {
+   outline: none;
+   border-color: #0056b3;
+ }
+ 

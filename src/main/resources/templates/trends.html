@@ -1,81 +1,93 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Trends</title>
-  <link rel="stylesheet" th:href="@{/css/trends.css}">
-  <link rel="stylesheet" th:href="@{/css/navbar.css}">
+ <meta charset="UTF-8">
+ <title>Trends</title>
+ <link rel="stylesheet" th:href="@{/css/trends.css}">
+ <link rel="stylesheet" th:href="@{/css/navbar.css}">
 </head>
 <body>
-  <div th:insert="~{fragments/navbar :: navbar}"></div>
+ <div th:insert="~{fragments/navbar :: navbar}"></div>
 
-  <!-- Tabs Section -->
-  <nav class="tabs">
-    <ul>
-      <li><a th:href="@{/resources}">Articles</a></li>
-      <li><a th:href="@{/guides}">Guides</a></li>
-      <li><a th:href="@{/videos}">Videos</a></li>
-      <li><a th:href="@{/trends}" class="active">Trends</a></li>
-    </ul>
-  </nav>
+ <!-- Search Bar Section -->
+ <div class="search-bar">
+   <input type="text" id="search-input" placeholder="Search Trends..." oninput="filterContent()">
+ </div>
 
-  <main>
-    <section>
-      <h2>Trends</h2>
-      <p>Stay updated with the latest trends in pet care and veterinary science.</p>
+ <nav class="tabs">
+   <ul>
+     <li><a th:href="@{/resources}">Articles</a></li>
+     <li><a th:href="@{/guides}">Guides</a></li>
+     <li><a th:href="@{/videos}">Videos</a></li>
+     <li><a th:href="@{/trends}" class="active">Trends</a></li>
+   </ul>
+ </nav>
 
-      <!-- Trend 1 -->
-      <div class="trend-preview">
-        <h3>Shelter Veterinarian Scholarship</h3>
-        <iframe id="iframe1" src="https://www.veterinarypracticenews.com/shelter-veterinarian-scholarship/" title="Shelter Veterinarian Scholarship Preview"></iframe>
-        <button class="full-screen-btn" onclick="openFullScreen('iframe1')">View Full Screen</button>
-      </div>
+ <main>
+   <section id="content-list">
+     <h2>Trends</h2>
+     <p>Stay updated with the latest trends in pet care and veterinary science.</p>
 
-      <!-- Trend 2 -->
-      <div class="trend-preview">
-        <h3>Bovine Anaplasmosis Vaccine</h3>
-        <iframe id="iframe2" src="https://www.veterinarypracticenews.com/bovine-anaplasmosis-vaccine/" title="Bovine Anaplasmosis Vaccine Preview"></iframe>
-        <button class="full-screen-btn" onclick="openFullScreen('iframe2')">View Full Screen</button>
-      </div>
+     <!-- Trend 1 -->
+     <div class="trend-preview content-item" data-title="Shelter Veterinarian Scholarship" data-type="Trend">
+       <h3>Shelter Veterinarian Scholarship</h3>
+       <iframe id="trend1" src="https://www.veterinarypracticenews.com/shelter-veterinarian-scholarship/" title="Shelter Veterinarian Scholarship"></iframe>
+       <button class="full-screen-btn" onclick="openFullScreen('trend1')">View Full Screen</button>
+     </div>
 
-      <!-- Trend 3 -->
-      <div class="trend-preview">
-        <h3>Collecting Deposits for Appointments</h3>
-        <iframe id="iframe3" src="https://www.veterinarypracticenews.com/collecting-deposits-appointments/" title="Collecting Deposits Preview"></iframe>
-        <button class="full-screen-btn" onclick="openFullScreen('iframe3')">View Full Screen</button>
-      </div>
-    </section>
-  </main>
+     <!-- Trend 2 -->
+     <div class="trend-preview content-item" data-title="Bovine Anaplasmosis Vaccine" data-type="Trend">
+       <h3>Bovine Anaplasmosis Vaccine</h3>
+       <iframe id="trend2" src="https://www.veterinarypracticenews.com/bovine-anaplasmosis-vaccine/" title="Bovine Anaplasmosis Vaccine"></iframe>
+       <button class="full-screen-btn" onclick="openFullScreen('trend2')">View Full Screen</button>
+     </div>
 
-  <footer>
-    <p>&copy; 2024 VetCare. All rights reserved.</p>
-  </footer>
+     <!-- Trend 3 -->
+     <div class="trend-preview content-item" data-title="Collecting Deposits for Appointments" data-type="Trend">
+       <h3>Collecting Deposits for Appointments</h3>
+       <iframe id="trend3" src="https://www.veterinarypracticenews.com/collecting-deposits-appointments/" title="Collecting Deposits Preview"></iframe>
+       <button class="full-screen-btn" onclick="openFullScreen('trend3')">View Full Screen</button>
+     </div>
+   </section>
+ </main>
 
-  <script>
-    // Function to open an iframe in full screen
-    function openFullScreen(iframeId) {
-      const iframe = document.getElementById(iframeId);
-      const fullScreenIframe = document.createElement('iframe');
-      fullScreenIframe.src = iframe.src;
-      fullScreenIframe.className = 'fullscreen-iframe';
+ <footer>
+   <p>&copy; 2024 VetCare. All rights reserved.</p>
+ </footer>
 
-      // Close full-screen on click or press escape key
-      fullScreenIframe.onclick = function() {
-        fullScreenIframe.remove();
-      };
+ <script>
+   // Same full-screen function
+   function openFullScreen(iframeId) {
+     const iframe = document.getElementById(iframeId);
+     const fullScreenIframe = document.createElement('iframe');
+     fullScreenIframe.src = iframe.src;
+     fullScreenIframe.className = 'fullscreen-iframe';
 
-      document.body.appendChild(fullScreenIframe);
-    }
+     const exitButton = document.createElement('button');
+     exitButton.className = 'exit-fullscreen-btn';
+     exitButton.textContent = 'Exit Full Screen';
+     exitButton.onclick = function() {
+       fullScreenIframe.remove();
+       exitButton.remove();
+     };
 
-    // Close iframe on Escape key press
-    document.addEventListener('keydown', function(event) {
-      if (event.key === 'Escape') {
-        const fullScreenIframe = document.querySelector('.fullscreen-iframe');
-        if (fullScreenIframe) {
-          fullScreenIframe.remove();
-        }
-      }
-    });
-  </script>
+     document.body.appendChild(fullScreenIframe);
+     document.body.appendChild(exitButton);
+   }
+
+   // Search Filter Functionality
+   function filterContent() {
+     const searchValue = document.getElementById('search-input').value.toLowerCase();
+     const items = document.querySelectorAll('.content-item');
+     items.forEach(item => {
+       const title = item.getAttribute('data-title').toLowerCase();
+       if (title.includes(searchValue)) {
+         item.style.display = 'block';
+       } else {
+         item.style.display = 'none';
+       }
+     });
+   }
+ </script>
 </body>
 </html>
