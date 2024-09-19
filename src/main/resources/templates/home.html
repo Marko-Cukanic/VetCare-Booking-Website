@@ -42,26 +42,28 @@
         <section id="appointments">
             <h2>Upcoming Appointments:</h2>
             <!-- Loop through the bookings and display each one like the My Booking/s page -->
-            <div class="booking-list">
-                <div th:each="booking : ${bookings}" class="booking-bar">
-                    <span class="booking-info-top">Booking for:</span>
-                    <span class="booking-info-bottom">
-                        At <span th:text="${booking.timeSlot}">Time</span> on 
-                        <span th:text="${booking.bookingDate}">Date</span> with Dr. Unknown
-                    </span>
-                    <!-- Add Reschedule and Cancel Buttons -->
-                    <div class="booking-actions">
-                        <!-- Reschedule Button -->
-                        <button class="reschedule-button" th:onclick="'confirmReschedule(' + ${booking.id} + ');'">
-                            <img th:src="@{/images/reschedule.png}" alt="Reschedule" />
-                        </button>
-                        <!-- Cancel Button -->
-                        <button class="cancel-button" th:onclick="confirmCancel([[${booking.id}]])">
-                            <img th:src="@{/images/cancel.png}" alt="Cancel" />
-                        </button>
-                    </div>
-                </div>
-            </div>
+<div class="booking-list">
+    <div th:each="booking : ${bookings}" class="booking-bar">
+        <span class="booking-info-top">Booking for:</span>
+        <span class="booking-info-bottom">
+            At <span th:text="${booking.timeSlot}">Time</span> on 
+            <span th:text="${booking.bookingDate}">Date</span> with
+            <span th:text="${booking.doctor}">Doctor</span>
+        </span>
+        <!-- Add Reschedule and Cancel Buttons -->
+        <div class="booking-actions">
+            <!-- Reschedule Button -->
+            <button class="reschedule-button" th:onclick="'confirmReschedule(' + ${booking.id} + ');'">
+                <img th:src="@{/images/reschedule.png}" alt="Reschedule" />
+            </button>
+            <!-- Cancel Button -->
+            <button class="cancel-button" th:onclick="confirmCancel([[${booking.id}]])">
+                <img th:src="@{/images/cancel.png}" alt="Cancel" />
+            </button>
+        </div>
+    </div>
+</div>
+
         </section>
 
         <!-- Welcome Section with the Image -->
