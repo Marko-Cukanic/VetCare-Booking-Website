@@ -16,16 +16,36 @@ public class PrescriptionOrderController {
     @Autowired
     private PrescriptionService prescriptionService;
 
-    @Autowired  // Add this to inject the PrescriptionHistoryService
-    private PrescriptionHistoryService prescriptionHistoryService;  // Add this line
+    @Autowired  // Inject the PrescriptionHistoryService
+    private PrescriptionHistoryService prescriptionHistoryService;
 
     @PostMapping("/confirmOrder")
     public String confirmOrder(@RequestParam("medication") Long prescriptionId, 
-                            @RequestParam("quantity") int quantity) {
-
+                               @RequestParam("quantity") int quantity, 
+                               Model model) {
         // Retrieve the selected prescription using the prescription ID
         Prescription prescription = prescriptionService.getPrescriptionById(prescriptionId);
-        
+
+        // Add prescription and quantity details to the model for confirmation
+        model.addAttribute("prescription", prescription);
+        model.addAttribute("quantity", quantity);
+
+        // Redirect to the confirmOrder page for user confirmation
+        return "confirmOrder"; 
+    }
+
+    @PostMapping("/finaliseOrder")
+    public String finaliseOrder(@RequestParam("medicationId") Long medicationId, 
+                                @RequestParam("quantity") int quantity, Model model) {
+        // Fetch the selected prescription using the prescription ID
+        Prescription prescription = prescriptionService.getPrescriptionById(medicationId);
+
+        // Mark the prescription as ordered
+        prescription.setOrdered(true);
+
+        // Save the updated prescription back to the database
+        prescriptionService.savePrescription(prescription);
+
         // Create a new PrescriptionHistory object
         PrescriptionHistory history = new PrescriptionHistory();
         history.setMedicationName(prescription.getMedicationName());
@@ -37,23 +57,11 @@ public class PrescriptionOrderController {
         // Save the new history record to the prescription_history table
         prescriptionHistoryService.savePrescriptionHistory(history);
 
-        // (Optional) Mark the prescription as ordered or update its status if needed
-
-        // Redirect back to the prescription listing page to show the updated data
-        return "redirect:/prescriptions";
-    }
-
-    @PostMapping("/finaliseOrder")
-    public String finaliseOrder(@RequestParam("medicationId") Long medicationId, 
-                                @RequestParam("quantity") int quantity, Model model) {
-        // Fetch the selected prescription
-        Prescription prescription = prescriptionService.getPrescriptionById(medicationId);
-
-        // Add prescription details to the model
+        // Add prescription details to the model for success message
         model.addAttribute("prescription", prescription);
         model.addAttribute("quantity", quantity);
 
-        // Ensure that you return "orderSuccess" to match the template name
-        return "orderSuccess";  // This should match the name of the HTML file
+        // Redirect to the success page after saving the order
+        return "orderSuccess";  // This should match the name of the success HTML file
     }
 }
