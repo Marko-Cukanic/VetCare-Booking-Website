@@ -6,10 +6,38 @@
     <link rel="stylesheet" th:href="@{/css/navbar.css}">
     <link rel="stylesheet" th:href="@{/css/prescriptions.css}">
 </head>
-<body>
+
+<!-- Include JavaScript for session token checking -->
+<script>
+    //Session Token Verification Script
+    function checkSessionToken() {
+        const sessionToken = localStorage.getItem('sessionToken');
+        const currentUrl = window.location.href;
+
+        if (sessionToken && !currentUrl.includes('sessionToken')) {
+            window.location.href = `/prescriptions?sessionToken=${encodeURIComponent(sessionToken)}`;
+        } else if (!sessionToken) {
+            document.getElementById('login-prompt').style.display = 'block';
+        }
+    }
+</script>
+
+<body onload="checkSessionToken();">
+
     <div th:insert="~{fragments/navbar :: navbar}"></div>
+
+    <!-- Main Medical History Section -->
+    <div id="banner">
+        <h2>Prescriptions</h2>
+        <p>Manage and review your pet's prescriptions</p>
+    </div>
     
-    <main>
+    <!-- Login prompt in case the user is not logged in -->
+    <div id="login-prompt" style="display: none;">
+        <p>Please <a th:href="@{/login}">log in</a> to access prescription management.</p>
+    </div>
+
+    <main th:if="${isLoggedIn}">
         <section id="prescription-listing">
             <h2>Prescription Listing</h2>
             <table>

@@ -128,7 +128,6 @@ public class Vaccination {
     }
 
     public Stream<Medical> stream() {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'stream'");
     }
 }
