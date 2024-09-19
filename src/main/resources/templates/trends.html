@@ -1,93 +1,133 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
- <meta charset="UTF-8">
- <title>Trends</title>
- <link rel="stylesheet" th:href="@{/css/trends.css}">
- <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <meta charset="UTF-8">
+    <title>Trends</title>
+    <link rel="stylesheet" th:href="@{/css/trends.css}">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
 </head>
 <body>
- <div th:insert="~{fragments/navbar :: navbar}"></div>
+<div th:insert="~{fragments/navbar :: navbar}"></div>
 
- <!-- Search Bar Section -->
- <div class="search-bar">
-   <input type="text" id="search-input" placeholder="Search Trends..." oninput="filterContent()">
- </div>
+<!-- Search Bar Section -->
+<div class="search-bar">
+    <input type="text" id="search-input" placeholder="Search Trends..." oninput="filterContent()">
+</div>
 
- <nav class="tabs">
-   <ul>
-     <li><a th:href="@{/resources}">Articles</a></li>
-     <li><a th:href="@{/guides}">Guides</a></li>
-     <li><a th:href="@{/videos}">Videos</a></li>
-     <li><a th:href="@{/trends}" class="active">Trends</a></li>
-   </ul>
- </nav>
+<!-- Filter Bar Section -->
+<div class="filter-bar">
+    <label for="filter-select">Sort by:</label>
+    <select id="filter-select" onchange="filterTrends()">
+        <option value="date">Publication Date</option>
+        <option value="relevance">Relevance</option>
+    </select>
+</div>
 
- <main>
-   <section id="content-list">
-     <h2>Trends</h2>
-     <p>Stay updated with the latest trends in pet care and veterinary science.</p>
+<nav class="tabs">
+    <ul>
+        <li><a th:href="@{/resources}">Articles</a></li>
+        <li><a th:href="@{/guides}">Guides</a></li>
+        <li><a th:href="@{/videos}">Videos</a></li>
+        <li><a th:href="@{/trends}" class="active">Trends</a></li>
+    </ul>
+</nav>
 
-     <!-- Trend 1 -->
-     <div class="trend-preview content-item" data-title="Shelter Veterinarian Scholarship" data-type="Trend">
-       <h3>Shelter Veterinarian Scholarship</h3>
-       <iframe id="trend1" src="https://www.veterinarypracticenews.com/shelter-veterinarian-scholarship/" title="Shelter Veterinarian Scholarship"></iframe>
-       <button class="full-screen-btn" onclick="openFullScreen('trend1')">View Full Screen</button>
-     </div>
+<main>
+    <section id="content-list">
+        <h2>Trends</h2>
+        <p>Stay updated with the latest trends in pet care and veterinary science.</p>
 
-     <!-- Trend 2 -->
-     <div class="trend-preview content-item" data-title="Bovine Anaplasmosis Vaccine" data-type="Trend">
-       <h3>Bovine Anaplasmosis Vaccine</h3>
-       <iframe id="trend2" src="https://www.veterinarypracticenews.com/bovine-anaplasmosis-vaccine/" title="Bovine Anaplasmosis Vaccine"></iframe>
-       <button class="full-screen-btn" onclick="openFullScreen('trend2')">View Full Screen</button>
-     </div>
+        <!-- Trend 1 -->
+        <div class="trend-preview content-item" data-title="Shelter Veterinarian Scholarship" data-type="Trend" data-date="2023-12-15" data-relevance="5">
+            <h3>Shelter Veterinarian Scholarship</h3>
+            <p><strong>Date:</strong> December 15, 2023</p>
+            <p><strong>Source:</strong> <a href="https://www.veterinarypracticenews.com/shelter-veterinarian-scholarship/" target="_blank">Veterinary Practice News</a></p>
+            <iframe id="trend1" src="https://www.veterinarypracticenews.com/shelter-veterinarian-scholarship/" title="Shelter Veterinarian Scholarship"></iframe>
+            <button class="full-screen-btn" onclick="openFullScreen('trend1')">View Full Screen</button>
+        </div>
 
-     <!-- Trend 3 -->
-     <div class="trend-preview content-item" data-title="Collecting Deposits for Appointments" data-type="Trend">
-       <h3>Collecting Deposits for Appointments</h3>
-       <iframe id="trend3" src="https://www.veterinarypracticenews.com/collecting-deposits-appointments/" title="Collecting Deposits Preview"></iframe>
-       <button class="full-screen-btn" onclick="openFullScreen('trend3')">View Full Screen</button>
-     </div>
-   </section>
- </main>
+        <!-- Trend 2 -->
+        <div class="trend-preview content-item" data-title="Bovine Anaplasmosis Vaccine" data-type="Trend" data-date="2023-11-30" data-relevance="4">
+            <h3>Bovine Anaplasmosis Vaccine</h3>
+            <p><strong>Date:</strong> November 30, 2023</p>
+            <p><strong>Source:</strong> <a href="https://www.veterinarypracticenews.com/bovine-anaplasmosis-vaccine/" target="_blank">Veterinary Practice News</a></p>
+            <iframe id="trend2" src="https://www.veterinarypracticenews.com/bovine-anaplasmosis-vaccine/" title="Bovine Anaplasmosis Vaccine"></iframe>
+            <button class="full-screen-btn" onclick="openFullScreen('trend2')">View Full Screen</button>
+        </div>
 
- <footer>
-   <p>&copy; 2024 VetCare. All rights reserved.</p>
- </footer>
+        <!-- Trend 3 -->
+        <div class="trend-preview content-item" data-title="Collecting Deposits for Appointments" data-type="Trend" data-date="2023-10-05" data-relevance="3">
+            <h3>Collecting Deposits for Appointments</h3>
+            <p><strong>Date:</strong> October 5, 2023</p>
+            <p><strong>Source:</strong> <a href="https://www.veterinarypracticenews.com/collecting-deposits-appointments/" target="_blank">Veterinary Practice News</a></p>
+            <iframe id="trend3" src="https://www.veterinarypracticenews.com/collecting-deposits-appointments/" title="Collecting Deposits for Appointments"></iframe>
+            <button class="full-screen-btn" onclick="openFullScreen('trend3')">View Full Screen</button>
+        </div>
 
- <script>
-   // Same full-screen function
-   function openFullScreen(iframeId) {
-     const iframe = document.getElementById(iframeId);
-     const fullScreenIframe = document.createElement('iframe');
-     fullScreenIframe.src = iframe.src;
-     fullScreenIframe.className = 'fullscreen-iframe';
+    </section>
+</main>
 
-     const exitButton = document.createElement('button');
-     exitButton.className = 'exit-fullscreen-btn';
-     exitButton.textContent = 'Exit Full Screen';
-     exitButton.onclick = function() {
-       fullScreenIframe.remove();
-       exitButton.remove();
-     };
+<footer>
+    <p>&copy; 2024 VetCare. All rights reserved.</p>
+</footer>
 
-     document.body.appendChild(fullScreenIframe);
-     document.body.appendChild(exitButton);
-   }
+<script>
+    // Same full-screen function
+    function openFullScreen(iframeId) {
+        const iframe = document.getElementById(iframeId);
+        const fullScreenIframe = document.createElement('iframe');
+        fullScreenIframe.src = iframe.src;
+        fullScreenIframe.className = 'fullscreen-iframe';
 
-   // Search Filter Functionality
-   function filterContent() {
-     const searchValue = document.getElementById('search-input').value.toLowerCase();
-     const items = document.querySelectorAll('.content-item');
-     items.forEach(item => {
-       const title = item.getAttribute('data-title').toLowerCase();
-       if (title.includes(searchValue)) {
-         item.style.display = 'block';
-       } else {
-         item.style.display = 'none';
-       }
-     });
-   }
- </script>
+        const exitButton = document.createElement('button');
+        exitButton.className = 'exit-fullscreen-btn';
+        exitButton.textContent = 'Exit Full Screen';
+        exitButton.onclick = function () {
+            fullScreenIframe.remove();
+            exitButton.remove();
+        };
+
+        document.body.appendChild(fullScreenIframe);
+        document.body.appendChild(exitButton);
+    }
+
+    // Search Filter Functionality
+    function filterContent() {
+        const searchValue = document.getElementById('search-input').value.toLowerCase();
+        const items = document.querySelectorAll('.content-item');
+        items.forEach(item => {
+            const title = item.getAttribute('data-title').toLowerCase();
+            if (title.includes(searchValue)) {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    }
+
+    // Sorting/filtering by date or relevance
+    function filterTrends() {
+        const filterOption = document.getElementById('filter-select').value;
+        const items = Array.from(document.querySelectorAll('.content-item'));
+
+        items.sort((a, b) => {
+            if (filterOption === 'date') {
+                // Compare by date
+                const dateA = new Date(a.getAttribute('data-date'));
+                const dateB = new Date(b.getAttribute('data-date'));
+                return dateB - dateA; // Sort in descending order
+            } else if (filterOption === 'relevance') {
+                // Compare by relevance
+                const relevanceA = parseInt(a.getAttribute('data-relevance'), 10);
+                const relevanceB = parseInt(b.getAttribute('data-relevance'), 10);
+                return relevanceB - relevanceA; // Sort in descending order
+            }
+        });
+
+        // Reorder the items in the DOM
+        const contentList = document.getElementById('content-list');
+        items.forEach(item => contentList.appendChild(item));
+    }
+</script>
 </body>
 </html>
