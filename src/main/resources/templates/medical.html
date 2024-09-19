@@ -54,34 +54,68 @@
         const medicalSection = document.getElementById('medical-record');
         const vaccineSection = document.getElementById('vaccination-history');
         const conditionsSection = document.getElementById('medical-conditions');
+        const treatmentPlanSection = document.getElementById('treatment-plan');
 
-        // Use html2canvas to capture each section
-        html2canvas(medicalSection).then(function(medicalCanvas) {
-            html2canvas(vaccineSection).then(function(vaccineCanvas) {
-                html2canvas(conditionsSection).then(function(conditionsCanvas) {
-
-                    // Get the images from the canvas
-                    const medicalImage = medicalCanvas.toDataURL('image/png');
-                    const vaccineImage = vaccineCanvas.toDataURL('image/png');
-                    const conditionsImage = conditionsCanvas.toDataURL('image/png');
-
-                    // Create a new jsPDF instance
-                    const { jsPDF } = window.jspdf;
-                    const pdf = new jsPDF('p', 'mm', 'a4');
-
-                    // Add medical section to PDF
-                    pdf.addImage(medicalImage, 'PNG', 10, 10, 140, 30); 
-
-                    // Add vaccine section to PDF
-                    pdf.addImage(vaccineImage, 'PNG', 10, 100, 140, 60);
-
-                    // Add medical conditions section to PDF
-                    pdf.addImage(conditionsImage, 'PNG', 10, 170, 140, 60);
-
-                    // Save the PDF with a user-friendly filename
-                    pdf.save('medical_report.pdf');
-                });
+        // Capture each section with high resolution
+        function captureSection(element) {
+            return html2canvas(element, { scale: 3 }).then(canvas => {
+                // Get the image data URL
+                const dataURL = canvas.toDataURL('image/png');
+                // Get the canvas width and height
+                const width = canvas.width;
+                const height = canvas.height;
+                return { dataURL, width, height };
             });
+        }
+
+        // Capture all sections
+        Promise.all([
+            captureSection(medicalSection),
+            captureSection(vaccineSection),
+            captureSection(conditionsSection),
+            captureSection(treatmentPlanSection)
+        ]).then(sections => {
+            // Create a new jsPDF instance with A4 page size
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            const pageWidth = pdf.internal.pageSize.width;
+            const pageHeight = pdf.internal.pageSize.height;
+
+            // Define margins and initial Y position
+            const margin = 10;
+            let yPosition = margin;
+
+            sections.forEach(({ dataURL, width, height }, index) => {
+                let imgWidth, imgHeight;
+                let xPosition = margin; // Default x position for all sections
+
+                if (index === 0) { // Special handling for medical record
+                    const maxHeight = 60; // Set maximum height to match other sections
+                    const scale = maxHeight / height;
+                    imgWidth = width * scale;
+                    imgHeight = height * scale;
+
+                    // Center the image horizontally
+                    xPosition = (pageWidth - imgWidth) / 2;
+                } else { // General handling for other sections
+                    imgWidth = pageWidth - 2 * margin;
+                    const scale = imgWidth / width;
+                    imgHeight = height * scale;
+                }
+
+                // Add a new page if necessary
+                if (yPosition + imgHeight > pageHeight) {
+                    pdf.addPage();
+                    yPosition = margin;
+                }
+
+                // Add image to PDF
+                pdf.addImage(dataURL, 'PNG', xPosition, yPosition, imgWidth, imgHeight);
+                yPosition += imgHeight + margin;
+            });
+
+            // Save the PDF with a user-friendly filename
+            pdf.save('medical_report.pdf');
         });
     }
 </script>
@@ -108,12 +142,12 @@
         </div>
     </section>
 
-    <main>
-        <!------------------- Default Medical Page (Not Logged In) ----------------------->
-         <div th:if="${!isLoggedIn}">
-            <p>No details recorded. Please <a th:href="@{/login}">log in</a> to view the medical history.</p>
-        </div>
+     <!------------------- Default Medical Page (Not Logged In) ----------------------->
+     <div id="not-logged-in-message" th:if="${!isLoggedIn}">
+        <p>No details recorded. Please <a th:href="@{/login}">log in</a> to view the medical history.</p>
+    </div>
 
+    <main>
         <!------------------------------ Logged In Medical Page -------------------------->
             <!-- Medical Record Section -->
             <section id="medical-record" th:if="${isLoggedIn}">
@@ -140,11 +174,11 @@
                 </div>
             </section>
 
-
+        <div class="right-column">
             <!-- Vaccination History Section -->
             <section id="vaccination-history" th:if="${isLoggedIn}">
                 <h2>Vaccination History for <span th:text="${selectedPetName}">Selected Pet</span></h2>
-                /
+                
                 <div class="list-container">
                     <!-- Dog Vaccines -->
                     <ul>
@@ -180,6 +214,17 @@
                     <li>Diarrhea</li>
                 </ul>
             </section>
+
+            <!-- Treatment Plan Section -->
+            <section id="treatment-plan" th:if="${isLoggedIn}">
+                <h2>Treatment Plan</h2>
+                <ul>
+                    <li>Neutering <span>dd/mm/yyyy</span></li>
+                    <li>Rabies Vaccination <span>dd/mm/yyyy</span></li>
+                    <li>General Check-up <span>dd/mm/yyyy</span></li>
+                </ul>
+            </section>
+        </div>
     </main>
 
     <footer>
