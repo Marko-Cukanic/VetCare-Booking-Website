@@ -32,3 +32,7 @@ docker exec -it team-project-group-p08-07-db-1 mysql -u vetuser -p
 use vetcaredb
 username vetuser
 password for mysql 1234
+
+http://localhost:8080/assignPrescription
+
+TO ASSIGN PRESCRIPTION WILL IMPLEMENT VET LOG IN
