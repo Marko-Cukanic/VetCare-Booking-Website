@@ -17,7 +17,7 @@ public class Prescription {
 
 
     private String medicationName;
-    private int quantity;
+    private Integer quantity;
     private Date prescriptionDate;
     private String petName;
     private String vetName;
@@ -59,11 +59,11 @@ public class Prescription {
         this.medicationName = medicationName;
     }
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
