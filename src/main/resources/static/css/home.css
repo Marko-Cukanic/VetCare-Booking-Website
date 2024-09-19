@@ -143,23 +143,45 @@ footer {
     width: 100vw;  /* Make the carousel take the full width of the screen */
     min-height: 600px;  
     overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #f0f0f0;
+    
 }
 
 .carousel-image {
     width: 100vw;  
     height: 600px;  /* Adjust the height dynamically based on the image */
     object-fit: cover;  /* Ensure the image covers the area without distortion */
+    display: none;
+
 }
 
 /* Show active image */
 .active {
     display: block;
 }
+.banner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    background: rgba(0, 0, 0, 0.5); /* Dark overlay to improve text readability */
+}
 
+.banner-overlay h2 {
+    font-size: 3em;
+    margin-bottom: 10px;
+}
+
+.banner-overlay p {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
 /* Left and right navigation buttons */
 .prev, .next {
     cursor: pointer;
