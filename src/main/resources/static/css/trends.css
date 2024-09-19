@@ -271,4 +271,17 @@ footer {
    outline: none;
    border-color: #0056b3;
  }
+
+ .filter-bar {
+   text-align: center;
+   margin: 20px 0;
+ }
+ 
+ .filter-bar select {
+   padding: 10px;
+   font-size: 1.1rem;
+   border: 2px solid #007bff;
+   border-radius: 5px;
+ }
+ 
  

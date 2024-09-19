@@ -22,4 +22,8 @@ public class PrescriptionService {
     public List<Prescription> getAllPrescriptions() {
         return prescriptionRepository.findAll();
     }
+
+    public void savePrescription(Prescription prescription) {
+        prescriptionRepository.save(prescription);
+    }
 }

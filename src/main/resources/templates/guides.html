@@ -1,100 +1,158 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
- <meta charset="UTF-8">
- <title>Guides</title>
- <link rel="stylesheet" th:href="@{/css/guides.css}">
- <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <meta charset="UTF-8">
+    <title>Guides</title>
+    <link rel="stylesheet" th:href="@{/css/guides.css}">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
 </head>
 <body>
- <div th:insert="~{fragments/navbar :: navbar}"></div>
+<div th:insert="~{fragments/navbar :: navbar}"></div>
 
- <!-- Search Bar Section -->
- <div class="search-bar">
-   <input type="text" id="search-input" placeholder="Search Guides..." oninput="filterContent()">
- </div>
+<!-- Search Bar Section -->
+<div class="search-bar">
+    <input type="text" id="search-input" placeholder="Search Guides..." oninput="filterContent()">
+</div>
 
- <nav class="tabs">
-   <ul>
-     <li><a th:href="@{/resources}">Articles</a></li>
-     <li><a th:href="@{/guides}" class="active">Guides</a></li>
-     <li><a th:href="@{/videos}">Videos</a></li>
-     <li><a th:href="@{/trends}">Trends</a></li>
-   </ul>
- </nav>
+<!-- Filter Bar Section -->
+<div class="filter-bar">
+    <label for="topic-select">Filter by Topic:</label>
+    <select id="topic-select" onchange="filterGuides()">
+        <option value="all">All Topics</option>
+        <option value="Health">Health</option>
+        <option value="General Care">General Care</option>
+        <option value="Training">Training</option>
+    </select>
 
- <main>
-   <section id="content-list">
-     <h2>Guides</h2>
-     <p>Access detailed guides on various topics related to pet care.</p>
+    <label for="time-select">Filter by Estimated Reading Time:</label>
+    <select id="time-select" onchange="filterGuides()">
+        <option value="all">All Times</option>
+        <option value="5-10">5-10 minutes</option>
+        <option value="10-15">10-15 minutes</option>
+        <option value="15-20">15-20 minutes</option>
+    </select>
+</div>
 
-     <!-- Guide 1 -->
-     <div class="guide-preview content-item" data-title="Cataracts in Dogs" data-type="Guide">
-       <h3>Cataracts in Dogs</h3>
-       <iframe id="guide1" src="https://bestfriends.org/pet-care-resources/cataracts-dogs-signs-causes-diagnosis-and-treatment" title="Cataracts in Dogs"></iframe>
-       <button class="full-screen-btn" onclick="openFullScreen('guide1')">View Full Screen</button>
-     </div>
+<nav class="tabs">
+    <ul>
+        <li><a th:href="@{/resources}">Articles</a></li>
+        <li><a th:href="@{/guides}" class="active">Guides</a></li>
+        <li><a th:href="@{/videos}">Videos</a></li>
+        <li><a th:href="@{/trends}">Trends</a></li>
+    </ul>
+</nav>
 
-     <!-- Guide 2 -->
-     <div class="guide-preview content-item" data-title="How to Take Care of Your Pet" data-type="Guide">
-       <h3>How to Take Care of Your Pet</h3>
-       <iframe id="guide2" src="https://www.wikihow.com/Take-Care-of-Your-Pet" title="How to Take Care of Your Pet"></iframe>
-       <button class="full-screen-btn" onclick="openFullScreen('guide2')">View Full Screen</button>
-     </div>
+<main>
+    <section id="content-list">
+        <h2>Guides</h2>
+        <p>Access detailed guides on various topics related to pet care.</p>
 
-     <!-- Guide 3 -->
-     <div class="guide-preview content-item" data-title="Hamster Care" data-type="Guide">
-       <h3>Hamster Care</h3>
-       <iframe id="guide3" src="https://www.bluecross.org.uk/advice/hamster/hamster-care" title="Hamster Care"></iframe>
-       <button class="full-screen-btn" onclick="openFullScreen('guide3')">View Full Screen</button>
-     </div>
+        <!-- Guide 1 -->
+        <div class="guide-preview content-item" data-title="Cataracts in Dogs" data-topic="Health" data-time="10">
+            <h3>Cataracts in Dogs</h3>
+            <p><strong>Description:</strong> Learn about the causes, diagnosis, and treatment of cataracts in dogs.</p>
+            <p><strong>Estimated Reading Time:</strong> 10 minutes</p>
+            <iframe id="guide1" src="https://bestfriends.org/pet-care-resources/cataracts-dogs-signs-causes-diagnosis-and-treatment" title="Cataracts in Dogs"></iframe>
+            <button class="full-screen-btn" onclick="openFullScreen('guide1')">View Full Screen</button>
+        </div>
 
-     <!-- Guide 4 -->
-     <div class="guide-preview content-item" data-title="Things You Learn from Your Pet" data-type="Guide">
-       <h3>Things You Learn from Your Pet</h3>
-       <iframe id="guide4" src="https://www.webmd.com/pets/ss/slideshow-things-you-learn-from-your-pet" title="Things You Learn from Your Pet"></iframe>
-       <button class="full-screen-btn" onclick="openFullScreen('guide4')">View Full Screen</button>
-     </div>
-   </section>
- </main>
+        <!-- Guide 2 -->
+        <div class="guide-preview content-item" data-title="How to Take Care of Your Pet" data-topic="General Care" data-time="15">
+            <h3>How to Take Care of Your Pet</h3>
+            <p><strong>Description:</strong> A comprehensive guide on how to properly take care of your pets.</p>
+            <p><strong>Estimated Reading Time:</strong> 15 minutes</p>
+            <iframe id="guide2" src="https://www.wikihow.com/Take-Care-of-Your-Pet" title="How to Take Care of Your Pet"></iframe>
+            <button class="full-screen-btn" onclick="openFullScreen('guide2')">View Full Screen</button>
+        </div>
 
- <footer>
-   <p>&copy; 2024 VetCare. All rights reserved.</p>
- </footer>
+        <!-- Guide 3 -->
+        <div class="guide-preview content-item" data-title="Hamster Care" data-topic="General Care" data-time="5">
+            <h3>Hamster Care</h3>
+            <p><strong>Description:</strong> Learn how to properly care for your hamster.</p>
+            <p><strong>Estimated Reading Time:</strong> 5 minutes</p>
+            <iframe id="guide3" src="https://www.bluecross.org.uk/advice/hamster/hamster-care" title="Hamster Care"></iframe>
+            <button class="full-screen-btn" onclick="openFullScreen('guide3')">View Full Screen</button>
+        </div>
 
- <script>
-   // Same full-screen function
-   function openFullScreen(iframeId) {
-     const iframe = document.getElementById(iframeId);
-     const fullScreenIframe = document.createElement('iframe');
-     fullScreenIframe.src = iframe.src;
-     fullScreenIframe.className = 'fullscreen-iframe';
+        <!-- Guide 4 -->
+        <div class="guide-preview content-item" data-title="Things You Learn from Your Pet" data-topic="Training" data-time="12">
+            <h3>Things You Learn from Your Pet</h3>
+            <p><strong>Description:</strong> Discover what your pet can teach you about life.</p>
+            <p><strong>Estimated Reading Time:</strong> 12 minutes</p>
+            <iframe id="guide4" src="https://www.webmd.com/pets/ss/slideshow-things-you-learn-from-your-pet" title="Things You Learn from Your Pet"></iframe>
+            <button class="full-screen-btn" onclick="openFullScreen('guide4')">View Full Screen</button>
+        </div>
+    </section>
+</main>
 
-     const exitButton = document.createElement('button');
-     exitButton.className = 'exit-fullscreen-btn';
-     exitButton.textContent = 'Exit Full Screen';
-     exitButton.onclick = function() {
-       fullScreenIframe.remove();
-       exitButton.remove();
-     };
+<footer>
+    <p>&copy; 2024 VetCare. All rights reserved.</p>
+</footer>
 
-     document.body.appendChild(fullScreenIframe);
-     document.body.appendChild(exitButton);
-   }
+<script>
+    // Full-screen function
+    function openFullScreen(iframeId) {
+        const iframe = document.getElementById(iframeId);
+        const fullScreenIframe = document.createElement('iframe');
+        fullScreenIframe.src = iframe.src;
+        fullScreenIframe.className = 'fullscreen-iframe';
 
-   // Search Filter Functionality
-   function filterContent() {
-     const searchValue = document.getElementById('search-input').value.toLowerCase();
-     const items = document.querySelectorAll('.content-item');
-     items.forEach(item => {
-       const title = item.getAttribute('data-title').toLowerCase();
-       if (title.includes(searchValue)) {
-         item.style.display = 'block';
-       } else {
-         item.style.display = 'none';
-       }
-     });
-   }
- </script>
+        const exitButton = document.createElement('button');
+        exitButton.className = 'exit-fullscreen-btn';
+        exitButton.textContent = 'Exit Full Screen';
+        exitButton.onclick = function() {
+            fullScreenIframe.remove();
+            exitButton.remove();
+        };
+
+        document.body.appendChild(fullScreenIframe);
+        document.body.appendChild(exitButton);
+    }
+
+    // Search Filter Functionality
+    function filterContent() {
+        const searchValue = document.getElementById('search-input').value.toLowerCase();
+        const items = document.querySelectorAll('.content-item');
+        items.forEach(item => {
+            const title = item.getAttribute('data-title').toLowerCase();
+            if (title.includes(searchValue)) {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    }
+
+    // Filter guides by topic and reading time
+    function filterGuides() {
+        const topicFilter = document.getElementById('topic-select').value;
+        const timeFilter = document.getElementById('time-select').value;
+
+        const items = document.querySelectorAll('.content-item');
+        items.forEach(item => {
+            const topic = item.getAttribute('data-topic');
+            const time = parseInt(item.getAttribute('data-time'));
+
+            let timeMatches = false;
+            if (timeFilter === "all") {
+                timeMatches = true;
+            } else if (timeFilter === "5-10" && time >= 5 && time <= 10) {
+                timeMatches = true;
+            } else if (timeFilter === "10-15" && time > 10 && time <= 15) {
+                timeMatches = true;
+            } else if (timeFilter === "15-20" && time > 15 && time <= 20) {
+                timeMatches = true;
+            }
+
+            const topicMatches = topicFilter === "all" || topic === topicFilter;
+
+            if (timeMatches && topicMatches) {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    }
+</script>
 </body>
 </html>

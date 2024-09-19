@@ -21,6 +21,17 @@ public class Prescription {
 
     // Getters and Setters
 
+    private boolean isOrdered;
+
+    // Getters and setters for the new field
+    public boolean isOrdered() {
+        return isOrdered;
+    }
+
+    public void setOrdered(boolean ordered) {
+        isOrdered = ordered;
+    }
+
     public Long getId() {
         return id;
     }
