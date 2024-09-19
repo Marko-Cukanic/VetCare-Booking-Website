@@ -13,6 +13,9 @@ public class Prescription {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String email; // Ensure this field exists
+
+
     private String medicationName;
     private int quantity;
     private Date prescriptionDate;
@@ -30,6 +33,14 @@ public class Prescription {
 
     public void setOrdered(boolean ordered) {
         isOrdered = ordered;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Long getId() {
