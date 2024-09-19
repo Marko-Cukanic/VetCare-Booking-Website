@@ -7,24 +7,23 @@
     <link rel="stylesheet" th:href="@{/css/prescriptions.css}">
 </head>
 <body>
-    <div th:insert="~{fragments/navbar :: navbar}"></div> <!-- Inserted navbar -->
+    <div th:insert="~{fragments/navbar :: navbar}"></div>
     
     <main>
         <section id="prescription-listing">
             <h2>Prescription Listing</h2>
-            <!-- Prescription table -->
             <table>
                 <thead>
                     <tr>
                         <th>Medication Name</th>
                         <th>Quantity</th>
-                        <th>Prescription Date</th>
+                        <th>Date</th>
                         <th>Pet Name</th>
-                        <th>Vet Name</th>
+                        <th>Vet</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr th:each="prescription : ${prescriptions}">
+                <tbody th:each="prescription : ${prescriptions}">
+                    <tr>
                         <td th:text="${prescription.medicationName}"></td>
                         <td th:text="${prescription.quantity}"></td>
                         <td th:text="${#dates.format(prescription.prescriptionDate, 'yyyy-MM-dd')}"></td>
@@ -35,43 +34,41 @@
             </table>
         </section>
         
-        <form th:action="@{/confirmOrder}" method="post">
-            <label for="medication">Select Medication:</label>
-            <select id="medication" name="medication" required>
-                <option value="" disabled selected>Select a medication</option>
-                <option th:each="prescription : ${prescriptions}"
-                        th:value="${prescription.id}" 
-                        th:text="${prescription.medicationName}">
-                </option>
-            </select>
-        
-            <label for="quantity">Quantity:</label>
-            <input type="number" id="quantity" name="quantity" required>
-        
-            <button type="submit">Order</button>
-        </form>
-        
-        
+        <section id="order-form">
+            <h2>Order Medication</h2>
+            <form th:action="@{/confirmOrder}" method="post">
+                <div class="form-group">
+                    <label for="medication">Medication:</label>
+                    <select id="medication" name="medication" required>
+                        <option value="" disabled selected>Select</option>
+                        <option th:each="prescription : ${prescriptions}"
+                                th:value="${prescription.id}" 
+                                th:text="${prescription.medicationName}">
+                        </option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="quantity">Quantity:</label>
+                    <input type="number" id="quantity" name="quantity" required>
+                </div>
+                <button type="submit">Order</button>
+            </form>
+        </section>
         
         <section id="prescription-history">
             <h2>Prescription History</h2>
-            <!-- Prescription history table -->
-
-            <div th:if="${#lists.isEmpty(histories)}">
-                <p>No prescription history available.</p>
-            </div>
             <table>
                 <thead>
                     <tr>
-                        <th>Medication Name</th>
+                        <th>Medication</th>
                         <th>Pet Name</th>
                         <th>Start Date</th>
                         <th>End Date</th>
-                        <th>Vet Name</th>
+                        <th>Vet</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr th:each="history : ${histories}">
+                <tbody th:each="history : ${histories}">
+                    <tr>
                         <td th:text="${history.medicationName}"></td>
                         <td th:text="${history.petName}"></td>
                         <td th:text="${#dates.format(history.startDate, 'yyyy-MM-dd')}"></td>
