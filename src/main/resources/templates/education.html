@@ -1,115 +1,155 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
- <meta charset="UTF-8">
- <title>Education Resources</title>
- <link rel="stylesheet" th:href="@{/css/education.css}">
- <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <meta charset="UTF-8">
+    <title>Education Resources</title>
+    <link rel="stylesheet" th:href="@{/css/education.css}">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
 </head>
 <body>
- <div th:insert="~{fragments/navbar :: navbar}"></div>
+<div th:insert="~{fragments/navbar :: navbar}"></div>
 
- <!-- Search Bar Section -->
- <div class="search-bar">
-   <input type="text" id="search-input" placeholder="Search Articles..." oninput="filterContent()">
- </div>
+<!-- Search Bar Section -->
+<div class="search-bar">
+    <input type="text" id="search-input" placeholder="Search Articles..." oninput="filterContent()">
+</div>
 
- <!-- Tabs Section -->
- <nav class="tabs">
-   <ul>
-     <li><a th:href="@{/resources}" class="active">Articles</a></li>
-     <li><a th:href="@{/guides}">Guides</a></li>
-     <li><a th:href="@{/videos}">Videos</a></li>
-     <li><a th:href="@{/trends}">Trends</a></li>
-   </ul>
- </nav>
+<!-- Filter Bar Section -->
+<div class="filter-bar">
+    <label for="topic-select">Filter by Topic:</label>
+    <select id="topic-select" onchange="filterArticles()">
+        <option value="all">All Topics</option>
+        <option value="Health">Health</option>
+        <option value="General Care">General Care</option>
+        <option value="Training">Training</option>
+    </select>
 
- <main>
-   <section id="content-list">
-     <h2>Articles</h2>
-     <p>Explore our collection of articles on pet care and veterinary medicine.</p>
+    <label for="date-select">Filter by Date:</label>
+    <select id="date-select" onchange="filterArticles()">
+        <option value="all">All Dates</option>
+        <option value="2023">2023</option>
+        <option value="2022">2022</option>
+        <option value="2021">2021</option>
+    </select>
+</div>
 
-     <!-- Article 1 -->
-     <div class="article-preview content-item" data-title="Emergency Care for Your Pet" data-type="Article">
-       <h3>Emergency Care for Your Pet</h3>
-       <iframe id="article1" src="https://www.aspca.org/pet-care/general-pet-care/emergency-care-your-pet" title="Emergency Care for Your Pet"></iframe>
-       <button class="full-screen-btn" onclick="openFullScreen('article1')">View Full Screen</button>
-     </div>
+<!-- Tabs Section -->
+<nav class="tabs">
+    <ul>
+        <li><a th:href="@{/resources}" class="active">Articles</a></li>
+        <li><a th:href="@{/guides}">Guides</a></li>
+        <li><a th:href="@{/videos}">Videos</a></li>
+        <li><a th:href="@{/trends}">Trends</a></li>
+    </ul>
+</nav>
 
-     <!-- Article 2 -->
-     <div class="article-preview content-item" data-title="Pet Care Tasks Easily Overlooked by Pet Parents" data-type="Article">
-       <h3>Pet Care Tasks Easily Overlooked by Pet Parents</h3>
-       <iframe id="article2" src="https://www.petmd.com/dog/general-health/pet-care-tasks-easily-overlooked-by-pet-parents" title="Pet Care Tasks"></iframe>
-       <button class="full-screen-btn" onclick="openFullScreen('article2')">View Full Screen</button>
-     </div>
+<main>
+    <section id="content-list">
+        <h2>Articles</h2>
+        <p>Explore our collection of articles on pet care and veterinary medicine.</p>
 
-     <!-- Article 3 -->
-     <div class="article-preview content-item" data-title="Teach Your Dog to Trade Items with You" data-type="Article">
-       <h3>Teach Your Dog to Trade Items with You</h3>
-       <iframe id="article3" src="https://www.akc.org/expert-advice/training/teach-dog-to-trade-items-with-you/" title="Teach Your Dog to Trade Items"></iframe>
-       <button class="full-screen-btn" onclick="openFullScreen('article3')">View Full Screen</button>
-     </div>
+        <!-- Article 1 -->
+        <div class="article-preview content-item" data-title="Emergency Care for Your Pet" data-topic="Health" data-date="2023-05-01">
+            <h3>Emergency Care for Your Pet</h3>
+            <iframe id="article1" src="https://www.aspca.org/pet-care/general-pet-care/emergency-care-your-pet" title="Emergency Care for Your Pet"></iframe>
+            <button class="full-screen-btn" onclick="openFullScreen('article1')">View Full Screen</button>
+        </div>
 
-     <!-- Article 4 -->
-     <div class="article-preview content-item" data-title="Vaccines for Dogs" data-type="Article">
-       <h3>Vaccines for Dogs</h3>
-       <iframe id="article4" src="https://vcahospitals.com/know-your-pet/vaccines-for-dogs" title="Vaccines for Dogs"></iframe>
-       <button class="full-screen-btn" onclick="openFullScreen('article4')">View Full Screen</button>
-     </div>
+        <!-- Article 2 -->
+        <div class="article-preview content-item" data-title="Pet Care Tasks Easily Overlooked by Pet Parents" data-topic="General Care" data-date="2023-03-15">
+            <h3>Pet Care Tasks Easily Overlooked by Pet Parents</h3>
+            <iframe id="article2" src="https://www.petmd.com/dog/general-health/pet-care-tasks-easily-overlooked-by-pet-parents" title="Pet Care Tasks"></iframe>
+            <button class="full-screen-btn" onclick="openFullScreen('article2')">View Full Screen</button>
+        </div>
 
-     <!-- Article 5 -->
-     <div class="article-preview content-item" data-title="Dog Behavior Problems - Aggression" data-type="Article">
-       <h3>Dog Behavior Problems - Aggression</h3>
-       <iframe id="article5" src="https://vcahospitals.com/know-your-pet/dog-behavior-problems---aggression---getting-started---safety-and-management" title="Dog Aggression Problems"></iframe>
-       <button class="full-screen-btn" onclick="openFullScreen('article5')">View Full Screen</button>
-     </div>
+        <!-- Article 3 -->
+        <div class="article-preview content-item" data-title="Teach Your Dog to Trade Items with You" data-topic="Training" data-date="2022-11-20">
+            <h3>Teach Your Dog to Trade Items with You</h3>
+            <iframe id="article3" src="https://www.akc.org/expert-advice/training/teach-dog-to-trade-items-with-you/" title="Teach Your Dog to Trade Items"></iframe>
+            <button class="full-screen-btn" onclick="openFullScreen('article3')">View Full Screen</button>
+        </div>
 
-     <!-- Article 6 -->
-     <div class="article-preview content-item" data-title="How Old Is Your Cat in People Years?" data-type="Article">
-       <h3>How Old Is Your Cat in People Years?</h3>
-       <iframe id="article6" src="https://www.pethealthnetwork.com/cat-health/cat-checkups-preventive-care/how-old-your-cat-people-years" title="How Old Is Your Cat"></iframe>
-       <button class="full-screen-btn" onclick="openFullScreen('article6')">View Full Screen</button>
-     </div>
-   </section>
- </main>
+        <!-- Article 4 -->
+        <div class="article-preview content-item" data-title="Vaccines for Dogs" data-topic="Health" data-date="2021-07-10">
+            <h3>Vaccines for Dogs</h3>
+            <iframe id="article4" src="https://vcahospitals.com/know-your-pet/vaccines-for-dogs" title="Vaccines for Dogs"></iframe>
+            <button class="full-screen-btn" onclick="openFullScreen('article4')">View Full Screen</button>
+        </div>
 
- <footer>
-   <p>&copy; 2024 VetCare. All rights reserved.</p>
- </footer>
+        <!-- Article 5 -->
+        <div class="article-preview content-item" data-title="Dog Behavior Problems - Aggression" data-topic="Training" data-date="2022-05-18">
+            <h3>Dog Behavior Problems - Aggression</h3>
+            <iframe id="article5" src="https://vcahospitals.com/know-your-pet/dog-behavior-problems---aggression---getting-started---safety-and-management" title="Dog Aggression Problems"></iframe>
+            <button class="full-screen-btn" onclick="openFullScreen('article5')">View Full Screen</button>
+        </div>
 
- <script>
-   // Full screen function remains the same
-   function openFullScreen(iframeId) {
-     const iframe = document.getElementById(iframeId);
-     const fullScreenIframe = document.createElement('iframe');
-     fullScreenIframe.src = iframe.src;
-     fullScreenIframe.className = 'fullscreen-iframe';
+        <!-- Article 6 -->
+        <div class="article-preview content-item" data-title="How Old Is Your Cat in People Years?" data-topic="Health" data-date="2021-03-10">
+            <h3>How Old Is Your Cat in People Years?</h3>
+            <iframe id="article6" src="https://www.pethealthnetwork.com/cat-health/cat-checkups-preventive-care/how-old-your-cat-people-years" title="How Old Is Your Cat"></iframe>
+            <button class="full-screen-btn" onclick="openFullScreen('article6')">View Full Screen</button>
+        </div>
+    </section>
+</main>
 
-     const exitButton = document.createElement('button');
-     exitButton.className = 'exit-fullscreen-btn';
-     exitButton.textContent = 'Exit Full Screen';
-     exitButton.onclick = function() {
-       fullScreenIframe.remove();
-       exitButton.remove();
-     };
+<footer>
+    <p>&copy; 2024 VetCare. All rights reserved.</p>
+</footer>
 
-     document.body.appendChild(fullScreenIframe);
-     document.body.appendChild(exitButton);
-   }
+<script>
+    // Full screen function
+    function openFullScreen(iframeId) {
+        const iframe = document.getElementById(iframeId);
+        const fullScreenIframe = document.createElement('iframe');
+        fullScreenIframe.src = iframe.src;
+        fullScreenIframe.className = 'fullscreen-iframe';
 
-   // Search Filter Functionality
-   function filterContent() {
-     const searchValue = document.getElementById('search-input').value.toLowerCase();
-     const items = document.querySelectorAll('.content-item');
-     items.forEach(item => {
-       const title = item.getAttribute('data-title').toLowerCase();
-       if (title.includes(searchValue)) {
-         item.style.display = 'block';
-       } else {
-         item.style.display = 'none';
-       }
-     });
-   }
- </script>
+        const exitButton = document.createElement('button');
+        exitButton.className = 'exit-fullscreen-btn';
+        exitButton.textContent = 'Exit Full Screen';
+        exitButton.onclick = function() {
+            fullScreenIframe.remove();
+            exitButton.remove();
+        };
+
+        document.body.appendChild(fullScreenIframe);
+        document.body.appendChild(exitButton);
+    }
+
+    // Search Filter Functionality
+    function filterContent() {
+        const searchValue = document.getElementById('search-input').value.toLowerCase();
+        const items = document.querySelectorAll('.content-item');
+        items.forEach(item => {
+            const title = item.getAttribute('data-title').toLowerCase();
+            if (title.includes(searchValue)) {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    }
+
+    // Filter articles by topic and date
+    function filterArticles() {
+        const topicFilter = document.getElementById('topic-select').value;
+        const dateFilter = document.getElementById('date-select').value;
+
+        const items = document.querySelectorAll('.content-item');
+        items.forEach(item => {
+            const topic = item.getAttribute('data-topic');
+            const date = new Date(item.getAttribute('data-date')).getFullYear();
+
+            const topicMatches = topicFilter === "all" || topic === topicFilter;
+            const dateMatches = dateFilter === "all" || date.toString() === dateFilter;
+
+            if (topicMatches && dateMatches) {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    }
+</script>
 </body>
 </html>
