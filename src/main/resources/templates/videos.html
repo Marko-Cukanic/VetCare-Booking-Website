@@ -1,100 +1,158 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
- <meta charset="UTF-8">
- <title>Videos</title>
- <link rel="stylesheet" th:href="@{/css/videos.css}">
- <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <meta charset="UTF-8">
+    <title>Videos</title>
+    <link rel="stylesheet" th:href="@{/css/videos.css}">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
 </head>
 <body>
- <div th:insert="~{fragments/navbar :: navbar}"></div>
+<div th:insert="~{fragments/navbar :: navbar}"></div>
 
- <!-- Search Bar Section -->
- <div class="search-bar">
-   <input type="text" id="search-input" placeholder="Search Videos..." oninput="filterContent()">
- </div>
+<!-- Search Bar Section -->
+<div class="search-bar">
+    <input type="text" id="search-input" placeholder="Search Videos..." oninput="filterContent()">
+</div>
 
- <nav class="tabs">
-   <ul>
-     <li><a th:href="@{/resources}">Articles</a></li>
-     <li><a th:href="@{/guides}">Guides</a></li>
-     <li><a th:href="@{/videos}" class="active">Videos</a></li>
-     <li><a th:href="@{/trends}">Trends</a></li>
-   </ul>
- </nav>
+<!-- Filter Bar Section -->
+<div class="filter-bar">
+    <label for="topic-select">Filter by Topic:</label>
+    <select id="topic-select" onchange="filterVideos()">
+        <option value="all">All Topics</option>
+        <option value="General Care">General Care</option>
+        <option value="Health">Health</option>
+        <option value="Training">Training</option>
+    </select>
 
- <main>
-   <section id="content-list">
-     <h2>Videos</h2>
-     <p>Watch educational videos to learn more about taking care of your pets.</p>
+    <label for="duration-select">Filter by Duration:</label>
+    <select id="duration-select" onchange="filterVideos()">
+        <option value="all">All Durations</option>
+        <option value="5-10">5-10 minutes</option>
+        <option value="10-15">10-15 minutes</option>
+        <option value="15-20">15-20 minutes</option>
+    </select>
+</div>
 
-     <!-- Video 1 -->
-     <div class="video-preview content-item" data-title="Pet Care Video 1" data-type="Video">
-       <h3>Pet Care Video 1</h3>
-       <iframe id="video1" src="https://www.youtube.com/embed/PsNlLLSBWLU" title="Pet Care Video 1"></iframe>
-       <button class="full-screen-btn" onclick="openFullScreen('video1')">View Full Screen</button>
-     </div>
+<nav class="tabs">
+    <ul>
+        <li><a th:href="@{/resources}">Articles</a></li>
+        <li><a th:href="@{/guides}">Guides</a></li>
+        <li><a th:href="@{/videos}" class="active">Videos</a></li>
+        <li><a th:href="@{/trends}">Trends</a></li>
+    </ul>
+</nav>
 
-     <!-- Video 2 -->
-     <div class="video-preview content-item" data-title="Pet Care Video 2" data-type="Video">
-       <h3>Pet Care Video 2</h3>
-       <iframe id="video2" src="https://www.youtube.com/embed/Yzv0gXqoCkc" title="Pet Care Video 2"></iframe>
-       <button class="full-screen-btn" onclick="openFullScreen('video2')">View Full Screen</button>
-     </div>
+<main>
+    <section id="content-list">
+        <h2>Videos</h2>
+        <p>Watch educational videos to learn more about taking care of your pets.</p>
 
-     <!-- Video 3 -->
-     <div class="video-preview content-item" data-title="Pet Care Video 3" data-type="Video">
-       <h3>Pet Care Video 3</h3>
-       <iframe id="video3" src="https://www.youtube.com/embed/tNu4-G0SmRU" title="Pet Care Video 3"></iframe>
-       <button class="full-screen-btn" onclick="openFullScreen('video3')">View Full Screen</button>
-     </div>
+        <!-- Video 1 -->
+        <div class="video-preview content-item" data-title="Pet Care Video 1" data-topic="General Care" data-duration="10">
+            <h3>Pet Care Video 1</h3>
+            <p><strong>Description:</strong> Learn the basics of pet care and how to keep your pets healthy and happy.</p>
+            <p><strong>Duration:</strong> 10 minutes</p>
+            <iframe id="video1" src="https://www.youtube.com/embed/PsNlLLSBWLU" title="Pet Care Video 1"></iframe>
+            <button class="full-screen-btn" onclick="openFullScreen('video1')">View Full Screen</button>
+        </div>
 
-     <!-- Video 4 -->
-     <div class="video-preview content-item" data-title="Pet Care Video 4" data-type="Video">
-       <h3>Pet Care Video 4</h3>
-       <iframe id="video4" src="https://www.youtube.com/embed/gqG8IZW0oi4" title="Pet Care Video 4"></iframe>
-       <button class="full-screen-btn" onclick="openFullScreen('video4')">View Full Screen</button>
-     </div>
-   </section>
- </main>
+        <!-- Video 2 -->
+        <div class="video-preview content-item" data-title="Pet Care Video 2" data-topic="Health" data-duration="15">
+            <h3>Pet Care Video 2</h3>
+            <p><strong>Description:</strong> A detailed look at common pet health issues and how to treat them.</p>
+            <p><strong>Duration:</strong> 15 minutes</p>
+            <iframe id="video2" src="https://www.youtube.com/embed/Yzv0gXqoCkc" title="Pet Care Video 2"></iframe>
+            <button class="full-screen-btn" onclick="openFullScreen('video2')">View Full Screen</button>
+        </div>
 
- <footer>
-   <p>&copy; 2024 VetCare. All rights reserved.</p>
- </footer>
+        <!-- Video 3 -->
+        <div class="video-preview content-item" data-title="Pet Care Video 3" data-topic="Training" data-duration="8">
+            <h3>Pet Care Video 3</h3>
+            <p><strong>Description:</strong> Learn how to train your pets effectively with these essential tips.</p>
+            <p><strong>Duration:</strong> 8 minutes</p>
+            <iframe id="video3" src="https://www.youtube.com/embed/tNu4-G0SmRU" title="Pet Care Video 3"></iframe>
+            <button class="full-screen-btn" onclick="openFullScreen('video3')">View Full Screen</button>
+        </div>
 
- <script>
-   // Same full-screen function
-   function openFullScreen(iframeId) {
-     const iframe = document.getElementById(iframeId);
-     const fullScreenIframe = document.createElement('iframe');
-     fullScreenIframe.src = iframe.src;
-     fullScreenIframe.className = 'fullscreen-iframe';
+        <!-- Video 4 -->
+        <div class="video-preview content-item" data-title="Pet Care Video 4" data-topic="General Care" data-duration="12">
+            <h3>Pet Care Video 4</h3>
+            <p><strong>Description:</strong> Tips on general care for pets, from grooming to nutrition.</p>
+            <p><strong>Duration:</strong> 12 minutes</p>
+            <iframe id="video4" src="https://www.youtube.com/embed/gqG8IZW0oi4" title="Pet Care Video 4"></iframe>
+            <button class="full-screen-btn" onclick="openFullScreen('video4')">View Full Screen</button>
+        </div>
+    </section>
+</main>
 
-     const exitButton = document.createElement('button');
-     exitButton.className = 'exit-fullscreen-btn';
-     exitButton.textContent = 'Exit Full Screen';
-     exitButton.onclick = function() {
-       fullScreenIframe.remove();
-       exitButton.remove();
-     };
+<footer>
+    <p>&copy; 2024 VetCare. All rights reserved.</p>
+</footer>
 
-     document.body.appendChild(fullScreenIframe);
-     document.body.appendChild(exitButton);
-   }
+<script>
+    // Full-screen function
+    function openFullScreen(iframeId) {
+        const iframe = document.getElementById(iframeId);
+        const fullScreenIframe = document.createElement('iframe');
+        fullScreenIframe.src = iframe.src;
+        fullScreenIframe.className = 'fullscreen-iframe';
 
-   // Search Filter Functionality
-   function filterContent() {
-     const searchValue = document.getElementById('search-input').value.toLowerCase();
-     const items = document.querySelectorAll('.content-item');
-     items.forEach(item => {
-       const title = item.getAttribute('data-title').toLowerCase();
-       if (title.includes(searchValue)) {
-         item.style.display = 'block';
-       } else {
-         item.style.display = 'none';
-       }
-     });
-   }
- </script>
+        const exitButton = document.createElement('button');
+        exitButton.className = 'exit-fullscreen-btn';
+        exitButton.textContent = 'Exit Full Screen';
+        exitButton.onclick = function() {
+            fullScreenIframe.remove();
+            exitButton.remove();
+        };
+
+        document.body.appendChild(fullScreenIframe);
+        document.body.appendChild(exitButton);
+    }
+
+    // Search Filter Functionality
+    function filterContent() {
+        const searchValue = document.getElementById('search-input').value.toLowerCase();
+        const items = document.querySelectorAll('.content-item');
+        items.forEach(item => {
+            const title = item.getAttribute('data-title').toLowerCase();
+            if (title.includes(searchValue)) {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    }
+
+    // Filter videos by topic and duration
+    function filterVideos() {
+        const topicFilter = document.getElementById('topic-select').value;
+        const durationFilter = document.getElementById('duration-select').value;
+
+        const items = document.querySelectorAll('.content-item');
+        items.forEach(item => {
+            const topic = item.getAttribute('data-topic');
+            const duration = parseInt(item.getAttribute('data-duration'));
+
+            let durationMatches = false;
+            if (durationFilter === "all") {
+                durationMatches = true;
+            } else if (durationFilter === "5-10" && duration >= 5 && duration <= 10) {
+                durationMatches = true;
+            } else if (durationFilter === "10-15" && duration > 10 && duration <= 15) {
+                durationMatches = true;
+            } else if (durationFilter === "15-20" && duration > 15 && duration <= 20) {
+                durationMatches = true;
+            }
+
+            const topicMatches = topicFilter === "all" || topic === topicFilter;
+
+            if (durationMatches && topicMatches) {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    }
+</script>
 </body>
 </html>
