@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class BookingService {
@@ -16,10 +17,20 @@ public class BookingService {
     @Autowired
     private BookingRepository bookingRepository;
 
+    private static final String[] DOCTORS = {"Dr. Cukanic", "Dr. Saleh", "Dr. Dao", "Dr. Le", "Dr. Thai"};
+
     // Method to create a booking
     public Booking createBooking(LocalDate bookingDate, String timeSlot) {
-        Booking booking = new Booking(bookingDate, timeSlot);
+        String doctor = getRandomDoctor();
+
+        Booking booking = new Booking(bookingDate, timeSlot, doctor);
         return bookingRepository.save(booking);
+    }
+
+    private String getRandomDoctor() {
+        Random random = new Random();
+        int index = random.nextInt(DOCTORS.length); // Random index from 0 to 4
+        return DOCTORS[index];
     }
 
     // Method to fetch all bookings

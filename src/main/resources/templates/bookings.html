@@ -29,7 +29,8 @@
             <span class="booking-info-top">Booking for:</span>
             <span class="booking-info-bottom">
                 At <span th:text="${booking.timeSlot}">Time</span> on 
-                <span th:text="${booking.bookingDate}">Date</span> with Dr. Unknown
+                <span th:text="${booking.bookingDate}">Date</span> with
+                <span th:text="${booking.doctor}">Doctor</span>
             </span>
             <!-- Add Reschedule and Cancel Buttons -->
             <div class="booking-actions">
