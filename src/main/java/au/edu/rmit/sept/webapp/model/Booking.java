@@ -18,6 +18,9 @@ public class Booking {
     @Column(name = "time_slot", nullable = false)
     private String timeSlot;
 
+    @Column(name = "doctor", nullable = false)
+    private String doctor;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
@@ -27,9 +30,10 @@ public class Booking {
         this.createdAt = LocalDateTime.now();
     }
 
-    public Booking(LocalDate bookingDate, String timeSlot) {
+    public Booking(LocalDate bookingDate, String timeSlot, String doctor) {
         this.bookingDate = bookingDate;
         this.timeSlot = timeSlot;
+        this.doctor = doctor;
         this.createdAt = LocalDateTime.now();
     }
 
@@ -51,6 +55,14 @@ public class Booking {
 
     public void setTimeSlot(String timeSlot) {
         this.timeSlot = timeSlot;
+    }
+
+    public String getDoctor(){
+        return doctor;
+    }
+
+    public void setDoctor(String doctor){
+        this.doctor = doctor;
     }
 
     public LocalDateTime getCreatedAt() {
