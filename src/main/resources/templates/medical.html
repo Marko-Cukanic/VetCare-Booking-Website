@@ -8,6 +8,9 @@
     <link rel="stylesheet" th:href="@{/css/medical.css}">
 </head>
 
+<!-- Include html2canvas and jsPDF libraries for PDF-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <script>
     //Session Token Verification Script 
@@ -46,23 +49,41 @@
         }
     }
 
-    //Download report txt script
-    function downloadReport() {
-        const medicalReport = document.getElementById('medical-record').innerText;
-        const vaccinationHistory = document.getElementById('vaccination-history').innerText;
-        const medicalConditions = document.getElementById('medical-conditions').innerText;
+     // Download report as PDF
+     function downloadReport() {
+        const medicalSection = document.getElementById('medical-record');
+        const vaccineSection = document.getElementById('vaccination-history');
+        const conditionsSection = document.getElementById('medical-conditions');
 
-        const reportContent = `${medicalReport}
-                            \n\n${vaccinationHistory}
-                            \n\n${medicalConditions}`;
+        // Use html2canvas to capture each section
+        html2canvas(medicalSection).then(function(medicalCanvas) {
+            html2canvas(vaccineSection).then(function(vaccineCanvas) {
+                html2canvas(conditionsSection).then(function(conditionsCanvas) {
 
-        const blob = new Blob([reportContent], { type: 'text/plain' });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = 'medical_report.txt';
-        link.click();
+                    // Get the images from the canvas
+                    const medicalImage = medicalCanvas.toDataURL('image/png');
+                    const vaccineImage = vaccineCanvas.toDataURL('image/png');
+                    const conditionsImage = conditionsCanvas.toDataURL('image/png');
+
+                    // Create a new jsPDF instance
+                    const { jsPDF } = window.jspdf;
+                    const pdf = new jsPDF('p', 'mm', 'a4');
+
+                    // Add medical section to PDF
+                    pdf.addImage(medicalImage, 'PNG', 10, 10, 140, 30); 
+
+                    // Add vaccine section to PDF
+                    pdf.addImage(vaccineImage, 'PNG', 10, 100, 140, 60);
+
+                    // Add medical conditions section to PDF
+                    pdf.addImage(conditionsImage, 'PNG', 10, 170, 140, 60);
+
+                    // Save the PDF with a user-friendly filename
+                    pdf.save('medical_report.pdf');
+                });
+            });
+        });
     }
-
 </script>
 
 <body onload="checkSessionToken();">
@@ -123,7 +144,9 @@
             <!-- Vaccination History Section -->
             <section id="vaccination-history" th:if="${isLoggedIn}">
                 <h2>Vaccination History for <span th:text="${selectedPetName}">Selected Pet</span></h2>
+                /
                 <div class="list-container">
+                    <!-- Dog Vaccines -->
                     <ul>
                         <li><input type="checkbox" th:checked="${vaccinationRecord?.distemper}" disabled> Distemper</li>
                         <li><input type="checkbox" th:checked="${vaccinationRecord?.canineParvovirus}" disabled> Canine Parvovirus</li>
@@ -132,6 +155,7 @@
                         <li><input type="checkbox" th:checked="${vaccinationRecord?.rabies}" disabled> Rabies</li>
                     </ul>
 
+                    <!-- Cat Vaccines -->
                     <ul>
                         <li><input type="checkbox" th:checked="${vaccinationRecord?.panleukopenia}" disabled> Panleukopenia</li>
                         <li><input type="checkbox" th:checked="${vaccinationRecord?.caliciVirus}" disabled> Calicivirus </li>
