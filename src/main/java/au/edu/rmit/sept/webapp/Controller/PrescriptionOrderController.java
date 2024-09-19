@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import au.edu.rmit.sept.webapp.service.PrescriptionService;
 import au.edu.rmit.sept.webapp.model.Prescription;
+import au.edu.rmit.sept.webapp.model.PrescriptionHistory;
+import au.edu.rmit.sept.webapp.service.PrescriptionHistoryService;
 
 @Controller
 public class PrescriptionOrderController {
@@ -14,19 +16,33 @@ public class PrescriptionOrderController {
     @Autowired
     private PrescriptionService prescriptionService;
 
-    @PostMapping("/confirmOrder")  // Camel case URL mapping
-    public String confirmOrder(@RequestParam("medication") Long medicationId, 
-                               @RequestParam("quantity") int quantity, Model model) {
-        // Fetch the selected prescription from the database
-        Prescription prescription = prescriptionService.getPrescriptionById(medicationId);
-        
-        // Add prescription and quantity to the model to pass to the confirmation page
-        model.addAttribute("prescription", prescription);
-        model.addAttribute("quantity", quantity);
+    @Autowired  // Add this to inject the PrescriptionHistoryService
+    private PrescriptionHistoryService prescriptionHistoryService;  // Add this line
 
-        return "confirmOrder";  // Forward to the confirmation page
+    @PostMapping("/confirmOrder")
+    public String confirmOrder(@RequestParam("medication") Long prescriptionId, 
+                            @RequestParam("quantity") int quantity) {
+
+        // Retrieve the selected prescription using the prescription ID
+        Prescription prescription = prescriptionService.getPrescriptionById(prescriptionId);
+        
+        // Create a new PrescriptionHistory object
+        PrescriptionHistory history = new PrescriptionHistory();
+        history.setMedicationName(prescription.getMedicationName());
+        history.setPetName(prescription.getPetName());
+        history.setStartDate(prescription.getPrescriptionDate());  // Assuming the prescription date is the start date
+        history.setEndDate(null);  // You can set an appropriate end date if needed
+        history.setVetName(prescription.getVetName());
+
+        // Save the new history record to the prescription_history table
+        prescriptionHistoryService.savePrescriptionHistory(history);
+
+        // (Optional) Mark the prescription as ordered or update its status if needed
+
+        // Redirect back to the prescription listing page to show the updated data
+        return "redirect:/prescriptions";
     }
-    
+
     @PostMapping("/finaliseOrder")
     public String finaliseOrder(@RequestParam("medicationId") Long medicationId, 
                                 @RequestParam("quantity") int quantity, Model model) {

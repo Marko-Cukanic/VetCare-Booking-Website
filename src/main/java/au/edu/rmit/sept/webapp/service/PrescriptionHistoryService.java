@@ -16,6 +16,10 @@ public class PrescriptionHistoryService {
     public List<PrescriptionHistory> getAllPrescriptionHistories() {
         return prescriptionHistoryRepository.findAll();
     }
+    
+    public void savePrescriptionHistory(PrescriptionHistory history) {
+        prescriptionHistoryRepository.save(history);  // Save the history object to the database
+    }
 
     
 }
