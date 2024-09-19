@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Assign Prescription</title>
+    <link rel="stylesheet" th:href="@{/css/assignPrescription.css}">
+</head>
+<body>
+    <h1>Assign a Prescription</h1>
+
+    <!-- "Return to VetCare" Button for logging out -->
+    <div style="text-align: right;">
+        <a href="/" style="text-decoration: none;">
+            <button type="button">Return to VetCare</button>
+        </a>
+    </div>
+
+    <form action="/assignPrescription" method="post" th:action="@{/assignPrescription}" th:object="${prescription}">
+        <label for="email">User Email:</label>
+        <input type="email" id="email" name="email" th:field="*{email}" required/><br/>
+
+        <label for="medicationName">Medication Name:</label>
+        <select id="medicationName" name="medicationName" th:field="*{medicationName}" required>
+            <option value="" disabled selected>Select a medication</option>
+            <option value="Carprofen">Carprofen</option>
+            <option value="Amoxicillin">Amoxicillin</option>
+            <option value="Metronidazole">Metronidazole</option>
+            <option value="Prednisone">Prednisone</option>
+            <option value="Gabapentin">Gabapentin</option>
+            <option value="Furosemide">Furosemide</option>
+            <option value="Clindamycin">Clindamycin</option>
+            <option value="Cefpodoxime">Cefpodoxime</option>
+            <option value="Meloxicam">Meloxicam</option>
+            <option value="Doxycycline">Doxycycline</option>
+        </select><br/>
+
+        <label for="quantity">Quantity:</label>
+        <select id="quantity" name="quantity" th:field="*{quantity}" required>
+            <option value="" disabled selected>Select quantity</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+            <option value="25">25</option>
+            <option value="30">30</option>
+            <option value="35">35</option>
+            <option value="40">40</option>
+            <option value="45">45</option>
+            <option value="50">50</option>
+        </select><br/>
+
+        <label for="petName">Pet Name:</label>
+        <input type="text" id="petName" name="petName" th:field="*{petName}" required/><br/>
+
+        <label for="vetName">Vet Name:</label>
+        <input type="text" id="vetName" name="vetName" th:field="*{vetName}" required/><br/>
+
+        <button type="submit">Assign Prescription</button>
+    </form>
+
+    <div th:if="${successMessage}">
+        <p th:text="${successMessage}"></p>
+    </div>
+</body>
+</html>
