@@ -26,18 +26,10 @@
         <a class="next" onclick="plusSlides(1)">&#10095;</a>
     </div>
 
-    <!-- Dots for carousel navigation -->
-    <div class="dots">
-        <span class="dot active-dot" onclick="currentSlide(1)"></span> 
-        <span class="dot" onclick="currentSlide(2)"></span> 
-        <span class="dot" onclick="currentSlide(3)"></span> 
-    </div>
-
     <!-- Main content section -->
     <main>
         <section id="appointments">
             <h2>Upcoming Appointments:</h2>
-            <!-- Loop through the bookings and display each one like the My Booking/s page -->
             <div class="booking-list">
                 <div th:each="booking : ${bookings}" class="booking-bar">
                     <span class="booking-info-top">Booking for:</span>
@@ -46,13 +38,10 @@
                         <span th:text="${booking.bookingDate}">Date</span> with
                         <span th:text="${booking.doctor}">Doctor</span>
                     </span>
-                    <!-- Add Reschedule and Cancel Buttons -->
                     <div class="booking-actions">
-                        <!-- Reschedule Button -->
                         <button class="reschedule-button" th:onclick="'confirmReschedule(' + ${booking.id} + ');'">
                             <img th:src="@{/images/reschedule.png}" alt="Reschedule" />
                         </button>
-                        <!-- Cancel Button -->
                         <button class="cancel-button" th:onclick="confirmCancel([[${booking.id}]])">
                             <img th:src="@{/images/cancel.png}" alt="Cancel" />
                         </button>
@@ -61,15 +50,9 @@
             </div>
         </section>
 
-        <!-- Welcome section with a message and image -->
         <section id="welcome">
             <div>
-                <p>At VetCare, we believe your pets deserve the best care, anytime and anywhere. 
-                    Our state-of-the-art platform offers pet owners an easy and convenient way to manage every aspect 
-                    of their pet’s health. From scheduling appointments to accessing medical records, VetCare 
-                    seamlessly connects you with trusted veterinarians and clinics in your local area. 
-                    With real-time data and a user-friendly interface, you’ll always have the most up-to-date 
-                    information at your fingertips.</p>
+                <p>At VetCare, we believe your pets deserve the best care, anytime and anywhere...</p>
                 <img src="/images/pexels-amy-mccormack-3650773-5463180.jpg" alt="Adorable puppies" style="width: 25%; height: auto;">
             </div>
         </section>
@@ -98,20 +81,19 @@
             let slides = document.getElementsByClassName("carousel-image");
             let dots = document.getElementsByClassName("dot");
 
-            if (n > slides.length) {slideIndex = 1}
+            if (n > slides.length) {slideIndex = 1}    
             if (n < 1) {slideIndex = slides.length}
-            
+
             for (i = 0; i < slides.length; i++) {
-                slides[i].style.display = "none";
+                slides[i].style.display = "none";  // Hide all slides
             }
-            
-            for (i = 0; i < dots.length; i++) {
-                dots[i].className = dots[i].className.replace(" active-dot", "");
-            }
-            
-            slides[slideIndex - 1].style.display = "block";
-            dots[slideIndex - 1].className += " active-dot";
+
+            slides[slideIndex - 1].style.display = "block";  // Show the current slide
         }
+        // Auto-slide every 3 seconds
+        setInterval(function() {
+            plusSlides(1);
+        }, 6000);  // 6000 milliseconds = 6 seconds
     </script>
 
 </body>
