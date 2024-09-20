@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS medical (
     id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(255),
     pet_name VARCHAR(255),
-    petID INT,
+    petID BIGINT,
     pet_age INT,
     pet_sex VARCHAR(255),
     pet_weight INT,

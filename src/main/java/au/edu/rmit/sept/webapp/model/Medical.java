@@ -14,7 +14,7 @@ public class Medical {
 
     private String email;
     private String petName;
-    private int petID;
+    private Long petID;
     private int petAge;
     private String petSex;
     private int petWeight;
@@ -30,7 +30,7 @@ public class Medical {
         return petName;
     }
 
-    public int getPetID() {
+    public Long getPetID() {
         return petID;
     }
 
@@ -63,7 +63,7 @@ public class Medical {
         this.petName = petName;
     }
 
-    public void setPetID(int petID) {
+    public void setPetID(Long petID) {
         this.petID = petID;
     }
 

@@ -12,11 +12,30 @@
     // -------------------------- Dynamically Add Medical Condition ---------------------------
     function addCondition() {
         var container = document.getElementById("medicalConditions");
+        var div = document.createElement("div");
+        div.className = "condition-group";  // Add class to wrap each condition input 
+        
         var input = document.createElement("input");
         input.type = "text";
         input.name = "medical_condition";
         input.placeholder = "Enter medical condition";
-        container.appendChild(input);
+
+        var removeBtn = document.createElement("button");
+        removeBtn.type = "button";
+        removeBtn.className = "remove-btn";
+        removeBtn.textContent = "Remove";
+        removeBtn.onclick = function() {
+            removeMedicalCondition(this);  // Attach remove functionality
+        };
+
+        div.appendChild(input);
+        div.appendChild(removeBtn);
+        container.appendChild(div);
+    }
+    
+    function removeMedicalCondition(button) {
+        const conditionDiv = button.parentElement;
+        conditionDiv.remove();
     }
 </script>
 
@@ -41,8 +60,9 @@
                 <input type="text" id="petName" name="petName" required>
 
                 <label for="petID">Pet ID:</label>
-                <input type="number" id="petID" name="petID" required>
-
+                <input type="text" id="petID" name="petID" pattern="^\d{15}$" maxlength="15" required
+                    title="Pet ID must be exactly 15 digits.">
+        
                 <label for="petAge">Age:</label>
                 <select id="petAge" name="petAge" required>
                     <option value="">Select Age</option>
