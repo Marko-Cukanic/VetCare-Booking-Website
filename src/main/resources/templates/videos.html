@@ -19,7 +19,7 @@
     <label for="topic-select">Filter by Topic:</label>
     <select id="topic-select" onchange="filterVideos()">
         <option value="all">All Topics</option>
-        <option value="General Care">General Care</option>
+        <option value="Grooming">Grooming</option>
         <option value="Health">Health</option>
         <option value="Training">Training</option>
     </select>
@@ -27,9 +27,8 @@
     <label for="duration-select">Filter by Duration:</label>
     <select id="duration-select" onchange="filterVideos()">
         <option value="all">All Durations</option>
+        <option value="0-5">0-5 minutes</option>
         <option value="5-10">5-10 minutes</option>
-        <option value="10-15">10-15 minutes</option>
-        <option value="15-20">15-20 minutes</option>
     </select>
 </div>
 
@@ -48,38 +47,38 @@
         <p>Watch educational videos to learn more about taking care of your pets.</p>
 
         <!-- Video 1 -->
-        <div class="video-preview content-item" data-title="Pet Care Video 1" data-topic="General Care" data-duration="10">
-            <h3>Pet Care Video 1</h3>
-            <p><strong>Description:</strong> Learn the basics of pet care and how to keep your pets healthy and happy.</p>
-            <p><strong>Duration:</strong> 10 minutes</p>
-            <iframe id="video1" src="https://www.youtube.com/embed/PsNlLLSBWLU" title="Pet Care Video 1"></iframe>
+        <div class="video-preview content-item" data-title="Pet Care Grooming" data-topic="Grooming" data-duration="3">
+            <h3>Pet Care Grooming</h3>
+            <p><strong>Description:</strong> Learn the basics of grooming for your pets to keep them healthy.</p>
+            <p><strong>Duration:</strong> 3 minutes</p>
+            <iframe id="video1" src="https://www.youtube.com/embed/PsNlLLSBWLU" title="Pet Care Grooming"></iframe>
             <button class="full-screen-btn" onclick="openFullScreen('video1')">View Full Screen</button>
         </div>
 
         <!-- Video 2 -->
-        <div class="video-preview content-item" data-title="Pet Care Video 2" data-topic="Health" data-duration="15">
-            <h3>Pet Care Video 2</h3>
-            <p><strong>Description:</strong> A detailed look at common pet health issues and how to treat them.</p>
-            <p><strong>Duration:</strong> 15 minutes</p>
-            <iframe id="video2" src="https://www.youtube.com/embed/Yzv0gXqoCkc" title="Pet Care Video 2"></iframe>
+        <div class="video-preview content-item" data-title="Treating Health Issues" data-topic="Health" data-duration="4">
+            <h3>Treating Health Issues</h3>
+            <p><strong>Description:</strong> Learn how to treat common pet health issues. </p>
+            <p><strong>Duration:</strong> 4 minutes</p>
+            <iframe id="video2" src="https://www.youtube.com/embed/Yzv0gXqoCkc" title="Treating Health Issues"></iframe>
             <button class="full-screen-btn" onclick="openFullScreen('video2')">View Full Screen</button>
         </div>
 
         <!-- Video 3 -->
-        <div class="video-preview content-item" data-title="Pet Care Video 3" data-topic="Training" data-duration="8">
-            <h3>Pet Care Video 3</h3>
-            <p><strong>Description:</strong> Learn how to train your pets effectively with these essential tips.</p>
-            <p><strong>Duration:</strong> 8 minutes</p>
-            <iframe id="video3" src="https://www.youtube.com/embed/tNu4-G0SmRU" title="Pet Care Video 3"></iframe>
+        <div class="video-preview content-item" data-title="Basic Training - Cats" data-topic="Training" data-duration="2">
+            <h3>Basic Training - Cats</h3>
+            <p><strong>Description:</strong> Tips on how to effectively train your cats.</p>
+            <p><strong>Duration:</strong> 2 minutes</p>
+            <iframe id="video3" src="https://www.youtube.com/embed/tNu4-G0SmRU" title="Basic Training - Cats"></iframe>
             <button class="full-screen-btn" onclick="openFullScreen('video3')">View Full Screen</button>
         </div>
 
         <!-- Video 4 -->
-        <div class="video-preview content-item" data-title="Pet Care Video 4" data-topic="General Care" data-duration="12">
-            <h3>Pet Care Video 4</h3>
-            <p><strong>Description:</strong> Tips on general care for pets, from grooming to nutrition.</p>
-            <p><strong>Duration:</strong> 12 minutes</p>
-            <iframe id="video4" src="https://www.youtube.com/embed/gqG8IZW0oi4" title="Pet Care Video 4"></iframe>
+        <div class="video-preview content-item" data-title="Dog Training Basics" data-topic="Training" data-duration="6">
+            <h3>Dog Training Basics</h3>
+            <p><strong>Description:</strong> Tips on how to train your dogs.</p>
+            <p><strong>Duration:</strong> 5 minutes</p>
+            <iframe id="video4" src="https://www.youtube.com/embed/gqG8IZW0oi4" title="Dog Training Basics"></iframe>
             <button class="full-screen-btn" onclick="openFullScreen('video4')">View Full Screen</button>
         </div>
     </section>
@@ -136,11 +135,9 @@
             let durationMatches = false;
             if (durationFilter === "all") {
                 durationMatches = true;
-            } else if (durationFilter === "5-10" && duration >= 5 && duration <= 10) {
+            } else if (durationFilter === "0-5" && duration <= 5) {
                 durationMatches = true;
-            } else if (durationFilter === "10-15" && duration > 10 && duration <= 15) {
-                durationMatches = true;
-            } else if (durationFilter === "15-20" && duration > 15 && duration <= 20) {
+            } else if (durationFilter === "5-10" && duration > 5 && duration <= 10) {
                 durationMatches = true;
             }
 
