@@ -78,11 +78,26 @@ public class MedicalController {
     }
     
     //Adding Record Data
+    // @GetMapping("/addReport")
+    // public String showAddReportForm(Model model) {
+    //     model.addAttribute("medical", new Medical());
+    //     model.addAttribute("vaccination", new Vaccination());
+    //     model.addAttribute("medicalCondition", new MedicalCondition());
+    //     return "addReport";
+    // }
+
     @GetMapping("/addReport")
-    public String showAddReportForm(Model model) {
+    public String showAddReportForm(@RequestParam String sessionToken, Model model) {
+        // Retrieve the email from the session
+        Map<String, String> sessionTokens = loginController.getSessionTokens();
+        String email = sessionTokens.get(sessionToken);
+
+        // Initialize the models for the form
         model.addAttribute("medical", new Medical());
         model.addAttribute("vaccination", new Vaccination());
         model.addAttribute("medicalCondition", new MedicalCondition());
+        model.addAttribute("email", email); // Pass the logged-in email to the view
+
         return "addReport";
     }
 
@@ -91,27 +106,41 @@ public class MedicalController {
                             @ModelAttribute Vaccination vaccination,
                             @RequestParam String email,
                             @RequestParam String petName,
-                            @RequestParam List<String> medical_condition) {
+                            @RequestParam List<String> medical_condition,
+                            Model model) {
 
         // Save the medical record
-        medicalService.saveMedicalRecord(medical);
+        try {
+            medicalService.saveMedicalRecord(medical);
 
-        // Save the vaccination record
-        vaccination.setEmail(medical.getEmail());
-        vaccination.setPetName(medical.getPetName());
-        vaccinationService.saveVaccinationRecord(vaccination);
-        
-        // Save each medical condition from the form
-        for (String condition : medical_condition) {
-            if (!condition.isEmpty()) {  // Avoid saving empty conditions
-                MedicalCondition medicalCondition = new MedicalCondition();
-                medicalCondition.setEmail(email);
-                medicalCondition.setPetName(petName);
-                medicalCondition.setCondition(condition);
-                medicalConditionService.saveMedicalCondition(medicalCondition);
-            }
-        }
+            // Save the vaccination record
+            vaccination.setEmail(medical.getEmail());
+            vaccination.setPetName(medical.getPetName());
+            vaccinationService.saveVaccinationRecord(vaccination);
             
-        return "redirect:/medical"; // Redirect to medical records page after submission
+            // Save each medical condition from the form
+            for (String condition : medical_condition) {
+                if (!condition.isEmpty()) {  // Avoid saving empty conditions
+                    MedicalCondition medicalCondition = new MedicalCondition();
+                    medicalCondition.setEmail(email);
+                    medicalCondition.setPetName(petName);
+                    medicalCondition.setCondition(condition);
+                    medicalConditionService.saveMedicalCondition(medicalCondition);
+                }
+            }
+            return "redirect:/medical"; // Redirect to medical records page after submission
+
+        } catch (MedicalService.DuplicateRecordException e){
+            model.addAttribute("error", e.getMessage());
+
+            //retaining data on the page
+            model.addAttribute("medical", medical);
+            model.addAttribute("vaccination", vaccination);
+            model.addAttribute("medicalConditions", medical_condition);
+            model.addAttribute("email", email);
+            model.addAttribute("petName", petName);
+
+            return "addReport"; // Return to the form with error message
+        } 
     }
 }

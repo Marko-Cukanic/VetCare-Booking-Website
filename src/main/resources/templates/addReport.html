@@ -48,14 +48,20 @@
         <p>Enter the details for your pet below</p>
     </div>
 
+    <div th:if="${error}" class="duplicate-error">
+        <p th:text="${error}"></p>
+    </div>
+
     <main>
         <form th:action="@{/addReport}" th:method="post">
             <!-- Add Medical Details Section -->
             <div class="form-section">
                 <h3>Medical Report</h3>
-                <label for="email">Email:</label>
-                <input type="text" id="email" name="email" th:value="${email}" required>
-                
+                <label>Email:</label>
+                <span th:text="${email}"></span> <!-- Display email with Thymeleaf -->
+                <input type="hidden" name="email" th:value="${email}" /> <!-- Hidden input for email -->
+                <span class="new-line"></span> 
+
                 <label for="petName">Pet Name:</label>
                 <input type="text" id="petName" name="petName" required>
 
