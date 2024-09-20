@@ -167,19 +167,31 @@ main {
     margin-top: 0;
 }
 
-#treatment-plan ul {
-    list-style-type: disc; 
-    padding-left: 20px;
+#treatment-plan table {
+    width: 100%;
+    border-collapse: collapse; 
+    margin: 20px auto; 
+    margin-top: 10px; 
 }
 
-#treatment-plan li {
-    display: flex;
-    justify-content: space-between;
+#treatment-plan th,
+#treatment-plan td {
+    border: 1px solid #ccc; 
+    padding: 10px; 
+    text-align: center; 
 }
 
-#treatment-plan li span {
-    flex: 1;
-    text-align: right; 
+#treatment-plan th {
+    background-color: #666966; 
+    color: white; 
+}
+
+#treatment-plan tr:nth-child(even) {
+    background-color: #f2f2f2; 
+}
+
+#treatment-plan tr:hover {
+    background-color: #ddd; 
 }
 
 /* Footer section */

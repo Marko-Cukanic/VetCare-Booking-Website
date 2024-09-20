@@ -118,6 +118,14 @@
             pdf.save('medical_report.pdf');
         });
     }
+
+    // ----------------------------- Share report --------------------------------------
+    function shareMedicalRecord() {
+        const email = prompt("Enter the email address to share the medical record:");
+            if (email) {
+                alert(`Medical record shared with ${email}`);
+            }
+    }
 </script>
 
 <body onload="checkSessionToken();">
@@ -213,12 +221,23 @@
 
             <!-- Treatment Plan Section -->
             <section id="treatment-plan" th:if="${isLoggedIn}">
-                <h2>Treatment Plan for <span th:text="${selectedPetName}">Selected Pet</h2>
-                <ul>
-                    <li>Neutering <span>dd/mm/yyyy</span></li>
-                    <li>Vaccination <span>dd/mm/yyyy</span></li>
-                    <li>General Check-up <span>dd/mm/yyyy</span></li>
-                </ul>
+                <h2>Treatment Plans for <span th:text="${selectedPetName}">Selected Pet</span></h2>
+                    <div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Treatment Name</th>
+                                    <th>Treatment Date (yyyy-MM-dd)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="treatmentPlan : ${treatmentPlans}">
+                                    <td th:text="${treatmentPlan.treatmentNames}"></td>
+                                    <td th:text="${#dates.format(treatmentPlan.treatmentDates, 'yyyy-MM-dd')}"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
             </section>
         </div>
     </main>
@@ -226,16 +245,5 @@
     <footer>
         <p>&copy; 2024 VetCare. All rights reserved.</p>
     </footer>
-
-    <!-- Sharing Medical Record Function -->
-    <script>
-        function shareMedicalRecord() {
-            const email = prompt("Enter the email address to share the medical record:");
-            if (email) {
-                alert(`Medical record shared with ${email}`);
-            }
-        }
-    </script>
-
 </body>
 </html>

@@ -35,6 +35,6 @@ public class MedicalService {
         if (medicalRepository.existsByPetIDAndPetName(medicalRecord.getPetID(), medicalRecord.getPetName())) {
             throw new DuplicateRecordException("A record with this petID or pet name already exists.");
         }
-        medicalRepository.save(medicalRecord);
+        medicalRepository.save(medicalRecord);  
     }
 }

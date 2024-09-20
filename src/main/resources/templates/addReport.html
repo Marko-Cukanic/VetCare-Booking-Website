@@ -37,6 +37,44 @@
         const conditionDiv = button.parentElement;
         conditionDiv.remove();
     }
+
+    // -------------------------- Dynamically Add Treatment Plan ---------------------------
+    function addTreatmentPlan() {
+        var container = document.getElementById("treatmentPlans");
+        var div = document.createElement("div");
+        div.className = "treatment-group";  // Class to wrap each treatment input
+        
+        // Treatment name input
+        var treatmentInput = document.createElement("input");
+        treatmentInput.type = "text";
+        treatmentInput.name = "treatmentNames";  
+        treatmentInput.placeholder = "Enter treatment name";
+
+        // Treatment date input
+        var dateInput = document.createElement("input");
+        dateInput.type = "date";
+        dateInput.name = "treatmentDates";  
+
+        // Remove button
+        var removeBtn = document.createElement("button");
+        removeBtn.type = "button";
+        removeBtn.className = "remove-btn";
+        removeBtn.textContent = "Remove";
+        removeBtn.onclick = function() {
+            removeTreatment(this);  // Attach remove functionality
+        };
+
+        // Append inputs and button to div
+        div.appendChild(treatmentInput);
+        div.appendChild(dateInput);
+        div.appendChild(removeBtn);
+        container.appendChild(div);
+    }
+
+    function removeTreatment(button) {
+        const treatmentDiv = button.parentElement;
+        treatmentDiv.remove();
+    }
 </script>
 
 <body>
@@ -171,12 +209,25 @@
                 <!-- Medical Conditions Input -->
                 <div id="medicalConditions">
                     <input type="text" name="medical_condition" placeholder="Enter medical condition">
+                    <span class="new-line"></span> 
                 </div>
 
                 <button type="button" onclick="addCondition()">Add Another Condition</button>
             </div>
 
              <!-- Add Treatment Plan Section -->
+             <div class="form-section">
+                <h3>Add Medical Condition</h3>
+                
+                <!-- Medical Conditions Input -->
+                <div id="treatmentPlans">
+                    <input type="text" name="treatmentNames" placeholder="Treatment Name" required>
+                    <input type="date" name="treatmentDates" placeholder="DD/MM/YYYY" required>
+                    <span class="new-line"></span> 
+                </div>
+
+                <button type="button" onclick="addTreatmentPlan()">Add Another Treatment Plan</button>
+            </div>
 
 
             <button type="button" class="cancel-button" onclick="window.location.href='/medical'">Cancel</button>
