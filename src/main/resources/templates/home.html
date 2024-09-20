@@ -4,50 +4,51 @@
     <meta charset="UTF-8">
     <title>VetCare Home</title>
     
+    <!-- Reference to external CSS files -->
     <link rel="stylesheet" th:href="@{/css/home.css}">
     <link rel="stylesheet" th:href="@{/css/bookings.css}">
-</head>
-<body onload="hideSuccessMessage(); checkSessionToken();">
-
-    <!-- Navbar remains unchanged -->
     <link rel="stylesheet" th:href="@{/css/navbar.css}">
+</head>
+<body>
 
+    <!-- Navbar section -->
     <div th:insert="~{fragments/navbar :: navbar}"></div>
 
-    <!-- Optional Login Prompt -->
-    <div id="login-prompt" style="display: none; background-color: #a5ffa7; padding: 1px; text-align: center;">
-        <p>Please <a th:href="@{/login}">log in</a> to access all features.</p>
+    <!-- Banner Section with Image Carousel -->
+    <div id="banner-carousel">
+        <!-- Carousel images -->
+        <img class="carousel-image active" src="/images/pexels-brett-sayles-1346086.jpg" alt="Pet Image 1">
+        <img class="carousel-image" src="/images/pexels-larissa-barbosa-945746-1870376.jpg" alt="Pet Image 2">
+        <img class="carousel-image" src="/images/pexels-sam-lion-5731866.jpg" alt="Pet Image 3">
+
+        <div class="banner-overlay">
+            <h2>Providing Excellent Care for Your Pets</h2>
+            <p>Our expert veterinarians are here for you and your pets.</p>
+            <a href="/makebooking" class="book-appointment-button">Book an Appointment</a>
+        </div>
+
+
+        <!-- Next and Previous Buttons -->
+        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+        <a class="next" onclick="plusSlides(1)">&#10095;</a>
     </div>
 
-    <!-- Success Message Section -->
-    <div id="success-message" class="success-message" style="display: none;">
-        <!-- Success message will be injected here -->
-    </div>
-
-    <!-- Banner Section with Slogan -->
-    <div id="banner">
-        <h2>Comprehensive Pet Care Made Simple</h2>
-        <p>Welcome to VetCare – Your Trusted Online Vet Clinic Management System</p>
-    </div>
-
+    <!-- Main content section -->
     <main>
         <section id="appointments">
             <h2>Upcoming Appointments:</h2>
-            <!-- Loop through the bookings and display each one like the My Booking/s page -->
             <div class="booking-list">
                 <div th:each="booking : ${bookings}" class="booking-bar">
                     <span class="booking-info-top">Booking for:</span>
                     <span class="booking-info-bottom">
                         At <span th:text="${booking.timeSlot}">Time</span> on 
-                        <span th:text="${booking.bookingDate}">Date</span> with Dr. Unknown
+                        <span th:text="${booking.bookingDate}">Date</span> with
+                        <span th:text="${booking.doctor}">Doctor</span>
                     </span>
-                    <!-- Add Reschedule and Cancel Buttons -->
                     <div class="booking-actions">
-                        <!-- Reschedule Button -->
                         <button class="reschedule-button" th:onclick="'confirmReschedule(' + ${booking.id} + ');'">
                             <img th:src="@{/images/reschedule.png}" alt="Reschedule" />
                         </button>
-                        <!-- Cancel Button -->
                         <button class="cancel-button" th:onclick="confirmCancel([[${booking.id}]])">
                             <img th:src="@{/images/cancel.png}" alt="Cancel" />
                         </button>
@@ -56,7 +57,6 @@
             </div>
         </section>
 
-        <!-- Welcome Section with the Image -->
         <section id="welcome">
             <div>
                 <p>At VetCare, we believe your pets deserve the best care, anytime and anywhere. 
@@ -70,24 +70,43 @@
         </section>
     </main>
 
-    <!-- Footer Section -->
+    <!-- Footer section -->
     <footer>
         <p>&copy; 2024 VetCare. All rights reserved.</p>
     </footer>
 
+    <!-- JavaScript for carousel functionality -->
     <script>
-        function confirmReschedule(bookingId) {
-            if (confirm("Are you sure you want to reschedule this booking?")) {
-                // Redirect to the reschedule endpoint
-                window.location.href = "/rescheduleBooking/" + bookingId;
-            }
+        let slideIndex = 1;
+        showSlides(slideIndex);
+
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
         }
-        function confirmCancel(bookingId) {
-            if (confirm("Are you sure you want to cancel this booking?")) {
-                // Redirect to the cancel endpoint
-                window.location.href = "/cancelBooking/" + bookingId;
-            }
+
+        function currentSlide(n) {
+            showSlides(slideIndex = n);
         }
+
+        function showSlides(n) {
+            let i;
+            let slides = document.getElementsByClassName("carousel-image");
+            let dots = document.getElementsByClassName("dot");
+
+            if (n > slides.length) {slideIndex = 1}    
+            if (n < 1) {slideIndex = slides.length}
+
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";  // Hide all slides
+            }
+
+            slides[slideIndex - 1].style.display = "block";  // Show the current slide
+        }
+        // Auto-slide every 3 seconds
+        setInterval(function() {
+            plusSlides(1);
+        }, 6000);  // 6000 milliseconds = 6 seconds
     </script>
+
 </body>
 </html>

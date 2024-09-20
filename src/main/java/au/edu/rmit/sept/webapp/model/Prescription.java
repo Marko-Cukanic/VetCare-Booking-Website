@@ -13,8 +13,11 @@ public class Prescription {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String email; // Ensure this field exists
+
+
     private String medicationName;
-    private int quantity;
+    private Integer quantity;
     private Date prescriptionDate;
     private String petName;
     private String vetName;
@@ -30,6 +33,14 @@ public class Prescription {
 
     public void setOrdered(boolean ordered) {
         isOrdered = ordered;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Long getId() {
@@ -48,11 +59,11 @@ public class Prescription {
         this.medicationName = medicationName;
     }
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 

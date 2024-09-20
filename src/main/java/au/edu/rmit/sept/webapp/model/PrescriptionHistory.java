@@ -11,6 +11,9 @@ public class PrescriptionHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String email; // Ensure this field exists
+
+
     private String medicationName;
     private String petName;
     private Date startDate;
@@ -24,6 +27,14 @@ public class PrescriptionHistory {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getMedicationName() {
