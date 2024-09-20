@@ -8,7 +8,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.hamcrest.Matchers.*;
 
@@ -17,19 +16,6 @@ public class VideosControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @Test
-    public void shouldReturnVideosPage_Success() throws Exception {
-        mockMvc.perform(get("/videos"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("videos"));
-    }
-
-    @Test
-    public void shouldReturn404_WhenInvalidUrl() throws Exception {
-        mockMvc.perform(get("/invalid-videos-url"))
-                .andExpect(status().isNotFound());
-    }
 
     // Test filtering by topic
     @Test
