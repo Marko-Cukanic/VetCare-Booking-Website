@@ -23,9 +23,15 @@ public class BookingController {
     @Autowired
     private BookingService bookingService;
 
+    // New GetMapping for the clinicSelector page
+    @GetMapping("/selectClinic")
+    public String selectClinic() {
+        return "clinicSelector"; // This directs to the clinicSelector.html page
+    }
+
     @GetMapping("/makebooking")
     public String makeBooking() {
-        return "makeBooking"; // This should match the name of your HTML file in the templates directory
+        return "redirect:/clinicSelector"; // This should match the name of your HTML file in the templates directory
     }
 
     // Endpoint to get available time slots for a given date

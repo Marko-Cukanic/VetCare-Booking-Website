@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Clinic Selector</title>
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/clinicSelector.css}">
+</head>
+<body>
+
+    <!-- Navbar insertion -->
+    <div th:insert="~{fragments/navbar :: navbar}"></div>
+
+    <!-- Title Container -->
+    <div class="title-container">
+        <h1>Select a Clinic</h1>
+    </div>
+
+    <!-- Clinic Dropdown and Select Button -->
+    <div class="content-container">
+        <div class="dropdown-container">
+            <select>
+                <option th:each="clinic : ${clinics}" th:value="${clinic.id}"
+                        th:text="${clinic.name + ' | Price: $' + clinic.price + ' | Rating: ' + clinic.rating + '/5 Star'}">
+                </option>
+            </select>
+        </div>
+
+        <!-- Select Button -->
+        <div class="button-container">
+            <button id="selectButton" type="button">Select</button>
+        </div>
+    </div>
+
+</body>
+</html>
