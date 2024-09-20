@@ -19,17 +19,16 @@
     <label for="topic-select">Filter by Topic:</label>
     <select id="topic-select" onchange="filterArticles()">
         <option value="all">All Topics</option>
-        <option value="Health">Health</option>
+        <option value="Nutrition/Diet">Nutrition/Diet</option>
         <option value="General Care">General Care</option>
-        <option value="Training">Training</option>
+        <option value="Exercise">Exercise</option>
     </select>
 
     <label for="date-select">Filter by Date:</label>
     <select id="date-select" onchange="filterArticles()">
         <option value="all">All Dates</option>
-        <option value="2023">2023</option>
-        <option value="2022">2022</option>
-        <option value="2021">2021</option>
+        <option value="2017-2020">2017-2020</option>
+        <option value="2021-2024">2021-2024</option>
     </select>
 </div>
 
@@ -48,45 +47,45 @@
         <h2>Articles</h2>
         <p>Explore our collection of articles on pet care and veterinary medicine.</p>
 
-        <!-- Article 1 -->
-        <div class="article-preview content-item" data-title="Emergency Care for Your Pet" data-topic="Health" data-date="2023-05-01">
-            <h3>Emergency Care for Your Pet</h3>
-            <iframe id="article1" src="https://www.aspca.org/pet-care/general-pet-care/emergency-care-your-pet" title="Emergency Care for Your Pet"></iframe>
+        <!-- Article 1 (General Care) -->
+        <div class="article-preview content-item" data-title="Functional Foods in Pet Nutrition" data-topic="General Care" data-date="2017">
+            <h3>Functional Foods in Pet Nutrition</h3>
+            <iframe id="article1" src="https://www.sciencedirect.com/science/article/pii/S0034528816303332" title="Functional Foods in Pet Nutrition"></iframe>
             <button class="full-screen-btn" onclick="openFullScreen('article1')">View Full Screen</button>
         </div>
 
-        <!-- Article 2 -->
-        <div class="article-preview content-item" data-title="Pet Care Tasks Easily Overlooked by Pet Parents" data-topic="General Care" data-date="2023-03-15">
-            <h3>Pet Care Tasks Easily Overlooked by Pet Parents</h3>
-            <iframe id="article2" src="https://www.petmd.com/dog/general-health/pet-care-tasks-easily-overlooked-by-pet-parents" title="Pet Care Tasks"></iframe>
+        <!-- Article 2 (Exercise) -->
+        <div class="article-preview content-item" data-title="Pet Care Exercises" data-topic="Exercise" data-date="2017">
+            <h3>Pet Care Exercises</h3>
+            <iframe id="article2" src="https://leerburg.com/go-out.php" title="Pet Care Exercises"></iframe>
             <button class="full-screen-btn" onclick="openFullScreen('article2')">View Full Screen</button>
         </div>
 
-        <!-- Article 3 -->
-        <div class="article-preview content-item" data-title="Teach Your Dog to Trade Items with You" data-topic="Training" data-date="2022-11-20">
-            <h3>Teach Your Dog to Trade Items with You</h3>
-            <iframe id="article3" src="https://www.akc.org/expert-advice/training/teach-dog-to-trade-items-with-you/" title="Teach Your Dog to Trade Items"></iframe>
+        <!-- Article 3 (Exercise) -->
+        <div class="article-preview content-item" data-title="Teach Your Dog to Trade Items Exercises" data-topic="Exercise" data-date="2024">
+            <h3>Teach Your Dog to Trade Items Exercises</h3>
+            <iframe id="article3" src="https://www.akc.org/expert-advice/training/teach-dog-to-trade-items-with-you/" title="Teach Your Dog to Trade Items Exercises"></iframe>
             <button class="full-screen-btn" onclick="openFullScreen('article3')">View Full Screen</button>
         </div>
 
-        <!-- Article 4 -->
-        <div class="article-preview content-item" data-title="Vaccines for Dogs" data-topic="Health" data-date="2021-07-10">
-            <h3>Vaccines for Dogs</h3>
-            <iframe id="article4" src="https://vcahospitals.com/know-your-pet/vaccines-for-dogs" title="Vaccines for Dogs"></iframe>
+        <!-- Article 4 (General Care) -->
+        <div class="article-preview content-item" data-title="Vaccines for Dogs General Care" data-topic="General Care" data-date="2024">
+            <h3>Vaccines for Dogs General Care</h3>
+            <iframe id="article4" src="https://vcahospitals.com/know-your-pet/vaccines-for-dogs" title="Vaccines for Dogs General Care"></iframe>
             <button class="full-screen-btn" onclick="openFullScreen('article4')">View Full Screen</button>
         </div>
 
-        <!-- Article 5 -->
-        <div class="article-preview content-item" data-title="Dog Behavior Problems - Aggression" data-topic="Training" data-date="2022-05-18">
-            <h3>Dog Behavior Problems - Aggression</h3>
-            <iframe id="article5" src="https://vcahospitals.com/know-your-pet/dog-behavior-problems---aggression---getting-started---safety-and-management" title="Dog Aggression Problems"></iframe>
+        <!-- Article 5 (General Care) -->
+        <div class="article-preview content-item" data-title="Dog Behavior Problems General Care" data-topic="General Care" data-date="2024">
+            <h3>Dog Behavior Problems General Care</h3>
+            <iframe id="article5" src="https://vcahospitals.com/know-your-pet/dog-behavior-problems---aggression---getting-started---safety-and-management" title="Dog Behavior Problems General Care"></iframe>
             <button class="full-screen-btn" onclick="openFullScreen('article5')">View Full Screen</button>
         </div>
 
-        <!-- Article 6 -->
-        <div class="article-preview content-item" data-title="How Old Is Your Cat in People Years?" data-topic="Health" data-date="2021-03-10">
-            <h3>How Old Is Your Cat in People Years?</h3>
-            <iframe id="article6" src="https://www.pethealthnetwork.com/cat-health/cat-checkups-preventive-care/how-old-your-cat-people-years" title="How Old Is Your Cat"></iframe>
+        <!-- Article 6 (Nutrition/Diet) -->
+        <div class="article-preview content-item" data-title="Natural Diets for Dogs" data-topic="Nutrition/Diet" data-date="2017">
+            <h3>Natural Diets for Dogs</h3>
+            <iframe id="article6" src="https://leerburg.com/diet.htm" title="Natural Diets for Dogs"></iframe>
             <button class="full-screen-btn" onclick="openFullScreen('article6')">View Full Screen</button>
         </div>
     </section>
@@ -141,7 +140,15 @@
             const date = new Date(item.getAttribute('data-date')).getFullYear();
 
             const topicMatches = topicFilter === "all" || topic === topicFilter;
-            const dateMatches = dateFilter === "all" || date.toString() === dateFilter;
+
+            let dateMatches = false;
+            if (dateFilter === "all") {
+                dateMatches = true;
+            } else if (dateFilter === "2017-2020" && date >= 2017 && date <= 2020) {
+                dateMatches = true;
+            } else if (dateFilter === "2021-2024" && date >= 2021 && date <= 2024) {
+                dateMatches = true;
+            }
 
             if (topicMatches && dateMatches) {
                 item.style.display = 'block';
