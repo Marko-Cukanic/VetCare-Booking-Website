@@ -6,6 +6,20 @@
     <link rel="stylesheet" th:href="@{/css/addReport.css}">
     <link rel="stylesheet" th:href="@{/css/navbar.css}">
 </head>
+
+
+<script>
+    // -------------------------- Dynamically Add Medical Condition ---------------------------
+    function addCondition() {
+        var container = document.getElementById("medicalConditions");
+        var input = document.createElement("input");
+        input.type = "text";
+        input.name = "medical_condition";
+        input.placeholder = "Enter medical condition";
+        container.appendChild(input);
+    }
+</script>
+
 <body>
 
     <div th:insert="~{fragments/navbar :: navbar}"></div>
@@ -17,6 +31,7 @@
 
     <main>
         <form th:action="@{/addReport}" th:method="post">
+            <!-- Add Medical Details Section -->
             <div class="form-section">
                 <h3>Medical Report</h3>
                 <label for="email">Email:</label>
@@ -67,6 +82,7 @@
                 <input type="text" id="petBreed" name="petBreed" required>
             </div>
 
+            <!-- Add Vaccination History Section -->
             <div class="form-section">
                 <h3>Vaccination Report</h3>
                 <div class="vaccine-section">
@@ -121,6 +137,21 @@
                     </label>
                 </div>
             </div>
+
+            <!-- Add Medical Condition Section -->
+            <div class="form-section">
+                <h3>Add Medical Condition</h3>
+                
+                <!-- Medical Conditions Input -->
+                <div id="medicalConditions">
+                    <input type="text" name="medical_condition" placeholder="Enter medical condition">
+                </div>
+
+                <button type="button" onclick="addCondition()">Add Another Condition</button>
+            </div>
+
+             <!-- Add Treatment Plan Section -->
+
 
             <button type="button" class="cancel-button" onclick="window.location.href='/medical'">Cancel</button>
             <button type="submit">Save Report</button>

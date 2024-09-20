@@ -129,8 +129,33 @@ main {
     margin-right: 10px;
 }
 
-/* Medical Conditions and Treatment Plan Section */
-#medical-conditions, #treatment-plan {
+/* Medical Conditions Section */
+#medical-conditions {
+    background-color: #eee;
+    padding: 20px;
+    margin: 20px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center;
+}
+
+#medical-conditions h2 {
+    margin-top: 0;
+}
+
+#medical-conditions ul {
+    padding-left: 20px; /* Padding for the list */
+    text-align: left;
+    list-style-type: disc; /* Display list items with bullets */
+}
+
+#medical-conditions ul li {
+    margin: 10px 0;
+    font-size: 1.1em;
+}
+
+/*Treatment Plan Section */
+#treatment-plan {
     background-color: #eee;
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -138,14 +163,8 @@ main {
     text-align: center;
 }
 
-#medical-conditions h2, #treatment-plan h2 {
+#treatment-plan h2 {
     margin-top: 0;
-}
-
-#medical-conditions ul {
-    padding-left: 20px; 
-    text-align: left; 
-    list-style-type: disc; 
 }
 
 #treatment-plan ul {

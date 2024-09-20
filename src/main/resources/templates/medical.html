@@ -13,7 +13,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <script>
-    //Session Token Verification Script 
+    //-------------------------------------- Session Token Verification Script --------------------------------------
     function checkSessionToken() {
         const sessionToken = localStorage.getItem('sessionToken');
         const currentUrl = window.location.href;
@@ -28,7 +28,7 @@
         }
     }
 
-    //Pet Name Script
+    //-------------------------------------- Pet Name Script --------------------------------------
     function onPetChange() {
         const petName = document.getElementById("pet-name").value;
         const sessionToken = localStorage.getItem('sessionToken');
@@ -38,7 +38,7 @@
         }
     }
 
-    //Add Button Page Script
+    //-------------------------------------- Add Button Page Script --------------------------------------
     function addReport() {
         const sessionToken = localStorage.getItem('sessionToken');
         if (sessionToken) {
@@ -49,7 +49,7 @@
         }
     }
 
-     // Download report as PDF
+     // ----------------------------- Download report as PDF --------------------------------------
      function downloadReport() {
         const medicalSection = document.getElementById('medical-record');
         const vaccineSection = document.getElementById('vaccination-history');
@@ -87,10 +87,10 @@
 
             sections.forEach(({ dataURL, width, height }, index) => {
                 let imgWidth, imgHeight;
-                let xPosition = margin; // Default x position for all sections
+                let xPosition = margin; 
 
-                if (index === 0) { // Special handling for medical record
-                    const maxHeight = 60; // Set maximum height to match other sections
+                if (index === 0) { 
+                    const maxHeight = 60; 
                     const scale = maxHeight / height;
                     imgWidth = width * scale;
                     imgHeight = height * scale;
@@ -198,29 +198,25 @@
                         <li><input type="checkbox" th:checked="${vaccinationRecord?.leukemiaVirus}" disabled> Leukemia Virus</li>
                     </ul>
                 </div>
-
-                <!-- Message when no vaccination record is found -->
-                <div th:if="${vaccinationRecord == null}">
-                    <p>No vaccination records found for the selected pet.</p>
-                </div>
             </section>
 
-            <!-- Medical Conditions Section -->
+           <!-- Medical Conditions Section -->
             <section id="medical-conditions" th:if="${isLoggedIn}">
-                <h2>Medical Conditions</h2>
+                <h2>Medical Conditions for <span th:text="${selectedPetName}">Selected Pet</span></h2>
                 <ul>
-                    <li>Arthritis</li>
-                    <li>Obesity</li>
-                    <li>Diarrhea</li>
+                    <li th:each="condition : ${medicalConditions}">
+                        <span th:text="${condition.condition}"></span>
+                    </li>
                 </ul>
             </section>
 
+
             <!-- Treatment Plan Section -->
             <section id="treatment-plan" th:if="${isLoggedIn}">
-                <h2>Treatment Plan</h2>
+                <h2>Treatment Plan for <span th:text="${selectedPetName}">Selected Pet</h2>
                 <ul>
                     <li>Neutering <span>dd/mm/yyyy</span></li>
-                    <li>Rabies Vaccination <span>dd/mm/yyyy</span></li>
+                    <li>Vaccination <span>dd/mm/yyyy</span></li>
                     <li>General Check-up <span>dd/mm/yyyy</span></li>
                 </ul>
             </section>
