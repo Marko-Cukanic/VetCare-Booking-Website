@@ -4,7 +4,6 @@ import au.edu.rmit.sept.webapp.model.TreatmentPlan;
 import au.edu.rmit.sept.webapp.repository.TreatmentPlanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
