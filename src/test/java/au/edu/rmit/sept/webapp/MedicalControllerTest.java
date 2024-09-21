@@ -81,7 +81,7 @@ public class MedicalControllerTest {
         Medical medicalRecord = new Medical();
         medicalRecord.setEmail(TEST_EMAIL);
         medicalRecord.setPetName(TEST_PET_NAME);
-        medicalRecord.setPetID(1L);
+        medicalRecord.setPetID(15L);
         medicalRecord.setPetAge(5);
         medicalRecord.setPetSex("Male");
         medicalRecord.setPetWeight(25);
