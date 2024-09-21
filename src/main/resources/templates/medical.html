@@ -218,26 +218,25 @@
                 </ul>
             </section>
 
-
             <!-- Treatment Plan Section -->
             <section id="treatment-plan" th:if="${isLoggedIn}">
                 <h2>Treatment Plans for <span th:text="${selectedPetName}">Selected Pet</span></h2>
-                    <div>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Treatment Name</th>
-                                    <th>Treatment Date (yyyy-MM-dd)</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr th:each="treatmentPlan : ${treatmentPlans}">
-                                    <td th:text="${treatmentPlan.treatmentNames}"></td>
-                                    <td th:text="${#dates.format(treatmentPlan.treatmentDates, 'yyyy-MM-dd')}"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                <div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Treatment Name</th>
+                                <th>Treatment Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="treatment : ${treatmentPlan}">
+                                <td th:text="${treatment.treatmentName}"></td>
+                                <td th:text="${treatment.treatmentDate}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </section>
         </div>
     </main>

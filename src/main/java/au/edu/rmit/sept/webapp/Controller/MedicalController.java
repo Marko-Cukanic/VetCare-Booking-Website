@@ -67,7 +67,7 @@ public class MedicalController {
             var vaccinationRecord = vaccinationService.getVaccinationRecordByEmailAndPetName(email, petName);
             var medicalConditions = medicalConditionService.getMedicalConditionsByEmailAndPetName(email, petName);
             var treatmentPlan = treatmentPlanService.getTreatmentPlansByEmailAndPetName(email, petName);
-            
+
             model.addAttribute("medicalRecord", medicalRecord);
             model.addAttribute("vaccinationRecord", vaccinationRecord);
             model.addAttribute("medicalConditions", medicalConditions);
@@ -79,7 +79,7 @@ public class MedicalController {
            model.addAttribute("medicalConditions", null); 
            model.addAttribute("treatmentPlan", null);
         }
-
+        
         model.addAttribute("selectedPetName", petName); // Pass selected pet name to the view
     
         return "medical";
@@ -96,6 +96,7 @@ public class MedicalController {
         model.addAttribute("medical", new Medical());
         model.addAttribute("vaccination", new Vaccination());
         model.addAttribute("medicalCondition", new MedicalCondition());
+        model.addAttribute("treatmentPlan", new TreatmentPlan());
         model.addAttribute("email", email); 
 
         return "addReport";

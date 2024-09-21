@@ -47,13 +47,13 @@
         // Treatment name input
         var treatmentInput = document.createElement("input");
         treatmentInput.type = "text";
-        treatmentInput.name = "treatmentNames";  
+        treatmentInput.name = "treatmentName";  
         treatmentInput.placeholder = "Enter treatment name";
 
         // Treatment date input
         var dateInput = document.createElement("input");
         dateInput.type = "date";
-        dateInput.name = "treatmentDates";  
+        dateInput.name = "treatmentDate";  
 
         // Remove button
         var removeBtn = document.createElement("button");
@@ -221,9 +221,9 @@
                 
                 <!-- Medical Conditions Input -->
                 <div id="treatmentPlans">
-                    <input type="text" name="treatmentNames" placeholder="Treatment Name" required>
-                    <input type="date" name="treatmentDates" placeholder="DD/MM/YYYY" required>
-                    <span class="new-line"></span> 
+                    <input type="text" name="treatmentName" placeholder="Treatment Name" required>
+                    <input type="date" name="treatmentDate" placeholder="DD/MM/YYYY" required>
+                    
                 </div>
 
                 <button type="button" onclick="addTreatmentPlan()">Add Another Treatment Plan</button>
