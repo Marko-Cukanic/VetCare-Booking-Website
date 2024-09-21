@@ -73,7 +73,14 @@
                 dateClick: function(info) {
                     var clickedDate = new Date(info.dateStr);
                     var today = new Date(); // Get today's date
+                    var currentMonth = calendar.getDate().getMonth(); // Get the current visible month
+                    var clickedMonth = clickedDate.getMonth(); // Get the month of the clicked date
 
+                    // Check if the clicked date is in the next month and change the calendar view
+                    if (clickedMonth !== currentMonth) {
+                        calendar.gotoDate(clickedDate); // Switch to the clicked date's month
+                    }
+                    
                     // If the clicked date is today, do not allow selection
                     if (clickedDate.toDateString() === today.toDateString()) {
                         return; // Do nothing if today is clicked, but still visually show it
