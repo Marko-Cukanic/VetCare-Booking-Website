@@ -31,7 +31,7 @@ public class BookingController {
 
     @GetMapping("/makebooking")
     public String makeBooking() {
-        return "redirect:/clinicSelector"; // This should match the name of your HTML file in the templates directory
+        return "makeBooking"; // This should match the name of your HTML file in the templates directory
     }
 
     // Endpoint to get available time slots for a given date

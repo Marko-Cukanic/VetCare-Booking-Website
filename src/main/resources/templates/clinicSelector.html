@@ -26,11 +26,17 @@
             </select>
         </div>
 
-        <!-- Select Button -->
-        <div class="button-container">
-            <button id="selectButton" type="button">Select</button>
+         <!-- Select Button -->
+         <div class="button-container">
+            <button id="selectButton" type="button" onclick="redirectToMakeBooking()">Select</button>
         </div>
     </div>
+
+    <script>
+        function redirectToMakeBooking() {
+            window.location.href = "/makebooking";
+        }
+    </script>
 
 </body>
 </html>
