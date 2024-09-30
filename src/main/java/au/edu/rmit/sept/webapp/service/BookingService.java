@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service
 public class BookingService {
@@ -20,10 +21,10 @@ public class BookingService {
     private static final String[] DOCTORS = {"Dr. Cukanic", "Dr. Saleh", "Dr. Dao", "Dr. Le", "Dr. Thai"};
 
     // Method to create a booking
-    public Booking createBooking(LocalDate bookingDate, String timeSlot) {
+    public Booking createBooking(LocalDate bookingDate, String timeSlot, String clinicName) {
         String doctor = getRandomDoctor();
 
-        Booking booking = new Booking(bookingDate, timeSlot, doctor);
+        Booking booking = new Booking(bookingDate, timeSlot, clinicName, doctor);
         return bookingRepository.save(booking);
     }
 
@@ -49,28 +50,26 @@ public class BookingService {
     }
 
     // Method to check if a time slot is available for a given date
-    public boolean isTimeSlotAvailable(LocalDate bookingDate, String timeSlot) {
-        List<Booking> bookingsOnDate = bookingRepository.findByBookingDate(bookingDate);
+    public boolean isTimeSlotAvailable(LocalDate bookingDate, String timeSlot, String clinicName) {
+        List<Booking> bookingsOnDateAndClinic = bookingRepository.findByBookingDateAndClinicName(bookingDate, clinicName);
         // Check if any booking has the same time slot on that date
-        return bookingsOnDate.stream().noneMatch(booking -> booking.getTimeSlot().equals(timeSlot));
+        return bookingsOnDateAndClinic.stream().noneMatch(booking -> booking.getTimeSlot().equals(timeSlot));
     }
 
     // Method to get available time slots for a given date
-    public List<String> getAvailableTimeSlots(LocalDate bookingDate) {
+    public List<String> getAvailableTimeSlots(LocalDate bookingDate, String clinicName) {
         // All possible time slots
         List<String> allSlots = Arrays.asList(
             "10:00", "10:20", "10:40", "11:00", "11:20", "11:40", "12:00", "12:20", 
             "12:40", "13:00", "13:20", "13:40", "14:00", "14:20", "14:40", "15:00", 
             "15:20", "15:40", "16:00", "16:20", "16:40", "17:00");
 
-        // Fetch existing bookings for the date
-        List<Booking> bookingsOnDate = bookingRepository.findByBookingDate(bookingDate);
+        // Fetch existing bookings for the date and clinic
+        List<Booking> bookingsOnDateAndClinic = bookingRepository.findByBookingDateAndClinicName(bookingDate, clinicName);
 
-        // Create a list of unavailable slots based on existing bookings
-        List<String> unavailableSlots = new ArrayList<>();
-        for (Booking booking : bookingsOnDate) {
-            unavailableSlots.add(booking.getTimeSlot());
-        }
+        List<String> unavailableSlots = bookingsOnDateAndClinic.stream()
+            .map(Booking::getTimeSlot)
+            .collect(Collectors.toList());
 
         // Return available slots (those not in unavailableSlots)
         List<String> availableSlots = new ArrayList<>(allSlots);

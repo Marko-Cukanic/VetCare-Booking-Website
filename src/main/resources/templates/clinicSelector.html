@@ -19,8 +19,8 @@
     <!-- Clinic Dropdown and Select Button -->
     <div class="content-container">
         <div class="dropdown-container">
-            <select>
-                <option th:each="clinic : ${clinics}" th:value="${clinic.id}"
+            <select id="clinicSelect">
+                <option th:each="clinic : ${clinics}" th:value="${clinic.name}"
                         th:text="${clinic.name + ' | Price: $' + clinic.price + ' | Rating: ' + clinic.rating + '/5 Star'}">
                 </option>
             </select>
@@ -34,7 +34,8 @@
 
     <script>
         function redirectToMakeBooking() {
-            window.location.href = "/makebooking";
+            var selectedClinic = document.getElementById("clinicSelect").value;
+            window.location.href = "/makebooking?clinicName=" + encodeURIComponent(selectedClinic);
         }
     </script>
 

@@ -34,7 +34,8 @@
 
     <!-- Booking Form -->
     <form id="bookingForm" action="/createBooking" method="post">
-        <!-- Hidden inputs to store the selected date and time slot -->
+        <!-- Hidden inputs to store the selected clinic, date, and time slot -->
+        <input type="hidden" name="clinicName" id="selectedClinicInput" th:value="${param.clinicName}" required />
         <input type="hidden" name="bookingDate" id="selectedDateInput" required />
         <input type="hidden" name="timeSlot" id="selectedTimeSlotInput" required />
         
@@ -111,13 +112,16 @@
 
             calendar.render();
 
-            // Function to generate time slots
+            // Modify generateTimeSlots function to include clinicName
             function generateTimeSlots() {
                 var timeSlotsContainer = document.querySelector('.time-slots');
                 timeSlotsContainer.innerHTML = ''; // Clear any existing slots
 
-                // Make AJAX request to fetch available time slots for the selected date
-                fetch(`/availableTimeSlots?date=${selectedDate}`)
+                // Get the selected clinic name from the hidden input field
+                var selectedClinic = document.getElementById('selectedClinicInput').value;
+
+                // Make AJAX request to fetch available time slots for the selected date and clinic
+                fetch(`/availableTimeSlots?date=${selectedDate}&clinicName=${encodeURIComponent(selectedClinic)}`)
                     .then(response => response.json())
                     .then(availableTimeSlots => {
                         // If no available slots, display a message
@@ -159,6 +163,7 @@
                         console.error('Error fetching available time slots:', error);
                     });
             }
+
 
         });
     </script>
