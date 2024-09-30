@@ -4,6 +4,7 @@ import au.edu.rmit.sept.webapp.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,16 +31,17 @@ public class BookingController {
     }
 
     @GetMapping("/makebooking")
-    public String makeBooking() {
-        return "makeBooking"; // This should match the name of your HTML file in the templates directory
+    public String makeBooking(@RequestParam("clinicName") String clinicName, Model model) {
+        model.addAttribute("clinicName", clinicName); // Pass the selected clinic to the makeBooking page
+        return "makeBooking"; 
     }
 
     // Endpoint to get available time slots for a given date
     @GetMapping("/availableTimeSlots")
     @ResponseBody
-    public List<String> getAvailableTimeSlots(@RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
+    public List<String> getAvailableTimeSlots(@RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date, @RequestParam("clinicName") String clinicName){
         // Call the service method to get available time slots for the selected date
-        return bookingService.getAvailableTimeSlots(date);
+        return bookingService.getAvailableTimeSlots(date, clinicName);
     }
 
     // New POST mapping to handle the booking creation
@@ -47,12 +49,13 @@ public class BookingController {
     public String createBooking(
             @RequestParam("bookingDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate bookingDate,
             @RequestParam("timeSlot") String timeSlot,
+            @RequestParam("clinicName") String clinicName,
             RedirectAttributes redirectAttributes) {
 
         // Check if the time slot is already booked
-        if (bookingService.isTimeSlotAvailable(bookingDate, timeSlot)) {
+        if (bookingService.isTimeSlotAvailable(bookingDate, timeSlot, clinicName)) {
             // Save the booking if the time slot is available
-            bookingService.createBooking(bookingDate, timeSlot);
+            bookingService.createBooking(bookingDate, timeSlot, clinicName);
             return "redirect:/bookings";
         } else {
             // Redirect back to the make booking page with an error message if the time slot is taken

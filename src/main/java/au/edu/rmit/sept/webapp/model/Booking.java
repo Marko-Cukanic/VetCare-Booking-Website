@@ -18,6 +18,9 @@ public class Booking {
     @Column(name = "time_slot", nullable = false)
     private String timeSlot;
 
+    @Column(name = "clinic_name", nullable = false) // New column for storing the clinic name
+    private String clinicName;
+
     @Column(name = "doctor", nullable = false)
     private String doctor;
 
@@ -30,9 +33,10 @@ public class Booking {
         this.createdAt = LocalDateTime.now();
     }
 
-    public Booking(LocalDate bookingDate, String timeSlot, String doctor) {
+    public Booking(LocalDate bookingDate, String timeSlot, String clinicName, String doctor) {
         this.bookingDate = bookingDate;
         this.timeSlot = timeSlot;
+        this.clinicName = clinicName;
         this.doctor = doctor;
         this.createdAt = LocalDateTime.now();
     }
@@ -55,6 +59,14 @@ public class Booking {
 
     public void setTimeSlot(String timeSlot) {
         this.timeSlot = timeSlot;
+    }
+
+    public String getClinicName() {
+        return clinicName;
+    }
+
+    public void setClinicName(String clinicName) {
+        this.clinicName = clinicName;
     }
 
     public String getDoctor(){
