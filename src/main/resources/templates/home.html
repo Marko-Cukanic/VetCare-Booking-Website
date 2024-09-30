@@ -46,9 +46,11 @@
                         <span th:text="${booking.doctor}">Doctor</span>
                     </span>
                     <div class="booking-actions">
+                        <!-- Reschedule Button -->
                         <button class="reschedule-button" th:onclick="'confirmReschedule(' + ${booking.id} + ');'">
                             <img th:src="@{/images/reschedule.png}" alt="Reschedule" />
                         </button>
+                        <!-- Cancel Button -->
                         <button class="cancel-button" th:onclick="confirmCancel([[${booking.id}]])">
                             <img th:src="@{/images/cancel.png}" alt="Cancel" />
                         </button>
@@ -74,6 +76,22 @@
     <footer>
         <p>&copy; 2024 VetCare. All rights reserved.</p>
     </footer>
+
+    <script>
+        function confirmReschedule(bookingId) {
+            if (confirm("Are you sure you want to reschedule this booking?")) {
+                // Redirect to the reschedule endpoint, which will handle booking deletion
+                window.location.href = "/rescheduleBooking/" + bookingId;
+            }
+        }
+    
+        function confirmCancel(bookingId) {
+            if (confirm("Are you sure you want to cancel this booking?")) {
+                // Redirect to the cancel endpoint, which will handle booking deletion
+                window.location.href = "/cancelBooking/" + bookingId;
+            }
+        }
+    </script>
 
     <!-- JavaScript for carousel functionality -->
     <script>
