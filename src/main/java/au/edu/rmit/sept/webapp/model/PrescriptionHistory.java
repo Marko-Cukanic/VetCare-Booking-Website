@@ -11,16 +11,32 @@ public class PrescriptionHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String email; // Ensure this field exists
-
-
+    private String email; 
     private String medicationName;
     private String petName;
     private Date startDate;
     private Date endDate;
     private String vetName;
+    private boolean isOrdered = false; 
+    private Integer quantity;
 
-    // Getters and setters
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+
+    public boolean isOrdered() {
+        return isOrdered;
+    }
+
+    public void setOrdered(boolean ordered) {
+        this.isOrdered = ordered;
+    }
+
     public Long getId() {
         return id;
     }

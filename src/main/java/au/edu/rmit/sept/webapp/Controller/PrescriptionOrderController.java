@@ -9,7 +9,6 @@ import au.edu.rmit.sept.webapp.service.PrescriptionService;
 import au.edu.rmit.sept.webapp.model.Prescription;
 import au.edu.rmit.sept.webapp.model.PrescriptionHistory;
 import au.edu.rmit.sept.webapp.service.PrescriptionHistoryService;
-import java.util.Map;
 
 @Controller
 public class PrescriptionOrderController {
@@ -18,23 +17,13 @@ public class PrescriptionOrderController {
     private PrescriptionService prescriptionService;
 
     @Autowired
-    private LoginController loginController;  // Inject LoginController for session token management
-
-    @Autowired
     private PrescriptionHistoryService prescriptionHistoryService;
 
+    // Step 1: Confirm the order
     @PostMapping("/confirmOrder")
     public String confirmOrder(@RequestParam("medication") Long prescriptionId, 
-                               @RequestParam("quantity") int quantity,
-                               @RequestParam(required = false) String sessionToken, 
+                               @RequestParam("quantity") int quantity, 
                                Model model) {
-
-        // Check if sessionToken is invalid or missing
-        Map<String, String> sessionTokens = loginController.getSessionTokens();
-        if (sessionToken == null || !sessionTokens.containsKey(sessionToken)) {
-            model.addAttribute("isLoggedIn", false);
-            return "login";  // Redirect to login page if not logged in
-        }
 
         // Retrieve the selected prescription using the prescription ID
         Prescription prescription = prescriptionService.getPrescriptionById(prescriptionId);
@@ -47,27 +36,22 @@ public class PrescriptionOrderController {
         return "confirmOrder"; 
     }
 
+    // Step 2: Finalize the order
     @PostMapping("/finaliseOrder")
     public String finaliseOrder(@RequestParam("medicationId") Long medicationId, 
-                                @RequestParam("quantity") int quantity,
-                                @RequestParam(required = false) String sessionToken, 
+                                @RequestParam("quantity") int quantity, 
                                 Model model) {
-
-        // Check if sessionToken is invalid or missing
-        Map<String, String> sessionTokens = loginController.getSessionTokens();
-        if (sessionToken == null || !sessionTokens.containsKey(sessionToken)) {
-            model.addAttribute("isLoggedIn", false);
-            return "login";  // Redirect to login page if not logged in
-        }
 
         // Fetch the selected prescription using the prescription ID
         Prescription prescription = prescriptionService.getPrescriptionById(medicationId);
 
-        // Mark the prescription as ordered
+        // Set 'is_ordered' to true before updating
         prescription.setOrdered(true);
 
         // Save the updated prescription back to the database
         prescriptionService.savePrescription(prescription);
+
+        String userEmail = prescription.getEmail();  // Ensure the prescription has the email
 
         // Create a new PrescriptionHistory object
         PrescriptionHistory history = new PrescriptionHistory();
@@ -76,6 +60,9 @@ public class PrescriptionOrderController {
         history.setStartDate(prescription.getPrescriptionDate());  
         history.setEndDate(null);  
         history.setVetName(prescription.getVetName());
+        history.setEmail(userEmail);  // Set the email
+
+        history.setQuantity(quantity);
 
         // Save the new history record to the prescription_history table
         prescriptionHistoryService.savePrescriptionHistory(history);
@@ -87,4 +74,5 @@ public class PrescriptionOrderController {
         // Redirect to the success page after saving the order
         return "orderSuccess";  
     }
+
 }
