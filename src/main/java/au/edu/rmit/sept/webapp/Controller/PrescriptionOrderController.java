@@ -10,6 +10,10 @@ import au.edu.rmit.sept.webapp.model.Prescription;
 import au.edu.rmit.sept.webapp.model.PrescriptionHistory;
 import au.edu.rmit.sept.webapp.service.PrescriptionHistoryService;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
+
 @Controller
 public class PrescriptionOrderController {
 
@@ -36,8 +40,8 @@ public class PrescriptionOrderController {
         return "confirmOrder"; 
     }
 
-    // Step 2: Finalize the order
-    @PostMapping("/finaliseOrder")
+        // Step 2: Finalize the order
+        @PostMapping("/finaliseOrder")
     public String finaliseOrder(@RequestParam("medicationId") Long medicationId, 
                                 @RequestParam("quantity") int quantity, 
                                 Model model) {
@@ -58,7 +62,14 @@ public class PrescriptionOrderController {
         history.setMedicationName(prescription.getMedicationName());
         history.setPetName(prescription.getPetName());
         history.setStartDate(prescription.getPrescriptionDate());  
-        history.setEndDate(null);  
+
+        // Set the end date to 3 months after the start date
+        LocalDate startDateLocal = prescription.getPrescriptionDate().toInstant()
+            .atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate endDateLocal = startDateLocal.plusMonths(3);
+        Date endDate = Date.from(endDateLocal.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+        history.setEndDate(endDate);  // Set the end date
         history.setVetName(prescription.getVetName());
         history.setEmail(userEmail);  // Set the email
 
@@ -74,5 +85,4 @@ public class PrescriptionOrderController {
         // Redirect to the success page after saving the order
         return "orderSuccess";  
     }
-
 }
