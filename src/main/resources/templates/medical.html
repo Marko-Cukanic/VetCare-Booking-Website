@@ -13,7 +13,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <script>
-    //Session Token Verification Script 
+    //-------------------------------------- Session Token Verification Script --------------------------------------
     function checkSessionToken() {
         const sessionToken = localStorage.getItem('sessionToken');
         const currentUrl = window.location.href;
@@ -28,7 +28,7 @@
         }
     }
 
-    //Pet Name Script
+    //-------------------------------------- Pet Name Script --------------------------------------
     function onPetChange() {
         const petName = document.getElementById("pet-name").value;
         const sessionToken = localStorage.getItem('sessionToken');
@@ -38,7 +38,7 @@
         }
     }
 
-    //Add Button Page Script
+    //-------------------------------------- Add Button Page Script --------------------------------------
     function addReport() {
         const sessionToken = localStorage.getItem('sessionToken');
         if (sessionToken) {
@@ -49,40 +49,82 @@
         }
     }
 
-     // Download report as PDF
+     // ----------------------------- Download report as PDF --------------------------------------
      function downloadReport() {
         const medicalSection = document.getElementById('medical-record');
         const vaccineSection = document.getElementById('vaccination-history');
         const conditionsSection = document.getElementById('medical-conditions');
+        const treatmentPlanSection = document.getElementById('treatment-plan');
 
-        // Use html2canvas to capture each section
-        html2canvas(medicalSection).then(function(medicalCanvas) {
-            html2canvas(vaccineSection).then(function(vaccineCanvas) {
-                html2canvas(conditionsSection).then(function(conditionsCanvas) {
-
-                    // Get the images from the canvas
-                    const medicalImage = medicalCanvas.toDataURL('image/png');
-                    const vaccineImage = vaccineCanvas.toDataURL('image/png');
-                    const conditionsImage = conditionsCanvas.toDataURL('image/png');
-
-                    // Create a new jsPDF instance
-                    const { jsPDF } = window.jspdf;
-                    const pdf = new jsPDF('p', 'mm', 'a4');
-
-                    // Add medical section to PDF
-                    pdf.addImage(medicalImage, 'PNG', 10, 10, 140, 30); 
-
-                    // Add vaccine section to PDF
-                    pdf.addImage(vaccineImage, 'PNG', 10, 100, 140, 60);
-
-                    // Add medical conditions section to PDF
-                    pdf.addImage(conditionsImage, 'PNG', 10, 170, 140, 60);
-
-                    // Save the PDF with a user-friendly filename
-                    pdf.save('medical_report.pdf');
-                });
+        // Capture each section with high resolution
+        function captureSection(element) {
+            return html2canvas(element, { scale: 3 }).then(canvas => {
+                // Get the image data URL
+                const dataURL = canvas.toDataURL('image/png');
+                // Get the canvas width and height
+                const width = canvas.width;
+                const height = canvas.height;
+                return { dataURL, width, height };
             });
+        }
+
+        // Capture all sections
+        Promise.all([
+            captureSection(medicalSection),
+            captureSection(vaccineSection),
+            captureSection(conditionsSection),
+            captureSection(treatmentPlanSection)
+        ]).then(sections => {
+            // Create a new jsPDF instance with A4 page size
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            const pageWidth = pdf.internal.pageSize.width;
+            const pageHeight = pdf.internal.pageSize.height;
+
+            // Define margins and initial Y position
+            const margin = 10;
+            let yPosition = margin;
+
+            sections.forEach(({ dataURL, width, height }, index) => {
+                let imgWidth, imgHeight;
+                let xPosition = margin; 
+
+                if (index === 0) { 
+                    const maxHeight = 60; 
+                    const scale = maxHeight / height;
+                    imgWidth = width * scale;
+                    imgHeight = height * scale;
+
+                    // Center the image horizontally
+                    xPosition = (pageWidth - imgWidth) / 2;
+                } else { // General handling for other sections
+                    imgWidth = pageWidth - 2 * margin;
+                    const scale = imgWidth / width;
+                    imgHeight = height * scale;
+                }
+
+                // Add a new page if necessary
+                if (yPosition + imgHeight > pageHeight) {
+                    pdf.addPage();
+                    yPosition = margin;
+                }
+
+                // Add image to PDF
+                pdf.addImage(dataURL, 'PNG', xPosition, yPosition, imgWidth, imgHeight);
+                yPosition += imgHeight + margin;
+            });
+
+            // Save the PDF with a user-friendly filename
+            pdf.save('medical_report.pdf');
         });
+    }
+
+    // ----------------------------- Share report --------------------------------------
+    function shareMedicalRecord() {
+        const email = prompt("Enter the email address to share the medical record:");
+            if (email) {
+                alert(`Medical record shared with ${email}`);
+            }
     }
 </script>
 
@@ -108,12 +150,12 @@
         </div>
     </section>
 
-    <main>
-        <!------------------- Default Medical Page (Not Logged In) ----------------------->
-         <div th:if="${!isLoggedIn}">
-            <p>No details recorded. Please <a th:href="@{/login}">log in</a> to view the medical history.</p>
-        </div>
+     <!------------------- Default Medical Page (Not Logged In) ----------------------->
+     <div id="not-logged-in-message" th:if="${!isLoggedIn}">
+        <p>No details recorded. Please <a th:href="@{/login}">log in</a> to view the medical history.</p>
+    </div>
 
+    <main>
         <!------------------------------ Logged In Medical Page -------------------------->
             <!-- Medical Record Section -->
             <section id="medical-record" th:if="${isLoggedIn}">
@@ -140,11 +182,11 @@
                 </div>
             </section>
 
-
+        <div class="right-column">
             <!-- Vaccination History Section -->
             <section id="vaccination-history" th:if="${isLoggedIn}">
                 <h2>Vaccination History for <span th:text="${selectedPetName}">Selected Pet</span></h2>
-                /
+                
                 <div class="list-container">
                     <!-- Dog Vaccines -->
                     <ul>
@@ -164,37 +206,43 @@
                         <li><input type="checkbox" th:checked="${vaccinationRecord?.leukemiaVirus}" disabled> Leukemia Virus</li>
                     </ul>
                 </div>
-
-                <!-- Message when no vaccination record is found -->
-                <div th:if="${vaccinationRecord == null}">
-                    <p>No vaccination records found for the selected pet.</p>
-                </div>
             </section>
 
-            <!-- Medical Conditions Section -->
+           <!-- Medical Conditions Section -->
             <section id="medical-conditions" th:if="${isLoggedIn}">
-                <h2>Medical Conditions</h2>
+                <h2>Medical Conditions for <span th:text="${selectedPetName}">Selected Pet</span></h2>
                 <ul>
-                    <li>Arthritis</li>
-                    <li>Obesity</li>
-                    <li>Diarrhea</li>
+                    <li th:each="condition : ${medicalConditions}">
+                        <span th:text="${condition.condition}"></span>
+                    </li>
                 </ul>
             </section>
+
+            <!-- Treatment Plan Section -->
+            <section id="treatment-plan" th:if="${isLoggedIn}">
+                <h2>Treatment Plans for <span th:text="${selectedPetName}">Selected Pet</span></h2>
+                <div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Treatment Name</th>
+                                <th>Treatment Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="treatment : ${treatmentPlan}">
+                                <td th:text="${treatment.treatmentName}"></td>
+                                <td th:text="${treatment.treatmentDate}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
     </main>
 
     <footer>
         <p>&copy; 2024 VetCare. All rights reserved.</p>
     </footer>
-
-    <!-- Sharing Medical Record Function -->
-    <script>
-        function shareMedicalRecord() {
-            const email = prompt("Enter the email address to share the medical record:");
-            if (email) {
-                alert(`Medical record shared with ${email}`);
-            }
-        }
-    </script>
-
 </body>
 </html>

@@ -1,5 +1,6 @@
 package au.edu.rmit.sept.webapp.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,10 +12,14 @@ public class Medical {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String email;
+
+    @Column(unique = true)
     private String petName;
-    private int petID;
+
+    @Column(unique = true)
+    private Long petID;
+    
     private int petAge;
     private String petSex;
     private int petWeight;
@@ -30,7 +35,7 @@ public class Medical {
         return petName;
     }
 
-    public int getPetID() {
+    public Long getPetID() {
         return petID;
     }
 
@@ -63,7 +68,7 @@ public class Medical {
         this.petName = petName;
     }
 
-    public void setPetID(int petID) {
+    public void setPetID(Long petID) {
         this.petID = petID;
     }
 

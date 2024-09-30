@@ -23,6 +23,12 @@ public class BookingController {
     @Autowired
     private BookingService bookingService;
 
+    // New GetMapping for the clinicSelector page
+    @GetMapping("/selectClinic")
+    public String selectClinic() {
+        return "clinicSelector"; // This directs to the clinicSelector.html page
+    }
+
     @GetMapping("/makebooking")
     public String makeBooking() {
         return "makeBooking"; // This should match the name of your HTML file in the templates directory

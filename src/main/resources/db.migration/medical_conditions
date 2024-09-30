@@ -1,0 +1,6 @@
+CREATE TABLE medical_conditions (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) NOT NULL,
+    pet_name VARCHAR(255) NOT NULL,
+    medical_condition VARCHAR(255) NOT NULL
+);
