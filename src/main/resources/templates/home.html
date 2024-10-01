@@ -24,8 +24,9 @@
         <div class="banner-overlay">
             <h2>Providing Excellent Care for Your Pets</h2>
             <p>Our expert veterinarians are here for you and your pets.</p>
-            <a href="/selectClinic" class="book-appointment-button">Book an Appointment</a>
+            <a href="/clinicSelector" class="book-appointment-button">Book an Appointment</a>
         </div>
+
 
 
         <!-- Next and Previous Buttons -->
@@ -39,7 +40,9 @@
             <h2>Upcoming Appointments:</h2>
             <div class="booking-list">
                 <div th:each="booking : ${bookings}" class="booking-bar">
-                    <span class="booking-info-top">Booking for:</span>
+                    <span class="booking-info-top">
+                        Booking at: <span th:text="${booking.clinicName}">Clinic Name</span>
+                    </span>
                     <span class="booking-info-bottom">
                         At <span th:text="${booking.timeSlot}">Time</span> on 
                         <span th:text="${booking.bookingDate}">Date</span> with
@@ -58,6 +61,7 @@
                 </div>
             </div>
         </section>
+        
 
         <section id="welcome">
             <div>
