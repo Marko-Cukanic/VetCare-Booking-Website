@@ -16,21 +16,12 @@ You will need to have in your system
 Other tools will be required to complete the project (e.g., Docker)
 
 ## Run Instructions
-
-- Confirm you can run your application 
-```shell
-./mvnw spring-boot:run
-```
-- Open in your browser [http://localhost:8080](http://localhost:8080)
-
-- You will see a page with the message "Whitelabel Error Page"
-
-- You can use the lectorials material to start developing your web application.
+Run in main branch
 
 Run with 
-docker-compose up
-if you make changes to code
 docker-compose up --build
+
+- Open in your browser [http://localhost:8080](http://localhost:8080)
 
 database details:
 docker exec -it team-project-group-p08-07-db-1 mysql -u vetuser -p
