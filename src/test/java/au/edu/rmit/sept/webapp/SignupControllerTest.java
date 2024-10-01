@@ -30,7 +30,7 @@ public class SignupControllerTest {
 
         // Perform a POST request to the signup endpoint
         mockMvc.perform(post("/signup")
-                .param("fullname", "John Doe")
+                .param("fullname", "Thomas Saleh")
                 .param("email", "test@example.com")
                 .param("password", "password123")
                 .param("confirmPassword", "password123"))
@@ -40,12 +40,12 @@ public class SignupControllerTest {
     @Test
     public void signupUser_EmailAlreadyExists_Error() throws Exception {
         // Mock an existing user with the same email
-        User existingUser = new User(1L, "John Doe", "test@example.com", "password123");
+        User existingUser = new User(1L, "Thomas Saleh", "test@example.com", "password123");
         Mockito.when(userRepository.findByEmail("test@example.com")).thenReturn(existingUser);
 
         // Perform a POST request to the signup endpoint
         mockMvc.perform(post("/signup")
-                .param("fullname", "John Doe")
+                .param("fullname", "Thomas Saleh")
                 .param("email", "test@example.com")
                 .param("password", "password123")
                 .param("confirmPassword", "password123"))

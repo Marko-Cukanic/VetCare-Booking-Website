@@ -13,12 +13,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
-
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import java.util.Date;
 
 @Controller
 public class PrescriptionController {
@@ -51,42 +48,31 @@ public class PrescriptionController {
         model.addAttribute("prescriptions", prescriptions);
         model.addAttribute("histories", histories);
 
+        boolean isAdmin = email.equals("admin@vetcare.com"); // Example logic for admin check
+        model.addAttribute("isAdmin", isAdmin);
+
         return "prescriptions";  // Render prescriptions template
     }
 
-
-
     @GetMapping("/assignPrescription")
-public String showAssignPrescriptionForm(@RequestParam(required = false) String sessionToken, Model model) {
-    
-
-    model.addAttribute("prescription", new Prescription());
-    model.addAttribute("sessionToken", sessionToken);  // Pass the session token for the logout button
-    return "assignPrescription";  // Render the 'assignPrescription.html' page
-}
+    public String showAssignPrescriptionForm(@RequestParam(required = false) String sessionToken, Model model) {
+        model.addAttribute("prescription", new Prescription());
+        model.addAttribute("sessionToken", sessionToken);  // Pass the session token for the logout button
+        return "assignPrescription";  // Render the 'assignPrescription.html' page
+    }
 
     @PostMapping("/assignPrescription")
-    public String assignPrescription(@ModelAttribute("prescription") Prescription prescription,
-                                     BindingResult result, Model model) {
+    public String assignPrescription(@ModelAttribute("prescription") Prescription prescription, BindingResult result, Model model) {
         if (result.hasErrors()) {
             return "assignPrescription";  // Re-render the form if there are validation errors
         }
 
-        // Set the prescription date to the current date
-        prescription.setPrescriptionDate(new Date());
+        prescription.setPrescriptionDate(new Date()); // Set the prescription date to the current date
+        prescription.setOrdered(false); // Set isOrdered to false by default when assigning a new prescription
 
-        // Set isOrdered to false by default when assigning a new prescription
-        prescription.setOrdered(false);
-
-        // Save the prescription
-        prescriptionService.savePrescription(prescription);
-
-        // Add a success message to the model
-        model.addAttribute("successMessage", "Prescription assigned successfully!");
-
-        // Clear the form fields
-        model.addAttribute("prescription", new Prescription());
-
+        prescriptionService.savePrescription(prescription); // Save the prescription
+        model.addAttribute("successMessage", "Prescription assigned successfully!"); // Add a success message to the model
+        model.addAttribute("prescription", new Prescription()); // Clear the form fields
 
         return "assignPrescription";  // Return the form page again with success message
     }
