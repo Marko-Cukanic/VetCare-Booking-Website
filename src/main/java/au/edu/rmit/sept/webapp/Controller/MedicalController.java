@@ -17,6 +17,17 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamSource;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
+import java.io.IOException;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +49,9 @@ public class MedicalController {
 
     @Autowired
     private TreatmentPlanService treatmentPlanService;
+
+    @Autowired
+    private JavaMailSender mailSender;
 
     //Getting Medical Record Data
     @GetMapping("/medical")
@@ -147,7 +161,30 @@ public class MedicalController {
 
         } catch (MedicalService.DuplicateRecordException e){
             model.addAttribute("error", e.getMessage());
+            model.addAttribute("email", email);
             return "addReport"; // Return to the form with error message
         } 
+    }
+
+    @PostMapping("/shareReport")
+    public String shareReport(
+            @RequestParam("email") String email,
+            @RequestPart("pdfFile") MultipartFile pdfFile) throws MessagingException, IOException {
+
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+        helper.setTo(email);
+        helper.setSubject("Medical Report");
+        helper.setText("Please find the attached medical report.");
+
+        // Attach PDF
+        InputStreamSource attachment = new ByteArrayResource(pdfFile.getBytes());
+        helper.addAttachment("medical_report.pdf", attachment);
+
+        // Send the email
+        mailSender.send(message);
+
+        return "Email sent successfully!";
     }
 }
