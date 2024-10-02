@@ -26,7 +26,9 @@
 
         <!-- Loop through each booking and display it as a horizontal bar -->
         <div th:each="booking : ${bookings}" class="booking-bar">
-            <span class="booking-info-top">Booking for:</span>
+            <span class="booking-info-top">
+                Booking at: <span th:text="${booking.clinicName}">Time</span>
+            </span>
             <span class="booking-info-bottom">
                 At <span th:text="${booking.timeSlot}">Time</span> on 
                 <span th:text="${booking.bookingDate}">Date</span> with

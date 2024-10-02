@@ -107,6 +107,13 @@
             </table>
         </section>
     </main>
+
+    <div th:if="${isAdmin}" id="assign-prescription-btn">
+        <a th:href="@{/assignPrescription}" class="button">
+            <button type="button">Assign Prescriptions</button>
+        </a>
+        </div>
+    </main> 
     
     <footer>
         <p>&copy; 2024 VetCare. All Rights Reserved.</p>

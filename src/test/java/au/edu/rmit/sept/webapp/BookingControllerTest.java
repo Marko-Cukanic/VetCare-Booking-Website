@@ -10,7 +10,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
@@ -30,14 +29,16 @@ public class BookingControllerTest {
     public void createBooking_ValidData_Success() throws Exception {
         LocalDate bookingDate = LocalDate.now();
         String timeSlot = "10:00 AM";
+        String clinicName = "Sunshine Vet Clinic";
 
         // Mock the service to indicate the time slot is available
-        Mockito.when(bookingService.isTimeSlotAvailable(bookingDate, timeSlot)).thenReturn(true);
+        Mockito.when(bookingService.isTimeSlotAvailable(bookingDate, timeSlot, clinicName)).thenReturn(true);
 
         // Perform POST request to create a booking
         mockMvc.perform(post("/createBooking")
                 .param("bookingDate", bookingDate.toString())
-                .param("timeSlot", timeSlot))
+                .param("timeSlot", timeSlot)
+                .param("clinicName", clinicName))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/bookings"));
     }
