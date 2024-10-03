@@ -19,5 +19,14 @@ jobs:
       with:
         java-version: '17'
         distribution: 'adopt'
-    - name: Build with Maven
-      run: mvn clean install
+    - name: Build and run tests with Maven
+      run: mvn clean test
+
+    - name: Generate Allure Report
+      run: mvn allure:report
+
+    - name: Upload Allure Report
+      uses: actions/upload-artifact@v2
+      with:
+        name: allure-report
+        path: target/site/allure-maven/index.html
