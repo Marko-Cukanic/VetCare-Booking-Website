@@ -21,9 +21,10 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamSource;
-import org.springframework.mail.MailSender;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
+
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import java.io.IOException;
@@ -166,25 +167,58 @@ public class MedicalController {
         } 
     }
 
+    // @PostMapping("/shareReport")
+    // public String shareReport(
+    //         @RequestParam("email") String email,
+    //         @RequestPart("pdfFile") MultipartFile pdfFile) throws MessagingException, IOException {
+
+    //     MimeMessage message = mailSender.createMimeMessage();
+    //     MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+    //     helper.setTo(email);
+    //     helper.setSubject("Medical Report");
+    //     helper.setText("Please find the attached medical report.");
+
+    //     // Attach PDF
+    //     InputStreamSource attachment = new ByteArrayResource(pdfFile.getBytes());
+    //     helper.addAttachment("medical_report.pdf", attachment);
+
+    //     // Send the email
+    //     mailSender.send(message);
+
+    //     return "Email sent successfully!";
+    // }
+
     @PostMapping("/shareReport")
     public String shareReport(
             @RequestParam("email") String email,
-            @RequestPart("pdfFile") MultipartFile pdfFile) throws MessagingException, IOException {
+            @RequestPart("pdfFile") MultipartFile pdfFile,
+            Model model) {
+        // Trigger the async email sending method
+        sendEmailWithAttachment(email, pdfFile);
 
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        // Provide immediate feedback
+        model.addAttribute("message", "Your report is being sent!");
+        return "medical"; // Redirect or return a view indicating the email is being processed
+    }
 
-        helper.setTo(email);
-        helper.setSubject("Medical Report");
-        helper.setText("Please find the attached medical report.");
+    @Async
+    public void sendEmailWithAttachment(String email, MultipartFile pdfFile) {
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            helper.setTo(email);
+            helper.setSubject("Medical Report");
+            helper.setText("Please find the attached medical report.");
 
-        // Attach PDF
-        InputStreamSource attachment = new ByteArrayResource(pdfFile.getBytes());
-        helper.addAttachment("medical_report.pdf", attachment);
+            // Attach PDF
+            InputStreamSource attachment = new ByteArrayResource(pdfFile.getBytes());
+            helper.addAttachment("medical_report.pdf", attachment);
 
-        // Send the email
-        mailSender.send(message);
-
-        return "Email sent successfully!";
+            // Send the email
+            mailSender.send(message);
+        } catch (MessagingException | IOException e) {
+            e.printStackTrace(); 
+        }
     }
 }
