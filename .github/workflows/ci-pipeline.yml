@@ -28,7 +28,7 @@ jobs:
         run: mvn surefire-report:report
 
       - name: Upload Surefire Test Report
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3  # Use the latest version (v3)
         with:
           name: surefire-report
           path: target/surefire-reports/index.html
