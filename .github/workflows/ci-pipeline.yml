@@ -19,14 +19,14 @@ jobs:
       with:
         java-version: '17'
         distribution: 'adopt'
-        
-    - name: Build and Test with Maven
-      run: mvn clean install
+    - name: Build and run tests with Maven
+      run: mvn clean test
 
-    # Upload test reports as artifacts
-    - name: Upload test results
-      if: always() # Always run this step even if tests fail
-      uses: actions/upload-artifact@v3
+    - name: Generate Allure Report
+      run: mvn allure:report
+
+    - name: Upload Allure Report
+      uses: actions/upload-artifact@v2
       with:
-        name: Test-Report
-        path: target/surefire-reports # This path should match where Surefire generates reports
+        name: allure-report
+        path: target/site/allure-maven/index.html
