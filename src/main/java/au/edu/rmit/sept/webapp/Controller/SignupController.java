@@ -9,12 +9,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import au.edu.rmit.sept.webapp.model.User;
 import au.edu.rmit.sept.webapp.repository.UserRepository;
+import au.edu.rmit.sept.webapp.service.EmailService;
 
 @Controller
 public class SignupController {
 
     @Autowired
-    private UserRepository userRepository; // Inject the repository using @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private EmailService emailService;  // Inject the email service
 
     @GetMapping("/signup")
     public String signupPage() {
@@ -29,7 +33,6 @@ public class SignupController {
         // Check if the email is already registered
         User existingUser = userRepository.findByEmail(email);
         if (existingUser != null) {
-            // Add an error message to the model and return the signup page
             model.addAttribute("errorMessage", "This email is already in use. Please choose a different email.");
             return "signup";
         }
@@ -43,6 +46,9 @@ public class SignupController {
         // Create a new user and save it to the repository
         User newUser = new User(null, fullname, email, password);
         userRepository.save(newUser);
+
+        // Send confirmation email
+        emailService.sendSignupConfirmationEmail(email, fullname);
 
         // Redirect to the login page with a success message
         return "redirect:/login?signupSuccess=true";
