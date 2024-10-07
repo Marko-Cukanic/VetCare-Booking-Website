@@ -70,7 +70,7 @@ public class BookingController {
         bookingService.deleteBookingById(id);
 
         // Redirect to the make booking page
-        return "redirect:/makebooking";
+        return "redirect:/clinicSelector";
     }
 
     @GetMapping("/cancelBooking/{id}")
