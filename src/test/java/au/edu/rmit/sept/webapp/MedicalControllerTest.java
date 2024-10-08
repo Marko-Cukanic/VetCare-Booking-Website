@@ -2,15 +2,18 @@ package au.edu.rmit.sept.webapp;
 
 import au.edu.rmit.sept.webapp.controller.MedicalController;
 import au.edu.rmit.sept.webapp.controller.LoginController;
+
 import au.edu.rmit.sept.webapp.model.Medical;
 import au.edu.rmit.sept.webapp.model.Vaccination;
 import au.edu.rmit.sept.webapp.model.MedicalCondition;
 import au.edu.rmit.sept.webapp.model.TreatmentPlan;
 import au.edu.rmit.sept.webapp.service.EmailService;
+
 import au.edu.rmit.sept.webapp.service.MedicalConditionService;
 import au.edu.rmit.sept.webapp.service.MedicalService;
 import au.edu.rmit.sept.webapp.service.TreatmentPlanService;
 import au.edu.rmit.sept.webapp.service.VaccinationService;
+
 import jakarta.mail.MessagingException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,9 +33,9 @@ import static org.mockito.Mockito.*;
 
 class MedicalControllerTest {
 
-    private final String email = "user@example.com"; // Correct casing
-    private final String petName = "Fluffy"; // Correct casing
-    private final String sessionToken = "validToken"; // Correct casing
+    private String email = "user@example.com"; 
+    private String petName = "Fluffy"; 
+    private String sessionToken = "validToken"; 
 
     @InjectMocks
     private MedicalController medicalController;
