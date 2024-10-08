@@ -17,27 +17,64 @@
     function checkSessionToken() {
         const sessionToken = localStorage.getItem('sessionToken');
         const currentUrl = window.location.href;
-
-        // Check if the current URL already contains the session token
+    
         if (sessionToken && !currentUrl.includes('sessionToken')) {
-            // Redirect to /medical with the session token as a query parameter if not already present
             window.location.href = `/medical?sessionToken=${encodeURIComponent(sessionToken)}`;
         } else if (!sessionToken) {
-            // If no session token, show the login prompt
             document.getElementById('login-prompt').style.display = 'block';
         }
     }
-
+    
     //-------------------------------------- Pet Name Script --------------------------------------
     function onPetChange() {
         const petName = document.getElementById("pet-name").value;
         const sessionToken = localStorage.getItem('sessionToken');
-        if (sessionToken && petName) {
-            // Redirect to update the medical and vaccination records for the selected pet
+        const currentPetName = new URLSearchParams(window.location.search).get('petName');
+    
+        if (sessionToken && petName && petName !== currentPetName) {
             window.location.href = `/medical?sessionToken=${encodeURIComponent(sessionToken)}&petName=${encodeURIComponent(petName)}`;
         }
     }
-
+    
+    //-------------------------------------- Common PDF Generation Script --------------------------------------
+    function generatePdf(sections, callback) {
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        const pageWidth = pdf.internal.pageSize.width;
+        const pageHeight = pdf.internal.pageSize.height;
+        const margin = 10;
+        let yPosition = margin;
+    
+        // Function to capture sections and add to PDF
+        function captureAndAddSection(index) {
+            if (index >= sections.length) {
+                callback(pdf);
+                return;
+            }
+    
+            const { element, scaleFactor } = sections[index];
+            html2canvas(element, { scale: 3 }).then(canvas => {
+                const imgWidth = pageWidth - 2 * margin;
+                const scale = imgWidth / canvas.width;
+                const imgHeight = canvas.height * scale;
+                const xPosition = margin;
+    
+                if (yPosition + imgHeight > pageHeight) {
+                    pdf.addPage();
+                    yPosition = margin;
+                }
+    
+                pdf.addImage(canvas.toDataURL('image/png'), 'PNG', xPosition, yPosition, imgWidth, imgHeight);
+                yPosition += imgHeight + margin;
+    
+                // Continue to next section
+                captureAndAddSection(index + 1);
+            });
+        }
+    
+        captureAndAddSection(0);
+    }
+    
     //-------------------------------------- Add Button Page Script --------------------------------------
     function addReport() {
         const sessionToken = localStorage.getItem('sessionToken');
@@ -48,177 +85,54 @@
             window.location.href = '/login'; 
         }
     }
-
-     // ----------------------------- Download report as PDF --------------------------------------
-     function downloadReport() {
-        const medicalSection = document.getElementById('medical-record');
-        const vaccineSection = document.getElementById('vaccination-history');
-        const conditionsSection = document.getElementById('medical-conditions');
-        const treatmentPlanSection = document.getElementById('treatment-plan');
-
-        // Capture each section with high resolution
-        function captureSection(element) {
-            return html2canvas(element, { scale: 3 }).then(canvas => {
-                // Get the image data URL
-                const dataURL = canvas.toDataURL('image/png');
-                // Get the canvas width and height
-                const width = canvas.width;
-                const height = canvas.height;
-                return { dataURL, width, height };
-            });
-        }
-
-        // Capture all sections
-        Promise.all([
-            captureSection(medicalSection),
-            captureSection(vaccineSection),
-            captureSection(conditionsSection),
-            captureSection(treatmentPlanSection)
-        ]).then(sections => {
-            // Create a new jsPDF instance with A4 page size
-            const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF('p', 'mm', 'a4');
-            const pageWidth = pdf.internal.pageSize.width;
-            const pageHeight = pdf.internal.pageSize.height;
-
-            // Define margins and initial Y position
-            const margin = 10;
-            let yPosition = margin;
-
-            sections.forEach(({ dataURL, width, height }, index) => {
-                let imgWidth, imgHeight;
-                let xPosition = margin; 
-
-                if (index === 0) { 
-                    const maxHeight = 60; 
-                    const scale = maxHeight / height;
-                    imgWidth = width * scale;
-                    imgHeight = height * scale;
-
-                    // Center the image horizontally
-                    xPosition = (pageWidth - imgWidth) / 2;
-                } else { // General handling for other sections
-                    imgWidth = pageWidth - 2 * margin;
-                    const scale = imgWidth / width;
-                    imgHeight = height * scale;
-                }
-
-                // Add a new page if necessary
-                if (yPosition + imgHeight > pageHeight) {
-                    pdf.addPage();
-                    yPosition = margin;
-                }
-
-                // Add image to PDF
-                pdf.addImage(dataURL, 'PNG', xPosition, yPosition, imgWidth, imgHeight);
-                yPosition += imgHeight + margin;
-            });
-
-            // Save the PDF with a user-friendly filename
-            pdf.save('medical_report.pdf');
-        });
+    
+    // ----------------------------- Download report as PDF --------------------------------------
+    function downloadReport() {
+        const sections = [
+            { element: document.getElementById('medical-record') },
+            { element: document.getElementById('vaccination-history') },
+            { element: document.getElementById('medical-conditions') },
+            { element: document.getElementById('treatment-plan') }
+        ];
+    
+        generatePdf(sections, pdf => pdf.save('medical_report.pdf'));
     }
-
+    
     // ----------------------------- Share report --------------------------------------
-    // function shareReport() {
-    //     const email = prompt("Enter the email address to share the medical record:");
-    //         if (email) {
-    //             alert(`Medical record shared with ${email}`);
-    //         }
-    // }
-
     function shareReport() {
         const email = prompt("Enter the email address to share the medical record:");
         if (!email) {
             alert("Email is required to share the report.");
             return;
         }
-
-        // First, generate the PDF
-        const medicalSection = document.getElementById('medical-record');
-        const vaccineSection = document.getElementById('vaccination-history');
-        const conditionsSection = document.getElementById('medical-conditions');
-        const treatmentPlanSection = document.getElementById('treatment-plan');
-
-       // Capture each section with high resolution
-       function captureSection(element) {
-            return html2canvas(element, { scale: 3 }).then(canvas => {
-                // Get the image data URL
-                const dataURL = canvas.toDataURL('image/png');
-                // Get the canvas width and height
-                const width = canvas.width;
-                const height = canvas.height;
-                return { dataURL, width, height };
-            });
-        }
-
-        // Capture all sections
-        Promise.all([
-            captureSection(medicalSection),
-            captureSection(vaccineSection),
-            captureSection(conditionsSection),
-            captureSection(treatmentPlanSection)
-        ]).then(sections => {
-            // Create a new jsPDF instance with A4 page size
-            const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF('p', 'mm', 'a4');
-            const pageWidth = pdf.internal.pageSize.width;
-            const pageHeight = pdf.internal.pageSize.height;
-
-            // Define margins and initial Y position
-            const margin = 10;
-            let yPosition = margin;
-
-            sections.forEach(({ dataURL, width, height }, index) => {
-                let imgWidth, imgHeight;
-                let xPosition = margin; 
-
-                if (index === 0) { 
-                    const maxHeight = 60; 
-                    const scale = maxHeight / height;
-                    imgWidth = width * scale;
-                    imgHeight = height * scale;
-
-                    // Center the image horizontally
-                    xPosition = (pageWidth - imgWidth) / 2;
-                } else { // General handling for other sections
-                    imgWidth = pageWidth - 2 * margin;
-                    const scale = imgWidth / width;
-                    imgHeight = height * scale;
-                }
-
-                // Add a new page if necessary
-                if (yPosition + imgHeight > pageHeight) {
-                    pdf.addPage();
-                    yPosition = margin;
-                }
-
-                // Add image to PDF
-                pdf.addImage(dataURL, 'PNG', xPosition, yPosition, imgWidth, imgHeight);
-                yPosition += imgHeight + margin;
-            });
-
-            // Convert PDF to Blob and send it to the server
+    
+        const sections = [
+            { element: document.getElementById('medical-record') },
+            { element: document.getElementById('vaccination-history') },
+            { element: document.getElementById('medical-conditions') },
+            { element: document.getElementById('treatment-plan') }
+        ];
+    
+        generatePdf(sections, pdf => {
             const pdfBlob = pdf.output('blob');
-
-            // Use FormData to send the PDF and email address to the backend
             const formData = new FormData();
             formData.append("email", email);
             formData.append("pdfFile", pdfBlob, 'medical_report.pdf');
-
+    
             fetch('/shareReport', {
-                method: 'POST', 
+                method: 'POST',
                 body: formData
             }).then(response => {
                 if (response.ok) {
                     alert(`Medical record successfully shared with ${email}`);
                 } else {
-                    alert("There was an error sharing the medical report. Please try again.");
+                    alert('Error sharing medical record.');
                 }
             });
         });
     }
 </script>
+    
 
 <body onload="checkSessionToken();">
 

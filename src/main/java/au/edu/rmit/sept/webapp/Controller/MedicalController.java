@@ -5,28 +5,25 @@ import au.edu.rmit.sept.webapp.model.Vaccination;
 import au.edu.rmit.sept.webapp.model.MedicalCondition;
 import au.edu.rmit.sept.webapp.model.TreatmentPlan;
 import au.edu.rmit.sept.webapp.service.MedicalService;
+
 import au.edu.rmit.sept.webapp.service.TreatmentPlanService;
 import au.edu.rmit.sept.webapp.service.VaccinationService;
+import jakarta.mail.MessagingException;
+import au.edu.rmit.sept.webapp.service.EmailService;
 import au.edu.rmit.sept.webapp.service.MedicalConditionService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.InputStreamSource;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.scheduling.annotation.Async;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
 import java.io.IOException;
 
 import java.time.LocalDate;
@@ -52,9 +49,9 @@ public class MedicalController {
     private TreatmentPlanService treatmentPlanService;
 
     @Autowired
-    private JavaMailSender mailSender;
+    private EmailService emailService;
 
-    //Getting Medical Record Data
+    // ------------------------------------------ Getting Medical Record Data -------------------------------------------------
     @GetMapping("/medical")
     public String showMedicalHistory(@RequestParam(required = false) String sessionToken,
                                      @RequestParam(required = false) String petName, 
@@ -100,7 +97,7 @@ public class MedicalController {
         return "medical";
     }
     
-    //Adding/Saving Record Data
+    //------------------------------------------------- Adding/Saving Record Data -------------------------------------------------
     @GetMapping("/addReport")
     public String showAddReportForm(@RequestParam String sessionToken, Model model) {
         // Retrieve the email from the session
@@ -167,58 +164,26 @@ public class MedicalController {
         } 
     }
 
-    // @PostMapping("/shareReport")
-    // public String shareReport(
-    //         @RequestParam("email") String email,
-    //         @RequestPart("pdfFile") MultipartFile pdfFile) throws MessagingException, IOException {
-
-    //     MimeMessage message = mailSender.createMimeMessage();
-    //     MimeMessageHelper helper = new MimeMessageHelper(message, true);
-
-    //     helper.setTo(email);
-    //     helper.setSubject("Medical Report");
-    //     helper.setText("Please find the attached medical report.");
-
-    //     // Attach PDF
-    //     InputStreamSource attachment = new ByteArrayResource(pdfFile.getBytes());
-    //     helper.addAttachment("medical_report.pdf", attachment);
-
-    //     // Send the email
-    //     mailSender.send(message);
-
-    //     return "Email sent successfully!";
-    // }
-
+    //------------------------------------------------- Sharing Record Data -------------------------------------------------
     @PostMapping("/shareReport")
     public String shareReport(
             @RequestParam("email") String email,
             @RequestPart("pdfFile") MultipartFile pdfFile,
-            Model model) {
-        // Trigger the async email sending method
-        sendEmailWithAttachment(email, pdfFile);
-
-        // Provide immediate feedback
-        model.addAttribute("message", "Your report is being sent!");
-        return "medical"; // Redirect or return a view indicating the email is being processed
-    }
-
-    @Async
-    public void sendEmailWithAttachment(String email, MultipartFile pdfFile) {
+            Model model) throws MessagingException {
+        
         try {
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true);
-            helper.setTo(email);
-            helper.setSubject("Medical Report");
-            helper.setText("Please find the attached medical report.");
-
-            // Attach PDF
-            InputStreamSource attachment = new ByteArrayResource(pdfFile.getBytes());
-            helper.addAttachment("medical_report.pdf", attachment);
-
-            // Send the email
-            mailSender.send(message);
-        } catch (MessagingException | IOException e) {
-            e.printStackTrace(); 
+            // Convert the MultipartFile to byte array
+            byte[] pdfBytes = pdfFile.getBytes();
+            // Send the email with attachment using EmailService
+            emailService.sendEmailWithAttachment(email, pdfBytes);
+            model.addAttribute("successMessage", "Medical report shared successfully!");
+        } catch (IOException e) {
+            model.addAttribute("errorMessage", "Error while sharing the medical report: " + e.getMessage());
+            e.printStackTrace();
         }
+
+        return "redirect:/medical"; // Redirect back to medical records page
     }
+
+
 }
