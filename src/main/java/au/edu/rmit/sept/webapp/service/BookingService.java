@@ -78,4 +78,9 @@ public class BookingService {
 
         return availableSlots;
     }
+
+    public List<Booking> getBookingsByUserEmail(String userEmail) {
+        return bookingRepository.findByUserEmail(userEmail);
+    }
+    
 }

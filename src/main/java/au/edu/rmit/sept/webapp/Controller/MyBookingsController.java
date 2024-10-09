@@ -18,26 +18,34 @@ public class MyBookingsController {
     private BookingService bookingService;
 
     @Autowired
-    private LoginController loginController; // Assume you have a LoginController for session tokens
+    private LoginController loginController; // Access session tokens from LoginController
 
-    // Get all bookings and display them on the bookings page with session token verification
     @GetMapping("/bookings")
     public String getBookings(@RequestParam(required = false) String sessionToken, Model model) {
         // Verify session token to check if the user is logged in
         Map<String, String> sessionTokens = loginController.getSessionTokens();
-        if (sessionToken == null || !sessionTokens.containsKey(sessionToken)) {
+        String userEmail = sessionTokens.get(sessionToken);
+
+        if (userEmail == null) {
+            // User is not logged in
             model.addAttribute("isLoggedIn", false);
+            model.addAttribute("error", "Please log in to view your bookings.");
             return "bookings";  // Show not logged-in page with a prompt
         }
+
+        // Debugging statements
+        System.out.println("Session Token: " + sessionToken);
+        System.out.println("User Email: " + userEmail);
 
         // User is logged in
         model.addAttribute("isLoggedIn", true);
 
-        // Fetch all bookings and display them (not filtered by user)
-        List<Booking> bookings = bookingService.getAllBookings();
-        model.addAttribute("bookings", bookings); // Pass bookings to the view
+        // Fetch bookings for the logged-in user and display them
+        List<Booking> userBookings = bookingService.getBookingsByUserEmail(userEmail);
+        System.out.println("User Bookings: " + userBookings); // Print the bookings to check if they are being fetched
+        model.addAttribute("bookings", userBookings); // Pass user's bookings to the view
 
         return "bookings"; // Ensure this points to the correct Thymeleaf template
     }
-}
 
+}

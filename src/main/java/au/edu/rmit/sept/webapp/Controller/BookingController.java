@@ -1,6 +1,9 @@
 package au.edu.rmit.sept.webapp.controller;
 
+import au.edu.rmit.sept.webapp.model.Booking;
 import au.edu.rmit.sept.webapp.service.BookingService;
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -23,6 +26,9 @@ public class BookingController {
 
     @Autowired
     private BookingService bookingService;
+
+    @Autowired
+    private LoginController loginController;
 
     // New GetMapping for the clinicSelector page
     @GetMapping("/selectClinic")
@@ -51,6 +57,8 @@ public class BookingController {
             @RequestParam("clinicName") String clinicName,
             @RequestParam("userEmail") String userEmail,
             RedirectAttributes redirectAttributes) {
+
+            System.out.println("Creating booking for userEmail: " + userEmail);
 
         // Debugging Statements
         System.out.println("Received booking request for date: " + bookingDate);
