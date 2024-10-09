@@ -1,6 +1,9 @@
 package au.edu.rmit.sept.webapp.controller;
 
+import au.edu.rmit.sept.webapp.model.Booking;
 import au.edu.rmit.sept.webapp.service.BookingService;
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -24,6 +27,9 @@ public class BookingController {
     @Autowired
     private BookingService bookingService;
 
+    @Autowired
+    private LoginController loginController;
+
     // New GetMapping for the clinicSelector page
     @GetMapping("/selectClinic")
     public String selectClinic() {
@@ -44,18 +50,26 @@ public class BookingController {
         return bookingService.getAvailableTimeSlots(date, clinicName);
     }
 
-    // New POST mapping to handle the booking creation
     @PostMapping("/createBooking")
     public String createBooking(
             @RequestParam("bookingDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate bookingDate,
             @RequestParam("timeSlot") String timeSlot,
             @RequestParam("clinicName") String clinicName,
+            @RequestParam("userEmail") String userEmail,
             RedirectAttributes redirectAttributes) {
+
+            System.out.println("Creating booking for userEmail: " + userEmail);
+
+        // Debugging Statements
+        System.out.println("Received booking request for date: " + bookingDate);
+        System.out.println("Time Slot: " + timeSlot);
+        System.out.println("Clinic Name: " + clinicName);
+        System.out.println("User Email: " + userEmail);
 
         // Check if the time slot is already booked
         if (bookingService.isTimeSlotAvailable(bookingDate, timeSlot, clinicName)) {
             // Save the booking if the time slot is available
-            bookingService.createBooking(bookingDate, timeSlot, clinicName);
+            bookingService.createBooking(bookingDate, timeSlot, clinicName, userEmail);
             return "redirect:/bookings";
         } else {
             // Redirect back to the make booking page with an error message if the time slot is taken

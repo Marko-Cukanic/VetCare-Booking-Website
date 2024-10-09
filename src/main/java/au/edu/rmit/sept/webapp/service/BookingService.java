@@ -21,10 +21,11 @@ public class BookingService {
     private static final String[] DOCTORS = {"Dr. Cukanic", "Dr. Saleh", "Dr. Dao", "Dr. Le", "Dr. Thai"};
 
     // Method to create a booking
-    public Booking createBooking(LocalDate bookingDate, String timeSlot, String clinicName) {
+    public Booking createBooking(LocalDate bookingDate, String timeSlot, String clinicName, String userEmail) {
         String doctor = getRandomDoctor();
-
-        Booking booking = new Booking(bookingDate, timeSlot, clinicName, doctor);
+    
+        // Updated constructor to include userEmail
+        Booking booking = new Booking(bookingDate, timeSlot, clinicName, doctor, userEmail);
         return bookingRepository.save(booking);
     }
 
@@ -77,4 +78,9 @@ public class BookingService {
 
         return availableSlots;
     }
+
+    public List<Booking> getBookingsByUserEmail(String userEmail) {
+        return bookingRepository.findByUserEmail(userEmail);
+    }
+    
 }

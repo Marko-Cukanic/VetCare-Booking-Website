@@ -74,3 +74,32 @@ body, html {
     background-color: #ccc;
     cursor: not-allowed;
 }
+
+/* Styling for the login prompt */
+#login-prompt {
+    position: fixed; /* Stay in one place on the screen */
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Adjust to truly center */
+    background-color: #ffffff; /* White background for clarity */
+    border: 1px solid #ccc; /* Light border for separation */
+    padding: 20px; /* Padding for a clean appearance */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Subtle shadow effect */
+    z-index: 1000; /* Ensure it stays on top of other content */
+    text-align: center; /* Center text inside the prompt */
+}
+
+/* Text styling inside the login prompt */
+#login-prompt p {
+    font-size: 1rem;
+    color: #333; /* Dark color for better readability */
+}
+
+#login-prompt a {
+    color: #007bff; /* Consistent link color */
+    text-decoration: none; /* Remove underline */
+}
+
+#login-prompt a:hover {
+    text-decoration: underline; /* Underline on hover */
+}
