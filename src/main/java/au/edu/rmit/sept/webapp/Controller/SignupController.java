@@ -43,6 +43,24 @@ public class SignupController {
             return "signup";
         }
 
+        // Check if fullname is empty
+        if (fullname == null || fullname.trim().isEmpty()) {
+            model.addAttribute("errorMessage", "Fullname is required.");
+            return "signup"; // Stay on the signup page with error message
+        }
+
+        // Check password length (minimum)
+        if (password.length() < 8) {
+            model.addAttribute("errorMessage", "Password must be at least 8 characters.");
+            return "signup"; // Stay on the signup page with error message
+        }
+
+        // Check password length (maximum)
+        if (password.length() > 100) {
+            model.addAttribute("errorMessage", "Password must be at most 100 characters.");
+            return "signup"; // Stay on the signup page with error message
+        }
+
         // Create a new user and save it to the repository
         User newUser = new User(null, fullname, email, password);
         userRepository.save(newUser);
