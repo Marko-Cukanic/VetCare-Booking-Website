@@ -22,10 +22,14 @@ public class LogoutControllerTest {
     @MockBean
     private UserRepository userRepository;  
 
+    @Autowired
+    private LoginController loginController; // Used to directly manipulate the controller state
+
     @Test
     public void logoutUser_ValidSession_Success() throws Exception {
-        // Mock a session token
+        // Simulate a user being logged in by adding a session token to the sessionTokens map
         String sessionToken = "mock-session-token";
+        loginController.getSessionTokens().put(sessionToken, "test@example.com");
 
         // Perform a GET request to logout
         mockMvc.perform(get("/logout")
@@ -38,6 +42,15 @@ public class LogoutControllerTest {
     public void logoutUser_NoSessionToken_Success() throws Exception {
         // Perform a GET request without a session token
         mockMvc.perform(get("/logout"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("You have successfully logged out."));
+    }
+
+    @Test
+    public void logoutUser_InvalidSessionToken_Success() throws Exception {
+        // Perform a GET request with an invalid session token
+        mockMvc.perform(get("/logout")
+                .param("sessionToken", "invalid-session-token"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("You have successfully logged out."));
     }

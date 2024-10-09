@@ -57,6 +57,41 @@ public class PrescriptionControllerTest {
     }
 
     @Test
+    public void getPrescriptionsAndHistory_InvalidSessionToken_Failure() throws Exception {
+        // Simulate an invalid session token
+        String invalidSessionToken = "invalid-session-token";
+
+        // Perform a GET request with an invalid session token
+        mockMvc.perform(get("/prescriptions").param("sessionToken", invalidSessionToken))
+                .andExpect(status().isOk())
+                .andExpect(view().name("prescriptions"))
+                .andExpect(model().attribute("isLoggedIn", false));
+    }
+
+
+    @Test
+    public void getPrescriptionsAndHistory_ValidAdminSessionToken_Success() throws Exception {
+        // Mock session token and admin login response
+        String adminSessionToken = "admin-session-token";
+        String adminEmail = "admin@vetcare.com";
+        Map<String, String> sessionTokens = new HashMap<>();
+        sessionTokens.put(adminSessionToken, adminEmail);
+
+        when(loginController.getSessionTokens()).thenReturn(sessionTokens);
+        when(prescriptionService.getPrescriptionsByEmail(adminEmail)).thenReturn(Collections.emptyList());
+        when(prescriptionHistoryService.getPrescriptionHistoriesByEmail(adminEmail)).thenReturn(Collections.emptyList());
+
+        // Perform a GET request with a valid admin session token
+        mockMvc.perform(get("/prescriptions").param("sessionToken", adminSessionToken))
+                .andExpect(status().isOk())
+                .andExpect(view().name("prescriptions"))
+                .andExpect(model().attribute("isLoggedIn", true))
+                .andExpect(model().attribute("isAdmin", true))
+                .andExpect(model().attribute("prescriptions", Collections.emptyList()))
+                .andExpect(model().attribute("histories", Collections.emptyList()));
+    }
+
+    @Test
     public void getPrescriptionsAndHistory_NoSessionToken_Failure() throws Exception {
         // Perform a GET request without a session token
         mockMvc.perform(get("/prescriptions"))
