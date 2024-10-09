@@ -25,64 +25,78 @@ public class PrescriptionOrderController {
 
     // Step 1: Confirm the order
     @PostMapping("/confirmOrder")
-    public String confirmOrder(@RequestParam("medication") Long prescriptionId, 
-                               @RequestParam("quantity") int quantity, 
-                               Model model) {
+public String confirmOrder(@RequestParam("medication") Long prescriptionId, 
+                           @RequestParam("quantity") int quantity, 
+                           Model model) {
 
-        // Retrieve the selected prescription using the prescription ID
-        Prescription prescription = prescriptionService.getPrescriptionById(prescriptionId);
+    // Retrieve the selected prescription using the prescription ID
+    Prescription prescription = prescriptionService.getPrescriptionById(prescriptionId);
 
-        // Add prescription and quantity details to the model for confirmation
-        model.addAttribute("prescription", prescription);
-        model.addAttribute("quantity", quantity);
-
-        // Redirect to the confirmOrder page for user confirmation
-        return "confirmOrder"; 
+    if (prescription == null) {
+        // Prescription not found, add an error message to the model
+        model.addAttribute("errorMessage", "Prescription not found.");
+        model.addAttribute("isPrescriptionValid", false);
+        return "confirmOrder"; // Render the page with the error message
     }
 
-        // Step 2: Finalize the order
-        @PostMapping("/finaliseOrder")
-    public String finaliseOrder(@RequestParam("medicationId") Long medicationId, 
-                                @RequestParam("quantity") int quantity, 
-                                Model model) {
+    // Add prescription and quantity details to the model for confirmation
+    model.addAttribute("prescription", prescription);
+    model.addAttribute("quantity", quantity);
+    model.addAttribute("isPrescriptionValid", true);
 
-        // Fetch the selected prescription using the prescription ID
-        Prescription prescription = prescriptionService.getPrescriptionById(medicationId);
+    // Redirect to the confirmOrder page for user confirmation
+    return "confirmOrder"; 
+}
 
-        // Set 'is_ordered' to true before updating
-        prescription.setOrdered(true);
+@PostMapping("/finaliseOrder")
+public String finaliseOrder(@RequestParam("medicationId") Long medicationId, 
+                            @RequestParam("quantity") int quantity, 
+                            Model model) {
 
-        // Save the updated prescription back to the database
-        prescriptionService.savePrescription(prescription);
+    // Fetch the selected prescription using the prescription ID
+    Prescription prescription = prescriptionService.getPrescriptionById(medicationId);
 
-        String userEmail = prescription.getEmail();  // Ensure the prescription has the email
+    if (prescription == null) {
+        // Prescription not found, add an error message to the model
+        model.addAttribute("errorMessage", "Prescription not found.");
+        model.addAttribute("isPrescriptionValid", false);
+        return "confirmOrder"; // Render an error page or the same form with an error message
+    }
 
-        // Create a new PrescriptionHistory object
-        PrescriptionHistory history = new PrescriptionHistory();
-        history.setMedicationName(prescription.getMedicationName());
-        history.setPetName(prescription.getPetName());
-        history.setStartDate(prescription.getPrescriptionDate());  
+    // Set 'is_ordered' to true before updating
+    prescription.setOrdered(true);
 
-        // Set the end date to 3 months after the start date
-        LocalDate startDateLocal = prescription.getPrescriptionDate().toInstant()
+    // Save the updated prescription back to the database
+    prescriptionService.savePrescription(prescription);
+
+    String userEmail = prescription.getEmail();  // Ensure the prescription has the email
+
+    // Create a new PrescriptionHistory object
+    PrescriptionHistory history = new PrescriptionHistory();
+    history.setMedicationName(prescription.getMedicationName());
+    history.setPetName(prescription.getPetName());
+    history.setStartDate(prescription.getPrescriptionDate());
+
+    // Set the end date to 3 months after the start date
+    LocalDate startDateLocal = prescription.getPrescriptionDate().toInstant()
             .atZone(ZoneId.systemDefault()).toLocalDate();
-        LocalDate endDateLocal = startDateLocal.plusMonths(3);
-        Date endDate = Date.from(endDateLocal.atStartOfDay(ZoneId.systemDefault()).toInstant());
+    LocalDate endDateLocal = startDateLocal.plusMonths(3);
+    Date endDate = Date.from(endDateLocal.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-        history.setEndDate(endDate);  // Set the end date
-        history.setVetName(prescription.getVetName());
-        history.setEmail(userEmail);  // Set the email
+    history.setEndDate(endDate);  // Set the end date
+    history.setVetName(prescription.getVetName());
+    history.setEmail(userEmail);  // Set the email
+    history.setQuantity(quantity);
 
-        history.setQuantity(quantity);
+    // Save the new history record to the prescription_history table
+    prescriptionHistoryService.savePrescriptionHistory(history);
 
-        // Save the new history record to the prescription_history table
-        prescriptionHistoryService.savePrescriptionHistory(history);
+    // Add prescription details to the model for success message
+    model.addAttribute("prescription", prescription);
+    model.addAttribute("quantity", quantity);
+    model.addAttribute("isPrescriptionValid", true);
 
-        // Add prescription details to the model for success message
-        model.addAttribute("prescription", prescription);
-        model.addAttribute("quantity", quantity);
-
-        // Redirect to the success page after saving the order
-        return "orderSuccess";  
+    // Redirect to the success page after saving the order
+    return "orderSuccess";  
     }
 }
