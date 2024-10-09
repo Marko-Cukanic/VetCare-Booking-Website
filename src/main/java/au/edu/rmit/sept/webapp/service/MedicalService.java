@@ -32,9 +32,14 @@ public class MedicalService {
 
     //Saving/adding records
     public void saveMedicalRecord(Medical medicalRecord) throws DuplicateRecordException {
-        if (medicalRepository.existsByPetIDAndPetName(medicalRecord.getPetID(), medicalRecord.getPetName())) {
-            throw new DuplicateRecordException("A record with this petID or pet name already exists.");
-        }
+        if (medicalRepository.existsByPetID(medicalRecord.getPetID())) {
+            throw new DuplicateRecordException("A record with this petID already exists.");
+        } 
+        
+        if (medicalRepository.existsByEmailAndPetName(medicalRecord.getEmail(), medicalRecord.getPetName())) {
+            throw new DuplicateRecordException("A record with this pet name already exists.");
+        } 
+
         medicalRepository.save(medicalRecord);  
     }
 }
