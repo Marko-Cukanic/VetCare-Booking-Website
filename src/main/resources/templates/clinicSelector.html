@@ -6,31 +6,66 @@
     <link rel="stylesheet" th:href="@{/css/navbar.css}">
     <link rel="stylesheet" th:href="@{/css/clinicSelector.css}">
 </head>
+
+    <!-- Include JavaScript for session token checking -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Session Token Verification Script
+            function checkSessionToken() {
+                const sessionToken = localStorage.getItem('sessionToken');
+                const currentUrl = window.location.href;
+    
+                if (sessionToken && !currentUrl.includes('sessionToken')) {
+                    window.location.href = `/clinicSelector?sessionToken=${encodeURIComponent(sessionToken)}`;
+                } else if (!sessionToken) {
+                    const loginPrompt = document.getElementById('login-prompt');
+                    const selectButton = document.getElementById('selectButton');
+    
+                    if (loginPrompt) {
+                        loginPrompt.style.display = 'block';
+                    }
+    
+                    if (selectButton) {
+                        selectButton.disabled = true; // Disable the Select button if not logged in
+                    }
+                }
+            }
+    
+            checkSessionToken(); // Call the function to check the session token
+        });
+    </script>
+      
 <body>
 
     <!-- Navbar insertion -->
     <div th:insert="~{fragments/navbar :: navbar}"></div>
 
-    <!-- Title Container -->
-    <div class="title-container">
-        <h1>Select a Clinic</h1>
+    <!-- Login prompt in case the user is not logged in -->
+    <div id="login-prompt" style="display: none;" th:if="${!isLoggedIn}">
+        <p>Please <a th:href="@{/login}">log in</a> to access clinic selection.</p>
     </div>
 
-    <!-- Clinic Dropdown and Select Button -->
-    <div class="content-container">
-        <div class="dropdown-container">
-            <select id="clinicSelect">
-                <option th:each="clinic : ${clinics}" th:value="${clinic.name}"
-                        th:text="${clinic.name + ' | Price: $' + clinic.price + ' | Rating: ' + clinic.rating + '/5 Star'}">
-                </option>
-            </select>
+    <main th:if="${isLoggedIn}">
+        <!-- Title Container -->
+        <div class="title-container">
+            <h1>Select a Clinic</h1>
         </div>
 
-         <!-- Select Button -->
-         <div class="button-container">
-            <button id="selectButton" type="button" onclick="redirectToMakeBooking()">Select</button>
+        <!-- Clinic Dropdown and Select Button -->
+        <div class="content-container">
+            <div class="dropdown-container">
+                <select id="clinicSelect">
+                    <option th:each="clinic : ${clinics}" th:value="${clinic.name}"
+                            th:text="${clinic.name + ' | Price: $' + clinic.price + ' | Rating: ' + clinic.rating + '/5 Star'}">
+                    </option>
+                </select>
+            </div>
+
+            <!-- Select Button -->
+            <div class="button-container">
+                <button id="selectButton" type="button" onclick="redirectToMakeBooking()">Select</button>
+            </div>
         </div>
-    </div>
 
     <script>
         function redirectToMakeBooking() {
@@ -38,6 +73,7 @@
             window.location.href = "/makebooking?clinicName=" + encodeURIComponent(selectedClinic);
         }
     </script>
+    </main>
 
 </body>
 </html>
