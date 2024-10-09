@@ -44,18 +44,24 @@ public class BookingController {
         return bookingService.getAvailableTimeSlots(date, clinicName);
     }
 
-    // New POST mapping to handle the booking creation
     @PostMapping("/createBooking")
     public String createBooking(
             @RequestParam("bookingDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate bookingDate,
             @RequestParam("timeSlot") String timeSlot,
             @RequestParam("clinicName") String clinicName,
+            @RequestParam("userEmail") String userEmail,
             RedirectAttributes redirectAttributes) {
+
+        // Debugging Statements
+        System.out.println("Received booking request for date: " + bookingDate);
+        System.out.println("Time Slot: " + timeSlot);
+        System.out.println("Clinic Name: " + clinicName);
+        System.out.println("User Email: " + userEmail);
 
         // Check if the time slot is already booked
         if (bookingService.isTimeSlotAvailable(bookingDate, timeSlot, clinicName)) {
             // Save the booking if the time slot is available
-            bookingService.createBooking(bookingDate, timeSlot, clinicName);
+            bookingService.createBooking(bookingDate, timeSlot, clinicName, userEmail);
             return "redirect:/bookings";
         } else {
             // Redirect back to the make booking page with an error message if the time slot is taken

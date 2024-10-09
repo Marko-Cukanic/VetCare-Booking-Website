@@ -38,6 +38,7 @@
         <input type="hidden" name="clinicName" id="selectedClinicInput" th:value="${param.clinicName}" required />
         <input type="hidden" name="bookingDate" id="selectedDateInput" required />
         <input type="hidden" name="timeSlot" id="selectedTimeSlotInput" required />
+        <input type="hidden" name="userEmail" id="userEmailInput" value="${session.userEmail}" required /> <!-- Hidden userEmail field -->
         
         <!-- Select Button at the bottom right -->
         <button id="selectButton" type="submit" disabled>Select</button>
