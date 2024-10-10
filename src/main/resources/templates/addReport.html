@@ -103,14 +103,14 @@
                 <label for="petName">Pet Name:</label>
                 <input type="text" id="petName" name="petName" required>
 
-                <label for="petID">Pet ID:</label>
+                <label for="petID">Pet ID (Must be 15 Digits):</label>
                 <input type="text" id="petID" name="petID" pattern="^\d{15}$" maxlength="15" required
                     title="Pet ID must be exactly 15 digits.">
         
                 <label for="petAge">Age:</label>
                 <select id="petAge" name="petAge" required>
                     <option value="">Select Age</option>
-                    <th:block th:each="age : ${#numbers.sequence(0, 99)}">
+                    <th:block th:each="age : ${#numbers.sequence(0, 20)}">
                         <option th:value="${age}" th:text="${age}">0</option>
                     </th:block>
                 </select>
