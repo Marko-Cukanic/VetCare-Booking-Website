@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>My Pets - VetCare</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <main>
+        <h2>My Pets</h2>
+        <div class="pet-list" th:if="${pets.size() > 0}">
+            <ul>
+                <li th:each="pet : ${pets}">
+                    <div class="pet-card">
+                        <h3 th:text="${pet.petName}">Pet Name</h3>
+                        <p><strong>Breed:</strong> <span th:text="${pet.petBreed}">Breed</span></p>
+                        <p><strong>Age:</strong> <span th:text="${pet.petAge}">Age</span></p>
+                        <p><strong>Type:</strong> <span th:text="${pet.petType}">Type</span></p>
+                        <p><strong>Weight:</strong> <span th:text="${pet.petWeight}">Weight</span> kg</p>
+                        <p><strong>Sex:</strong> <span th:text="${pet.petSex}">Sex</span></p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div th:if="${pets.size() == 0}">
+            <p>No pets found. <a th:href="@{/addpet}">Add a new pet</a></p>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sessionToken = localStorage.getItem('sessionToken');
+            if (!sessionToken) {
+                alert('Please log in to access your pets.');
+                window.location.href = '/login';
+            }
+        });
+    </script>
+</body>
+</html>
