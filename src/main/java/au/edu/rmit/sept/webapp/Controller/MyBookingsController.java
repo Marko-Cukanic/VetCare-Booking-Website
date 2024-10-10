@@ -41,7 +41,7 @@ public class MyBookingsController {
         model.addAttribute("isLoggedIn", true);
 
         // Fetch bookings for the logged-in user and display them
-        List<Booking> userBookings = bookingService.getBookingsByUserEmail(userEmail);
+        List<Booking> userBookings = bookingService.getUpcomingBookings(userEmail);
         System.out.println("User Bookings: " + userBookings); // Print the bookings to check if they are being fetched
         model.addAttribute("bookings", userBookings); // Pass user's bookings to the view
 
