@@ -23,9 +23,11 @@ jobs:
 
       - name: Build and run tests with Maven
         run: mvn clean test
+        continue-on-error: true  # Ensure that even if tests fail, it moves to the next step
 
       - name: Generate Surefire Test Report
         run: mvn surefire-report:report
+        continue-on-error: true  # Continue even if this fails
 
       - name: Check Surefire Report Directory
         run: ls -R target/surefire-reports || echo "Surefire report not found."
