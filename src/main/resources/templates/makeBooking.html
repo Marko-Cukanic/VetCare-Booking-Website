@@ -38,6 +38,7 @@
         <input type="hidden" name="clinicName" id="selectedClinicInput" th:value="${param.clinicName}" required />
         <input type="hidden" name="bookingDate" id="selectedDateInput" required />
         <input type="hidden" name="timeSlot" id="selectedTimeSlotInput" required />
+        <input type="hidden" name="userEmail" th:value="${session.userEmail}" /> <!-- Add this hidden field for user email -->
         
         <!-- Select Button at the bottom right -->
         <button id="selectButton" type="submit" disabled>Select</button>
@@ -84,6 +85,7 @@
                     
                     // If the clicked date is today, do not allow selection
                     if (clickedDate.toDateString() === today.toDateString()) {
+                        alert("Same day bookings are not allowed. Please select a different date.");
                         return; // Do nothing if today is clicked, but still visually show it
                     }
 

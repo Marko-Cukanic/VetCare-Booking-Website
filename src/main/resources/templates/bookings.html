@@ -6,47 +6,82 @@
     <link rel="stylesheet" th:href="@{/css/navbar.css}">
     <link rel="stylesheet" th:href="@{/css/bookings.css}">
 </head>
+
+<!-- Include JavaScript for session token checking -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        function checkSessionToken() {
+            const sessionToken = localStorage.getItem('sessionToken');
+            const currentUrl = window.location.href;
+
+            if (sessionToken && !currentUrl.includes('sessionToken')) {
+                window.location.href = `/bookings?sessionToken=${encodeURIComponent(sessionToken)}`;
+            } else if (!sessionToken) {
+                const loginPrompt = document.getElementById('login-prompt');
+                const bookingList = document.querySelector('.booking-list');
+
+                if (loginPrompt) {
+                    loginPrompt.style.display = 'block';
+                }
+
+                if (bookingList) {
+                    bookingList.style.display = 'none'; // Hide booking list if not logged in
+                }
+            }
+        }
+
+        checkSessionToken();
+    });
+</script>
 <body>
 
-    <!-- Second Header with Title -->
-    <div class="Header">
-        <div th:insert="~{fragments/navbar :: navbar}"></div>
-        <div class="title-container">
-            <h1>My Booking/s</h1>
-        </div>
+    <!-- Login prompt in case the user is not logged in -->
+    <div id="login-prompt" style="display: none;">
+        <p>Please <a th:href="@{/login}">Log in</a> to view your upcoming appointments.</p>
     </div>
 
-    <!-- Container to hold all the bookings -->
-    <div class="booking-list">
-
-        <!-- Conditional to check if bookings list is empty -->
-        <div th:if="${#lists.isEmpty(bookings)}">
-            <p class="noAppointmentCondition">You have no upcoming appointments.</p>
-        </div>
-
-        <!-- Loop through each booking and display it as a horizontal bar -->
-        <div th:each="booking : ${bookings}" class="booking-bar">
-            <span class="booking-info-top">
-                Booking at: <span th:text="${booking.clinicName}">Time</span>
-            </span>
-            <span class="booking-info-bottom">
-                At <span th:text="${booking.timeSlot}">Time</span> on 
-                <span th:text="${booking.bookingDate}">Date</span> with
-                <span th:text="${booking.doctor}">Doctor</span>
-            </span>
-            <!-- Add Reschedule and Cancel Buttons -->
-            <div class="booking-actions">
-                <!-- Reschedule Button -->
-                <button class="reschedule-button" th:onclick="'confirmReschedule(' + ${booking.id} + ');'">
-                    <img th:src="@{/images/reschedule.png}" alt="Reschedule" />
-                </button>
-                <!-- Cancel Button -->
-                <button class="cancel-button" th:onclick="confirmCancel([[${booking.id}]])">
-                    <img th:src="@{/images/cancel.png}" alt="Cancel" />
-                </button>
+    <main>
+        <!-- Second Header with Title -->
+        <div class="Header">
+            <div th:insert="~{fragments/navbar :: navbar}"></div>
+            <div class="title-container">
+                <h1>My Booking/s</h1>
             </div>
         </div>
-    </div>
+
+        <!-- Container to hold all the bookings -->
+        <div class="booking-list">
+
+            <!-- Conditional to check if bookings list is empty -->
+            <div th:if="${#lists.isEmpty(bookings)}">
+                <p class="noAppointmentCondition">You have no upcoming appointments.</p>
+            </div>
+
+            <!-- Loop through each booking and display it as a horizontal bar -->
+            <div th:each="booking : ${bookings}" class="booking-bar">
+                <span class="booking-info-top">
+                    Booking at: <span th:text="${booking.clinicName}">Time</span>
+                </span>
+                <span class="booking-info-bottom">
+                    At <span th:text="${booking.timeSlot}">Time</span> on 
+                    <span th:text="${booking.bookingDate}">Date</span> with
+                    <span th:text="${booking.doctor}">Doctor</span>
+                </span>
+                <!-- Add Reschedule and Cancel Buttons -->
+                <div class="booking-actions">
+                    <!-- Reschedule Button -->
+                    <button class="reschedule-button" th:onclick="'confirmReschedule(' + ${booking.id} + ');'" title="Reschedule this booking">
+                        <img th:src="@{/images/reschedule.png}" alt="Reschedule" />
+                    </button>
+
+                    <!-- Cancel Button -->
+                    <button class="cancel-button" th:onclick="confirmCancel([[${booking.id}]])" title="Cancel this booking">
+                        <img th:src="@{/images/cancel.png}" alt="Cancel" />
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
 
     <script>
         function confirmReschedule(bookingId) {

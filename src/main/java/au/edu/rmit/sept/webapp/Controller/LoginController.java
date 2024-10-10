@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class LoginController {
 
@@ -29,25 +31,21 @@ public class LoginController {
 
     @PostMapping("/login")
     @ResponseBody
-    public String loginUser(@RequestParam String email, @RequestParam String password, @RequestParam(required = false) String sessionToken) {
-        // Check if the user is already logged in by verifying the session token
-        if (sessionToken != null && sessionTokens.containsKey(sessionToken)) {
-            return "You are already logged in!";
-        }
-    
+    public String loginUser(@RequestParam String email, @RequestParam String password, HttpSession session) {
         // Find the user by email
         User user = userRepository.findByEmail(email);
-    
-        // Fix: use getPassword() instead of password()
+
         if (user == null || !user.getPassword().equals(password)) {
-            // If no user is found or password doesn't match, return an error message
             return "Invalid email or password.";
         }
-    
+
+        // Store the user email in the HTTP session upon successful login
+        session.setAttribute("userEmail", email);
+
         // Generate a new session token
         String newSessionToken = UUID.randomUUID().toString();
         sessionTokens.put(newSessionToken, email); // Store the token with the user's email
-    
+
         // Return the session token to the client
         return newSessionToken;
     }

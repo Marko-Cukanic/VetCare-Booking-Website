@@ -11,4 +11,7 @@ import java.util.List;
 public interface BookingRepository extends JpaRepository<Booking, Long> {
     // Find bookings by date and clinic
     List<Booking> findByBookingDateAndClinicName(LocalDate bookingDate, String clinicName);
+
+    // New method to find bookings by user email
+    List<Booking> findByUserEmail(String userEmail);
 }

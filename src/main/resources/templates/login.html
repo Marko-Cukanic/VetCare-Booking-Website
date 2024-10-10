@@ -31,6 +31,9 @@
                     // Store the session token in local storage
                     localStorage.setItem('sessionToken', data);
 
+                    // Also store the user's email in localStorage
+                    localStorage.setItem('userEmail', email);
+
                     // Redirect to the homepage
                     window.location.href = '/';
                 }

@@ -24,6 +24,9 @@ public class Booking {
     @Column(name = "doctor", nullable = false)
     private String doctor;
 
+    @Column(name = "user_email", nullable = false)
+    private String userEmail;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
@@ -33,11 +36,12 @@ public class Booking {
         this.createdAt = LocalDateTime.now();
     }
 
-    public Booking(LocalDate bookingDate, String timeSlot, String clinicName, String doctor) {
+    public Booking(LocalDate bookingDate, String timeSlot, String clinicName, String doctor, String userEmail) {
         this.bookingDate = bookingDate;
         this.timeSlot = timeSlot;
         this.clinicName = clinicName;
         this.doctor = doctor;
+        this.userEmail = userEmail;
         this.createdAt = LocalDateTime.now();
     }
 
@@ -75,6 +79,15 @@ public class Booking {
 
     public void setDoctor(String doctor){
         this.doctor = doctor;
+    }
+
+    // Getter and Setter for userEmail
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
     public LocalDateTime getCreatedAt() {
