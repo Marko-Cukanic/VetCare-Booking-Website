@@ -1,5 +1,7 @@
 package au.edu.rmit.sept.webapp.service;
 
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamSource;
@@ -27,6 +29,20 @@ public class EmailService {
 
         mailSender.send(message);
     }
+
+    // Sending booking confirmation email
+    @Async
+    public void sendBookingConfirmationEmail(String toEmail, String clinicName, LocalDate bookingDate, String timeSlot) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(toEmail);
+        message.setSubject("Booking Confirmation - VetCare");
+        message.setText("Dear User,\n\nYour booking has been confirmed at " + clinicName +
+                ".\n\nDetails:\nDate: " + bookingDate + "\nTime: " + timeSlot +
+                "\n\nThank you for choosing VetCare.\n\nBest regards,\nVetCare Team");
+
+        mailSender.send(message);
+    }
+
 
     // Sending email with PDF attachment
     @Async

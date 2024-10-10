@@ -1,6 +1,11 @@
 package au.edu.rmit.sept.webapp.controller;
 
 import au.edu.rmit.sept.webapp.service.BookingService;
+<<<<<<< HEAD
+
+import au.edu.rmit.sept.webapp.service.EmailService;
+import jakarta.servlet.http.HttpSession;
+>>>>>>> db132dcba206da3e43c68a52685069f24ca76164
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -14,9 +19,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
-
-
-
 import java.time.LocalDate;
 
 @Controller
@@ -25,7 +27,15 @@ public class BookingController {
     @Autowired
     private BookingService bookingService;
 
+<<<<<<< HEAD
     
+=======
+    @Autowired
+    private EmailService emailService;
+
+    @Autowired
+    private LoginController loginController;
+>>>>>>> db132dcba206da3e43c68a52685069f24ca76164
 
     // New GetMapping for the clinicSelector page
     @GetMapping("/selectClinic")
@@ -42,7 +52,8 @@ public class BookingController {
     // Endpoint to get available time slots for a given date
     @GetMapping("/availableTimeSlots")
     @ResponseBody
-    public List<String> getAvailableTimeSlots(@RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date, @RequestParam("clinicName") String clinicName){
+    public List<String> getAvailableTimeSlots(@RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date, 
+                                              @RequestParam("clinicName") String clinicName) {
         // Call the service method to get available time slots for the selected date
         return bookingService.getAvailableTimeSlots(date, clinicName);
     }
@@ -55,7 +66,7 @@ public class BookingController {
             @RequestParam("userEmail") String userEmail,
             RedirectAttributes redirectAttributes) {
 
-            System.out.println("Creating booking for userEmail: " + userEmail);
+        System.out.println("Creating booking for userEmail: " + userEmail);
 
         // Debugging Statements
         System.out.println("Received booking request for date: " + bookingDate);
@@ -66,7 +77,11 @@ public class BookingController {
         // Check if the time slot is already booked
         if (bookingService.isTimeSlotAvailable(bookingDate, timeSlot, clinicName)) {
             // Save the booking if the time slot is available
-            bookingService.createBooking(bookingDate, timeSlot, clinicName, userEmail);
+            Booking booking = bookingService.createBooking(bookingDate, timeSlot, clinicName, userEmail);
+
+            // Send booking confirmation email
+            emailService.sendBookingConfirmationEmail(userEmail, clinicName, bookingDate, timeSlot);
+
             return "redirect:/bookings";
         } else {
             // Redirect back to the make booking page with an error message if the time slot is taken

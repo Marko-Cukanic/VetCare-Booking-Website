@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>VetCare Home</title>
-    
+
     <!-- Reference to external CSS files -->
     <link rel="stylesheet" th:href="@{/css/home.css}">
     <link rel="stylesheet" th:href="@{/css/bookings.css}">
@@ -27,8 +27,6 @@
             <a href="/clinicSelector" class="book-appointment-button">Book an Appointment</a>
         </div>
 
-
-
         <!-- Next and Previous Buttons -->
         <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
         <a class="next" onclick="plusSlides(1)">&#10095;</a>
@@ -38,7 +36,16 @@
     <main>
         <section id="appointments">
             <h2>Upcoming Appointments:</h2>
-            <div class="booking-list">
+
+            <div th:if="${!isLoggedIn}">
+                <p>Please <a th:href="@{/login}">Log in</a> to view your upcoming appointments.</p>
+            </div>
+
+            <div th:if="${isLoggedIn}" class="booking-list">
+                <div th:if="${#lists.isEmpty(bookings)}">
+                    <p class="noAppointmentCondition">You have no upcoming appointments.</p>
+                </div>
+
                 <div th:each="booking : ${bookings}" class="booking-bar">
                     <span class="booking-info-top">
                         Booking at: <span th:text="${booking.clinicName}">Clinic Name</span>
@@ -49,11 +56,9 @@
                         <span th:text="${booking.doctor}">Doctor</span>
                     </span>
                     <div class="booking-actions">
-                        <!-- Reschedule Button -->
                         <button class="reschedule-button" th:onclick="'confirmReschedule(' + ${booking.id} + ');'">
                             <img th:src="@{/images/reschedule.png}" alt="Reschedule" />
                         </button>
-                        <!-- Cancel Button -->
                         <button class="cancel-button" th:onclick="confirmCancel([[${booking.id}]])">
                             <img th:src="@{/images/cancel.png}" alt="Cancel" />
                         </button>
@@ -61,7 +66,6 @@
                 </div>
             </div>
         </section>
-        
 
         <section id="welcome">
             <div>
@@ -81,20 +85,20 @@
         <p>&copy; 2024 VetCare. All rights reserved.</p>
     </footer>
 
+    <!-- JavaScript for session token checking -->
     <script>
-        function confirmReschedule(bookingId) {
-            if (confirm("Are you sure you want to reschedule this booking?")) {
-                // Redirect to the reschedule endpoint, which will handle booking deletion
-                window.location.href = "/rescheduleBooking/" + bookingId;
+        document.addEventListener('DOMContentLoaded', function () {
+            function checkSessionToken() {
+                const sessionToken = localStorage.getItem('sessionToken');
+                const currentUrl = window.location.href;
+
+                if (sessionToken && !currentUrl.includes('sessionToken')) {
+                    window.location.href = `/?sessionToken=${encodeURIComponent(sessionToken)}`;
+                }
             }
-        }
-    
-        function confirmCancel(bookingId) {
-            if (confirm("Are you sure you want to cancel this booking?")) {
-                // Redirect to the cancel endpoint, which will handle booking deletion
-                window.location.href = "/cancelBooking/" + bookingId;
-            }
-        }
+
+            checkSessionToken();
+        });
     </script>
 
     <!-- JavaScript for carousel functionality -->
@@ -124,10 +128,24 @@
 
             slides[slideIndex - 1].style.display = "block";  // Show the current slide
         }
-        // Auto-slide every 3 seconds
+        // Auto-slide every 6 seconds
         setInterval(function() {
             plusSlides(1);
         }, 6000);  // 6000 milliseconds = 6 seconds
+    </script>
+
+    <script>
+        function confirmReschedule(bookingId) {
+            if (confirm("Are you sure you want to reschedule this booking?")) {
+                window.location.href = "/rescheduleBooking/" + bookingId;
+            }
+        }
+
+        function confirmCancel(bookingId) {
+            if (confirm("Are you sure you want to cancel this booking?")) {
+                window.location.href = "/cancelBooking/" + bookingId;
+            }
+        }
     </script>
 
 </body>
