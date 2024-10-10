@@ -85,6 +85,7 @@
                     
                     // If the clicked date is today, do not allow selection
                     if (clickedDate.toDateString() === today.toDateString()) {
+                        alert("Same day bookings are not allowed. Please select a different date.");
                         return; // Do nothing if today is clicked, but still visually show it
                     }
 
