@@ -70,11 +70,12 @@
                 <!-- Add Reschedule and Cancel Buttons -->
                 <div class="booking-actions">
                     <!-- Reschedule Button -->
-                    <button class="reschedule-button" th:onclick="'confirmReschedule(' + ${booking.id} + ');'">
+                    <button class="reschedule-button" th:onclick="'confirmReschedule(' + ${booking.id} + ');'" title="Reschedule this booking">
                         <img th:src="@{/images/reschedule.png}" alt="Reschedule" />
                     </button>
+
                     <!-- Cancel Button -->
-                    <button class="cancel-button" th:onclick="confirmCancel([[${booking.id}]])">
+                    <button class="cancel-button" th:onclick="confirmCancel([[${booking.id}]])" title="Cancel this booking">
                         <img th:src="@{/images/cancel.png}" alt="Cancel" />
                     </button>
                 </div>
