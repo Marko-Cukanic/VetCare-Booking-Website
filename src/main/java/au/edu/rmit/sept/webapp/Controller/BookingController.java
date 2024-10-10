@@ -1,8 +1,6 @@
 package au.edu.rmit.sept.webapp.controller;
 
-import au.edu.rmit.sept.webapp.model.Booking;
 import au.edu.rmit.sept.webapp.service.BookingService;
-import jakarta.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -27,8 +25,7 @@ public class BookingController {
     @Autowired
     private BookingService bookingService;
 
-    @Autowired
-    private LoginController loginController;
+    
 
     // New GetMapping for the clinicSelector page
     @GetMapping("/selectClinic")
