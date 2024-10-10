@@ -33,4 +33,4 @@ password for mysql 1234
 
 http://localhost:8080/assignPrescription
 
-TO ASSIGN PRESCRIPTION WILL IMPLEMENT VET LOG IN
+To assign prescriptions log in with admin account and go to prescriptions page and press assign prescriptions then write the email you want to send it to.

@@ -21,9 +21,8 @@
                     <li><a th:href="@{/resources}">Educational Resources</a></li>
                     <li class="dropdown">
                         <a href="#">Profile</a>
-                        <div class="dropdown-content">
-                            <a th:href="@{/signup}">Signup</a>
-                            <a th:href="@{/login}">Login</a>
+                        <div class="dropdown-content" th:if="${session.loggedIn ?: false}">
+                            <a th:href="@{/mypets}">My Pets</a>
                             <!-- Logout link -->
                             <a href="#" onclick="handleLogout()">Logout</a>
                             <script>
@@ -50,12 +49,40 @@
                         
                             </script>
                         </div>
+                        <div class="dropdown-content" th:if="${!(session.loggedIn ?: false)}">
+                            <a th:href="@{/signup}">Signup</a>
+                            <a th:href="@{/login}">Login</a>
+                        </div>
                     </li>
                 </ul>
             </nav>
         </header>
     </div>
 
-    <!-- Move the script to the bottom of the body -->
+    <div id="login-prompt" style="display: none;">
+        <p>Please <a th:href="@{/login}">login</a> to access this feature.</p>
+    </div>
 </body>
+
+<!-- Move the script to the bottom of the body -->
+
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+
+        function checkSessionToken() {
+            const sessionToken = localStorage.getItem('sessionToken');
+            const currentUrl = window.location.href;
+
+            if (sessionToken && !currentUrl.includes('sessionToken')) {
+                window.location.href = `/prescriptions?sessionToken=${encodeURIComponent(sessionToken)}`;
+            } else if (!sessionToken) {
+                document.getElementById('login-prompt').style.display = 'block';
+            }
+        }
+
+        checkSessionToken();
+    });
+</script>
+
+
 </html>

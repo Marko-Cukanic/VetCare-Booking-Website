@@ -9,6 +9,7 @@ import au.edu.rmit.sept.webapp.service.PrescriptionService;
 import au.edu.rmit.sept.webapp.model.Prescription;
 import au.edu.rmit.sept.webapp.model.PrescriptionHistory;
 import au.edu.rmit.sept.webapp.service.PrescriptionHistoryService;
+import au.edu.rmit.sept.webapp.service.EmailService;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -23,36 +24,45 @@ public class PrescriptionOrderController {
     @Autowired
     private PrescriptionHistoryService prescriptionHistoryService;
 
+    @Autowired
+    private EmailService emailService;
+
     // Step 1: Confirm the order
     @PostMapping("/confirmOrder")
     public String confirmOrder(@RequestParam("medication") Long prescriptionId, 
                                @RequestParam("quantity") int quantity, 
                                Model model) {
 
-        // Retrieve the selected prescription using the prescription ID
         Prescription prescription = prescriptionService.getPrescriptionById(prescriptionId);
 
-        // Add prescription and quantity details to the model for confirmation
+        if (prescription == null) {
+            model.addAttribute("errorMessage", "Prescription not found.");
+            model.addAttribute("isPrescriptionValid", false);
+            return "confirmOrder";
+        }
+
         model.addAttribute("prescription", prescription);
         model.addAttribute("quantity", quantity);
+        model.addAttribute("isPrescriptionValid", true);
 
-        // Redirect to the confirmOrder page for user confirmation
         return "confirmOrder"; 
     }
 
-        // Step 2: Finalize the order
-        @PostMapping("/finaliseOrder")
+    @PostMapping("/finaliseOrder")
     public String finaliseOrder(@RequestParam("medicationId") Long medicationId, 
                                 @RequestParam("quantity") int quantity, 
                                 Model model) {
 
-        // Fetch the selected prescription using the prescription ID
         Prescription prescription = prescriptionService.getPrescriptionById(medicationId);
+
+        if (prescription == null) {
+            model.addAttribute("errorMessage", "Prescription not found.");
+            model.addAttribute("isPrescriptionValid", false);
+            return "confirmOrder";
+        }
 
         // Set 'is_ordered' to true before updating
         prescription.setOrdered(true);
-
-        // Save the updated prescription back to the database
         prescriptionService.savePrescription(prescription);
 
         String userEmail = prescription.getEmail();  // Ensure the prescription has the email
@@ -61,28 +71,31 @@ public class PrescriptionOrderController {
         PrescriptionHistory history = new PrescriptionHistory();
         history.setMedicationName(prescription.getMedicationName());
         history.setPetName(prescription.getPetName());
-        history.setStartDate(prescription.getPrescriptionDate());  
+        history.setStartDate(prescription.getPrescriptionDate());
 
-        // Set the end date to 3 months after the start date
         LocalDate startDateLocal = prescription.getPrescriptionDate().toInstant()
-            .atZone(ZoneId.systemDefault()).toLocalDate();
+                .atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate endDateLocal = startDateLocal.plusMonths(3);
         Date endDate = Date.from(endDateLocal.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-        history.setEndDate(endDate);  // Set the end date
+        history.setEndDate(endDate);
         history.setVetName(prescription.getVetName());
-        history.setEmail(userEmail);  // Set the email
-
+        history.setEmail(userEmail);
         history.setQuantity(quantity);
 
-        // Save the new history record to the prescription_history table
         prescriptionHistoryService.savePrescriptionHistory(history);
 
-        // Add prescription details to the model for success message
+        // Calculate the price based on quantity and a fixed price per unit (for example, $10 per unit)
+        double pricePerUnit = 10.0;
+        double totalPrice = quantity * pricePerUnit;
+
+        // Send the order confirmation email
+        emailService.sendPrescriptionOrderEmail(userEmail, prescription.getMedicationName(), quantity, totalPrice);
+
         model.addAttribute("prescription", prescription);
         model.addAttribute("quantity", quantity);
+        model.addAttribute("isPrescriptionValid", true);
 
-        // Redirect to the success page after saving the order
         return "orderSuccess";  
     }
 }

@@ -23,6 +23,9 @@ public class LoginControllerTest {
     @MockBean
     private UserRepository userRepository;  // Mock the repository to isolate the test
 
+    @Autowired
+    private LoginController loginController; // Used to directly manipulate the controller state
+
     @Test
     public void loginUser_ValidCredentials_Success() throws Exception {
         // Mock an existing user with valid credentials
@@ -52,16 +55,16 @@ public class LoginControllerTest {
 
     @Test
     public void loginUser_AlreadyLoggedIn_Message() throws Exception {
-        // Generate a mock session token
+        // Simulate a user already logged in by adding a session token to the sessionTokens map
         String sessionToken = "mock-session-token";
+        loginController.getSessionTokens().put(sessionToken, "test@example.com");
 
         // Perform a POST request simulating an already logged-in user
         mockMvc.perform(post("/login")
-        .param("email", "test@example.com")
-        .param("password", "password123")
-        .param("sessionToken", sessionToken))
-        .andDo(result -> System.out.println("Response: " + result.getResponse().getContentAsString()))
-        .andExpect(status().isOk());
-
+                .param("email", "newuser@example.com")
+                .param("password", "password123")
+                .param("sessionToken", sessionToken))
+                .andExpect(status().isOk())
+                .andExpect(content().string("You are already logged in!"));
     }
 }
