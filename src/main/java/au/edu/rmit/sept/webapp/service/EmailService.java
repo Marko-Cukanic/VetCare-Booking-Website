@@ -64,4 +64,31 @@ public class EmailService {
             e.printStackTrace(); 
         }
     }
+
+    @Async
+    public void sendPrescriptionOrderEmail(String toEmail, String medicationName, int quantity, double price) {
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            helper.setTo(toEmail);
+            helper.setSubject("Your Prescription Order Confirmation");
+
+            // Constructing the email message
+            String emailContent = "Dear Customer,\n\n" +
+                    "Thank you for ordering your prescription with VetCare. Here are the details of your order:\n\n" +
+                    "Medication Name: " + medicationName + "\n" +
+                    "Quantity: " + quantity + "\n" +
+                    "Total Price: $" + price + "\n\n" +
+                    "Your prescription will arrive at your address within 3-4 business days.\n\n" +
+                    "Best regards,\nVetCare Team";
+
+            helper.setText(emailContent);
+
+            // Send the email
+            mailSender.send(message);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+    }
 }
+
