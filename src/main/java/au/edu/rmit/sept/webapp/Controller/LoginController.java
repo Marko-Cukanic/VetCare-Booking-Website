@@ -41,6 +41,8 @@ public class LoginController {
 
         // Store the user email in the HTTP session upon successful login
         session.setAttribute("userEmail", email);
+        session.setAttribute("loggedIn", true); // Set the loggedIn attribute
+
 
         // Generate a new session token
         String newSessionToken = UUID.randomUUID().toString();
@@ -52,11 +54,13 @@ public class LoginController {
 
     @GetMapping("/logout")
     @ResponseBody
-    public String logout(@RequestParam(required = false) String sessionToken) {
+    public String logout(@RequestParam(required = false) String sessionToken, HttpSession session) {
         // Invalidate the session token
         if (sessionToken != null && sessionTokens.containsKey(sessionToken)) {
-            sessionTokens.remove(sessionToken);
+            sessionTokens.remove(sessionToken);   
         }
+        session.invalidate();
+
         // Return a success message
         return "You have successfully logged out.";
     }
