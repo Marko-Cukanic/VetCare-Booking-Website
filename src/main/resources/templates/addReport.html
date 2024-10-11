@@ -13,7 +13,7 @@
         var container = document.getElementById("medicalConditions");
         var div = document.createElement("div");
         div.className = "condition-group";  // Add class to wrap each condition input 
-        
+
         var input = document.createElement("input");
         input.type = "text";
         input.name = "medical_condition";
@@ -31,7 +31,7 @@
         div.appendChild(removeBtn);
         container.appendChild(div);
     }
-    
+
     function removeMedicalCondition(button) {
         const conditionDiv = button.parentElement;
         conditionDiv.remove();
@@ -42,7 +42,7 @@
         var container = document.getElementById("treatmentPlans");
         var div = document.createElement("div");
         div.className = "treatment-group";  // Class to wrap each treatment input
-        
+
         // Treatment name input
         var treatmentInput = document.createElement("input");
         treatmentInput.type = "text";
@@ -91,12 +91,50 @@
 
     <main>
         <form th:action="@{/addReport}" th:method="post">
-            
-            <!-- Display Selected Pet -->
+            <!-- Add Medical Details Section -->
             <div class="form-section">
-                <h3>Adding Report for <span th:text="${petName}"></span></h3>
-                <input type="hidden" name="petName" th:value="${petName}" />
-                <input type="hidden" name="email" th:value="${email}" />
+                <h3>Medical Report</h3>
+                <label>Email:</label>
+                <span th:text="${email}"></span> <!-- Display email with Thymeleaf -->
+                <input type="hidden" name="email" th:value="${email}" /> <!-- Hidden input for email -->
+                <span class="new-line"></span> 
+                <label for="petName">Pet Name:</label>
+                <input type="text" id="petName" name="petName" required>
+                <label for="petID">Pet ID (Must be 15 Digits):</label>
+                <input type="text" id="petID" name="petID" pattern="^\d{15}$" maxlength="15" required
+                    title="Pet ID must be exactly 15 digits.">
+        
+                <label for="petAge">Age:</label>
+                <select id="petAge" name="petAge" required>
+                    <option value="">Select Age</option>
+                    <th:block th:each="age : ${#numbers.sequence(0, 20)}">
+                        <option th:value="${age}" th:text="${age}">0</option>
+                    </th:block>
+                </select>
+                <label>Sex:</label>
+                <label for="male">
+                    <input type="radio" id="male" name="petSex" value="Male">
+                    Male
+                </label>
+                <label for="female">
+                    <input type="radio" id="female" name="petSex" value="Female">
+                    Female
+                </label>
+                <span class="new-line"></span> 
+                <label for="petType">Species:</label>
+                <label for="cat">
+                    <input type="radio" id="cat" name="petType" value="Cat">
+                    Cat
+                </label>
+                <label for="dog">
+                    <input type="radio" id="dog" name="petType" value="Dog">
+                    Dog
+                </label>
+                <span class="new-line"></span> 
+                <label for="petWeight">Weight (KG):</label>
+                <input type="number" id="petWeight" name="petWeight" required>
+                <label for="petBreed">Breed:</label>
+                <input type="text" id="petBreed" name="petBreed" required>
             </div>
 
             <!-- Add Vaccination History Section -->
@@ -114,4 +152,68 @@
                     </label>
 
                     <label for="bordetella">
-                        <input
+                        <input type="checkbox" id="bordetella" name="bordetella">
+                        Bordetella
+                    </label>
+                    <label for="lymeDisease">
+                        <input type="checkbox" id="lymeDisease" name="lymeDisease">
+                        Lyme Disease
+                    </label>
+                    <label for="rabies">
+                        <input type="checkbox" id="rabies" name="rabies">
+                        Rabies
+                    </label>
+                    <label for="panleukopenia">
+                        <input type="checkbox" id="panleukopenia" name="panleukopenia">
+                        Panleukopenia
+                    </label>
+                    <label for="caliciVirus">
+                        <input type="checkbox" id="caliciVirus" name="caliciVirus">
+                        Calicivirus
+                    </label>
+                    <label for="immunodeficiencyVirus">
+                        <input type="checkbox" id="immunodeficiencyVirus" name="immunodeficiencyVirus">
+                        Immunodeficiency Virus
+                    </label>
+                    <label for="chlamydiaFelis">
+                        <input type="checkbox" id="chlamydiaFelis" name="chlamydiaFelis">
+                        Chlamydia felis
+                    </label>
+                    <label for="leukemiaVirus">
+                        <input type="checkbox" id="leukemiaVirus" name="leukemiaVirus">
+                        Leukemia Virus
+                    </label>
+                </div>
+            </div>
+            <!-- Add Medical Condition Section -->
+            <div class="form-section">
+                <h3>Add Medical Condition</h3>
+                
+                <!-- Medical Conditions Input -->
+                <div id="medicalConditions">
+                    <input type="text" name="medical_condition" placeholder="Enter medical condition">
+                    <span class="new-line"></span> 
+                </div>
+                <button type="button" onclick="addCondition()">Add Another Condition</button>
+            </div>
+             <!-- Add Treatment Plan Section -->
+             <div class="form-section">
+                <h3>Add Medical Condition</h3>
+                
+                <!-- Medical Conditions Input -->
+                <div id="treatmentPlans">
+                    <input type="text" name="treatmentName" placeholder="Treatment Name" required>
+                    <input type="date" name="treatmentDate" placeholder="DD/MM/YYYY" required>
+                    
+                </div>
+                <button type="button" onclick="addTreatmentPlan()">Add Another Treatment Plan</button>
+            </div>
+            <button type="button" class="cancel-button" onclick="window.location.href='/medical'">Cancel</button>
+            <button type="submit">Save Report</button>
+        </form>
+    </main>
+    <footer>
+        <p>&copy; 2024 VetCare. All rights reserved.</p>
+    </footer>
+</body>
+</html>

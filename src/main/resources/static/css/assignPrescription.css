@@ -1,69 +1,80 @@
-/* Global Styles */
+/* General body styles */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f8ff; /* Light blue background */
+    color: #333;
     margin: 0;
     padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Main container styling */
+form {
+    max-width: 600px;
+    width: 100%;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    border: 2px solid #FFD700; /* Yellow border */
 }
 
 h1 {
     text-align: center;
-    margin-top: 20px;
-    font-size: 28px;
-    color: #333;
+    color: #5C9EAD; /* Calming blue-green */
+    margin-bottom: 20px;
+    font-family: 'Georgia', serif; /* Professional font */
 }
 
-/* Container Styles */
-form {
-    max-width: 600px;
-    margin: 50px auto;
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
+/* Label and input styles */
 label {
     display: block;
     margin-bottom: 8px;
     font-weight: bold;
     color: #555;
+    font-size: 14px;
 }
 
-input[type="email"],
+select,
 input[type="text"],
-input[type="number"],
 button {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     margin-bottom: 20px;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 16px;
+    box-sizing: border-box;
 }
 
-input[type="email"]:focus,
-input[type="text"]:focus,
-input[type="number"]:focus {
-    border-color: #007BFF;
+select:focus,
+input[type="text"]:focus {
+    border-color: #5C9EAD;
     outline: none;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    box-shadow: 0 0 5px rgba(92, 158, 173, 0.5);
 }
 
+/* Button styles */
 button {
-    background-color: #007BFF;
-    color: white;
+    background-color: #FFD700; /* Bright yellow for buttons */
+    color: #333;
     border: none;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 16px;
+    transition: background-color 0.3s;
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #FFC107; /* Slightly darker yellow on hover */
 }
 
-div {
-    text-align: center;
+button[type="button"] {
+    width: auto;
+    padding: 8px 16px;
+    font-size: 16px;
 }
 
 /* Success Message */
@@ -74,17 +85,10 @@ div {
     margin-top: 10px;
 }
 
-/* Logout Button */
-div[style*="text-align: right;"] {
-    margin-bottom: 20px;
-}
-
-form[method="get"] {
-    display: inline;
-}
-
-button[type="submit"] {
-    width: auto;
-    padding: 8px 16px;
-    font-size: 16px;
+/* Responsive design */
+@media (max-width: 768px) {
+    form {
+        width: 95%;
+        padding: 20px;
+    }
 }
