@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Pet</title>
+    <link rel="stylesheet" th:href="@{/css/addPet.css}">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+</head>
+<body>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div id="banner">
+        <h2>Add Pet Information</h2>
+        <p>Enter the details of your pet below</p>
+    </div>
+
+    <main>
+        <form th:action="@{/addPet}" th:method="post">
+            <!-- Include a hidden input for the session token -->
+            <input type="hidden" name="sessionToken" th:value="${sessionToken}" />
+
+            <div class="form-section">
+                <label for="petName">Pet Name:</label>
+                <input type="text" id="petName" name="petName" required>
+
+                <label for="petAge">Age:</label>
+                <select id="petAge" name="petAge" required>
+                    <option value="">Select Age</option>
+                    <th:block th:each="age : ${#numbers.sequence(0, 20)}">
+                        <option th:value="${age}" th:text="${age}"></option>
+                    </th:block>
+                </select>
+
+                <label>Sex:</label>
+                <label for="male">
+                    <input type="radio" id="male" name="petSex" value="Male" required>
+                    Male
+                </label>
+                <label for="female">
+                    <input type="radio" id="female" name="petSex" value="Female" required>
+                    Female
+                </label>
+
+                <label for="petType">Species:</label>
+                <label for="cat">
+                    <input type="radio" id="cat" name="petType" value="Cat" required>
+                    Cat
+                </label>
+                <label for="dog">
+                    <input type="radio" id="dog" name="petType" value="Dog" required>
+                    Dog
+                </label>
+
+                <label for="petWeight">Weight (KG):</label>
+                <input type="number" id="petWeight" name="petWeight" required>
+
+                <label for="petBreed">Breed:</label>
+                <input type="text" id="petBreed" name="petBreed" required>
+
+                <button type="submit">Save Pet Information</button>
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                const sessionToken = localStorage.getItem('sessionToken');
+                if (!sessionToken) {
+                    alert('Please log in to access your pets.');
+                    window.location.href = '/login';
+                } else {
+                    // Set the session token in relevant links
+                    const myPetsLink = document.querySelector('a[href="/mypets"]');
+                    if (myPetsLink) {
+                        myPetsLink.setAttribute('href', `/mypets?sessionToken=${sessionToken}`);
+                    }
+        
+                    const addPetLink = document.querySelector('a[href="/addPet"]');
+                    if (addPetLink) {
+                        addPetLink.setAttribute('href', `/addPet?sessionToken=${sessionToken}`);
+                    }
+                }
+            });
+            </script>
+            </div>
+        </form>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 VetCare. All rights reserved.</p>
+    </footer>
+</body>
+</html>

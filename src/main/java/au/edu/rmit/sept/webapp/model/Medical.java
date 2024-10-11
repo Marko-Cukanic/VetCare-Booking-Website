@@ -14,10 +14,9 @@ public class Medical {
     private Long id;
     private String email;
 
-    @Column(unique = true)
-    private String petName;
+    private String petName; 
 
-    @Column(unique = true)
+    @Column(unique = true) 
     private Long petID;
     
     private int petAge;
@@ -26,7 +25,7 @@ public class Medical {
     private String petType;
     private String petBreed;
 
-    //Getters
+    // Getters
     public String getEmail() {
         return email;
     }
@@ -59,7 +58,7 @@ public class Medical {
         return petBreed;
     }
 
-    //Setters
+    // Setters
     public void setEmail(String email) {
         this.email = email;
     }
@@ -91,5 +90,4 @@ public class Medical {
     public void setPetBreed(String petBreed) {
         this.petBreed = petBreed;
     }
-   
 }

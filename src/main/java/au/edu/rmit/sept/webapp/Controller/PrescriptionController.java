@@ -76,4 +76,6 @@ public class PrescriptionController {
 
         return "assignPrescription";  // Return the form page again with success message
     }
+
+    
 }

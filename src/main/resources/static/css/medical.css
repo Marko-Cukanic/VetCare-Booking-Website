@@ -3,21 +3,22 @@ body {
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f8f8f8;
+    background-color: #f0f8ff; /* Light blue background */
     color: #333;
 }
 
 /* Banner section */    
 #banner {
-    background-color: #4CAF50;  
+    background-color: #5C9EAD; /* Blue-green banner */
     color: white;
     text-align: center;
     padding: 50px 0;
-    margin-top: 100px; 
+    margin-top: 0; /* Removed margin to eliminate the gap */
+    border-bottom: 4px solid #FFD700; /* Yellow accent */
 }
 
 nav {
-    position: relative;  
+    position: relative;
     z-index: 1;
 }
 
@@ -33,16 +34,29 @@ nav {
 
 /* Login prompt */
 #login-prompt {
-    display: none; 
-    background-color: #a5ffa7; 
-    padding: 1px; 
+    background-color: #FFD700;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 20px;
     text-align: center;
+    font-family: 'Arial', sans-serif;
+    border: 2px solid #333; /* Add a border for emphasis */
+}
+
+#login-prompt a {
+    color: #333;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+#login-prompt a:hover {
+    text-decoration: underline;
 }
 
 /* Not Logged In message */
 #not-logged-in-message {
-    text-align: center; 
-    margin: 20px 0; 
+    text-align: center;
+    margin: 20px 0;
 }
 
 /* Action Buttons Section */
@@ -52,51 +66,54 @@ nav {
 }
 
 #action-buttons button {
-    background-color: #4CAF50;
-    color: white;
+    background-color: #FFD700; /* Yellow button */
+    color: #333;
     border: none;
     padding: 10px 20px;
     margin: 0 10px;
     border-radius: 5px;
     cursor: pointer;
     font-size: 1em;
+    transition: background-color 0.3s;
 }
 
 #action-buttons button:hover {
-    background-color: #45a049;
+    background-color: #FFC107; /* Slightly darker yellow */
 }
 
 /* Main content area */
 main {
     display: flex;
-    justify-content: center; 
-    width: 80%; 
-    margin: 0 auto; 
+    justify-content: center;
+    width: 80%;
+    margin: 0 auto;
 }
 
 /* Left column: Medical Record */
 #medical-record {
-    flex: 1 1 30%; 
-    background-color: #eee;
+    flex: 1 1 30%;
+    background-color: white;
+    border: 2px solid #5C9EAD; /* Blue-green border */
     padding: 20px;
     margin: 0px 20px 10px 0;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     text-align: center;
-    height: fit-content; 
+    height: fit-content;
 }
 
 /* Right column: Vaccination, Medical Conditions, Treatment Plan */
 .right-column {
-    flex: 1 1 70%; 
+    flex: 1 1 70%;
     display: flex;
     flex-direction: column;
-    gap: 30px; 
+    gap: 30px;
 }
 
 /* Vaccination History Section */
 #vaccination-history {
-    background-color: #eee;
+    background-color: white;
+    border: 2px solid #5C9EAD; /* Blue-green border */
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
@@ -109,14 +126,14 @@ main {
 
 .list-container {
     display: flex;
-    justify-content: space-between; 
+    justify-content: space-between;
 }
 
 #vaccination-history ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
-    width: 45%; 
+    width: 45%;
 }
 
 #vaccination-history li {
@@ -131,7 +148,8 @@ main {
 
 /* Medical Conditions Section */
 #medical-conditions {
-    background-color: #eee;
+    background-color: white;
+    border: 2px solid #5C9EAD; /* Blue-green border */
     padding: 20px;
     margin: 20px 0;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -144,9 +162,9 @@ main {
 }
 
 #medical-conditions ul {
-    padding-left: 20px; /* Padding for the list */
+    padding-left: 20px;
     text-align: left;
-    list-style-type: disc; /* Display list items with bullets */
+    list-style-type: disc;
 }
 
 #medical-conditions ul li {
@@ -154,9 +172,10 @@ main {
     font-size: 1.1em;
 }
 
-/*Treatment Plan Section */
+/* Treatment Plan Section */
 #treatment-plan {
-    background-color: #eee;
+    background-color: white;
+    border: 2px solid #5C9EAD; /* Blue-green border */
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
@@ -169,29 +188,28 @@ main {
 
 #treatment-plan table {
     width: 100%;
-    border-collapse: collapse; 
-    margin: 20px auto; 
-    margin-top: 10px; 
+    border-collapse: collapse;
+    margin: 20px auto;
 }
 
 #treatment-plan th,
 #treatment-plan td {
-    border: 1px solid #ccc; 
-    padding: 10px; 
-    text-align: center; 
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
 }
 
 #treatment-plan th {
-    background-color: #666966; 
-    color: white; 
+    background-color: #5C9EAD; /* Blue-green background */
+    color: white;
 }
 
 #treatment-plan tr:nth-child(even) {
-    background-color: #f2f2f2; 
+    background-color: #f2f2f2;
 }
 
 #treatment-plan tr:hover {
-    background-color: #ddd; 
+    background-color: #ddd;
 }
 
 /* Footer section */
@@ -200,9 +218,7 @@ footer {
     color: #fff;
     text-align: center;
     margin-top: 40px;
-    padding: 30px 0px;
-    position: relative;
-    bottom: 0;
+    padding: 30px 0;
     width: 100%;
 }
 
@@ -210,15 +226,15 @@ footer {
 @media (max-width: 768px) {
     main {
         flex-direction: column;
-        width: 100%; 
+        width: 100%;
     }
 
     #medical-record {
-        flex: 1 1 100%; 
+        flex: 1 1 100%;
         margin-bottom: 10px;
     }
 
     .right-column {
-        flex: 1 1 100%; 
+        flex: 1 1 100%;
     }
 }

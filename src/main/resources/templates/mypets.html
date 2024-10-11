@@ -1,14 +1,23 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
     <title>My Pets - VetCare</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" th:href="@{/css/pets.css}" />
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+
 </head>
 <body>
     <div th:replace="~{fragments/navbar :: navbar}"></div>
 
     <main>
         <h2>My Pets</h2>
+
+        <!-- Always display the Add Pet link/button -->
+        <div class="add-pet">
+            <a th:href="@{/addPet}" class="button">Add a new pet</a>
+        </div>
+        
         <div class="pet-list" th:if="${pets.size() > 0}">
             <ul>
                 <li th:each="pet : ${pets}">
@@ -24,18 +33,29 @@
             </ul>
         </div>
         <div th:if="${pets.size() == 0}">
-            <p>No pets found. <a th:href="@{/addpet}">Add a new pet</a></p>
+            <p>No pets found. </p>
         </div>
     </main>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const sessionToken = localStorage.getItem('sessionToken');
-            if (!sessionToken) {
-                alert('Please log in to access your pets.');
-                window.location.href = '/login';
+            document.addEventListener('DOMContentLoaded', function() {
+        const sessionToken = localStorage.getItem('sessionToken');
+        if (!sessionToken) {
+            alert('Please log in to access your pets.');
+            window.location.href = '/login';
+        } else {
+            // Set the session token in relevant links
+            const myPetsLink = document.querySelector('a[href="/mypets"]');
+            if (myPetsLink) {
+                myPetsLink.setAttribute('href', `/mypets?sessionToken=${sessionToken}`);
             }
-        });
+
+            const addPetLink = document.querySelector('a[href="/addPet"]');
+            if (addPetLink) {
+                addPetLink.setAttribute('href', `/addPet?sessionToken=${sessionToken}`);
+            }
+        }
+    });
     </script>
 </body>
 </html>

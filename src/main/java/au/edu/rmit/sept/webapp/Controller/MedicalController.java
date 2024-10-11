@@ -51,63 +51,70 @@ public class MedicalController {
 
     // ------------------------------------------ Getting Medical Record Data -------------------------------------------------
     @GetMapping("/medical")
-    public String showMedicalHistory(@RequestParam(required = false) String sessionToken,
-                                     @RequestParam(required = false) String petName, 
-                                     Model model) {
-    
-        // Check if sessionToken is invalid or missing
-        Map<String, String> sessionTokens = loginController.getSessionTokens();
-        if (sessionToken == null || !sessionTokens.containsKey(sessionToken)) {
-            model.addAttribute("isLoggedIn", false);
-            return "medical";  // Show the not logged in page
-        }
-    
-        // User is logged in
-        String email = sessionTokens.get(sessionToken);
-        model.addAttribute("isLoggedIn", true);
-    
-        // Fetch pet names for the dropdown list
-        List<Medical> pets = medicalService.getMedicalRecordsByEmail(email);
-        List<String> petNames = pets.stream().map(Medical::getPetName).distinct().toList();
-        model.addAttribute("petNames", petNames);
+public String showMedicalHistory(@RequestParam(required = false) String sessionToken,
+                                 @RequestParam(required = false) String petName, 
+                                 Model model) {
 
-        // If a petName is provided, fetch its medical details
-        if (petName != null && !petName.isEmpty()) {
-            Medical medicalRecord = medicalService.getMedicalRecordByEmailAndPetName(email, petName);
-            var vaccinationRecord = vaccinationService.getVaccinationRecordByEmailAndPetName(email, petName);
-            var medicalConditions = medicalConditionService.getMedicalConditionsByEmailAndPetName(email, petName);
-            var treatmentPlan = treatmentPlanService.getTreatmentPlansByEmailAndPetName(email, petName);
-
-            model.addAttribute("medicalRecord", medicalRecord);
-            model.addAttribute("vaccinationRecord", vaccinationRecord);
-            model.addAttribute("medicalConditions", medicalConditions);
-            model.addAttribute("treatmentPlan", treatmentPlan);
-
-        } else {
-            model.addAttribute("medicalRecord", null);  // Handle case when no pet is selected
-           model.addAttribute("vaccinationRecord", null); 
-           model.addAttribute("medicalConditions", null); 
-           model.addAttribute("treatmentPlan", null);
-        }
-        
-        model.addAttribute("selectedPetName", petName); // Pass selected pet name to the view
+    // Get the email using the new method
+    String email = getEmailFromSessionToken(sessionToken);
     
-        return "medical";
+    if (email == null) {
+        model.addAttribute("isLoggedIn", false);
+        return "medical";  // Show the not logged in page
     }
-    
+
+    // User is logged in
+    model.addAttribute("isLoggedIn", true);
+
+    // Fetch pet names for the dropdown list
+    List<Medical> pets = medicalService.getMedicalRecordsByEmail(email);
+    List<String> petNames = pets.stream().map(Medical::getPetName).distinct().toList();
+    model.addAttribute("petNames", petNames);
+
+    // If a petName is provided, fetch its medical details
+    if (petName != null && !petName.isEmpty()) {
+        Medical medicalRecord = medicalService.getMedicalRecordByEmailAndPetName(email, petName);
+        var vaccinationRecord = vaccinationService.getVaccinationRecordByEmailAndPetName(email, petName);
+        var medicalConditions = medicalConditionService.getMedicalConditionsByEmailAndPetName(email, petName);
+        var treatmentPlan = treatmentPlanService.getTreatmentPlansByEmailAndPetName(email, petName);
+
+        model.addAttribute("medicalRecord", medicalRecord);
+        model.addAttribute("vaccinationRecord", vaccinationRecord);
+        model.addAttribute("medicalConditions", medicalConditions);
+        model.addAttribute("treatmentPlan", treatmentPlan);
+
+    } else {
+        model.addAttribute("medicalRecord", null);  
+        model.addAttribute("vaccinationRecord", null); 
+        model.addAttribute("medicalConditions", null); 
+        model.addAttribute("treatmentPlan", null);
+    }
+
+    model.addAttribute("selectedPetName", petName); // Pass selected pet name to the view
+
+    return "medical";
+}
+
+
     //------------------------------------------------- Adding/Saving Record Data -------------------------------------------------
-    @GetMapping("/addReport")
+        @GetMapping("/addReport")
     public String showAddReportForm(@RequestParam String sessionToken, Model model) {
-        // Retrieve the email from the session
         Map<String, String> sessionTokens = loginController.getSessionTokens();
         String email = sessionTokens.get(sessionToken);
 
-        // Initialize the models for the form
-        model.addAttribute("medical", new Medical());
+        if (email == null) {
+            model.addAttribute("isLoggedIn", false);
+            return "redirect:/login";
+        }
+
+        model.addAttribute("isLoggedIn", true);
+        
+        List<Medical> pets = medicalService.getMedicalRecordsByEmail(email);
+        model.addAttribute("pets", pets);
         model.addAttribute("vaccination", new Vaccination());
         model.addAttribute("medicalCondition", new MedicalCondition());
         model.addAttribute("treatmentPlan", new TreatmentPlan());
-        model.addAttribute("email", email); 
+        model.addAttribute("email", email);
 
         return "addReport";
     }
@@ -130,7 +137,7 @@ public class MedicalController {
             vaccination.setEmail(medical.getEmail());
             vaccination.setPetName(medical.getPetName());
             vaccinationService.saveVaccinationRecord(vaccination);
-            
+
             // Save each medical condition from the form
             for (String condition : medical_condition) {
                 if (!condition.isEmpty()) {  
@@ -168,7 +175,7 @@ public class MedicalController {
             @RequestParam("email") String email,
             @RequestPart("pdfFile") MultipartFile pdfFile,
             Model model) throws MessagingException {
-        
+
         try {
             // Convert the MultipartFile to byte array
             byte[] pdfBytes = pdfFile.getBytes();
@@ -183,5 +190,18 @@ public class MedicalController {
         return "redirect:/medical"; // Redirect back to medical records page
     }
 
+
+
+    private String getEmailFromSessionToken(String sessionToken) {
+        System.out.println("Session Token Received: " + sessionToken);
+        Map<String, String> sessionTokens = loginController.getSessionTokens();
+        String email = sessionTokens.get(sessionToken);
+        if (email == null) {
+            System.out.println("No email found for session token: " + sessionToken);
+        } else {
+            System.out.println("Email Retrieved: " + email);
+        }
+        return email;
+    }
 
 }

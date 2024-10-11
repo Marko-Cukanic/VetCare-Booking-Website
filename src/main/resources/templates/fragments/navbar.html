@@ -22,7 +22,27 @@
                     <li class="dropdown">
                         <a href="#">Profile</a>
                         <div class="dropdown-content" th:if="${session.loggedIn ?: false}">
-                            <a th:href="@{/mypets}">My Pets</a>
+                            <a id="myPetsLink" th:href="@{/mypets}">My Pets</a>
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function() {
+                            const sessionToken = localStorage.getItem('sessionToken');
+                            if (!sessionToken) {
+                                alert('Please log in to access your pets.');
+                                window.location.href = '/login';
+                            } else {
+                                // Set the session token in relevant links
+                                const myPetsLink = document.querySelector('a[href="/mypets"]');
+                                if (myPetsLink) {
+                                    myPetsLink.setAttribute('href', `/mypets?sessionToken=${sessionToken}`);
+                                }
+                        
+                                const addPetLink = document.querySelector('a[href="/addPet"]');
+                                if (addPetLink) {
+                                    addPetLink.setAttribute('href', `/addPet?sessionToken=${sessionToken}`);
+                                }
+                            }
+                            });
+                            </script>
                             <!-- Logout link -->
                             <a href="#" onclick="handleLogout()">Logout</a>
                             <script>
@@ -66,23 +86,7 @@
 
 <!-- Move the script to the bottom of the body -->
 
-<script>
-    document.addEventListener('DOMContentLoaded', (event) => {
-
-        function checkSessionToken() {
-            const sessionToken = localStorage.getItem('sessionToken');
-            const currentUrl = window.location.href;
-
-            if (sessionToken && !currentUrl.includes('sessionToken')) {
-                window.location.href = `/prescriptions?sessionToken=${encodeURIComponent(sessionToken)}`;
-            } else if (!sessionToken) {
-                document.getElementById('login-prompt').style.display = 'block';
-            }
-        }
-
-        checkSessionToken();
-    });
-</script>
+    
 
 
 </html>

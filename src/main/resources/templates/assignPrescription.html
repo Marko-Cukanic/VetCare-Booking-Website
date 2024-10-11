@@ -15,9 +15,19 @@
     </div>
 
     <form action="/assignPrescription" method="post" th:action="@{/assignPrescription}" th:object="${prescription}">
+        <!-- User Email Dropdown -->
         <label for="email">User Email:</label>
-        <input type="email" id="email" name="email" th:field="*{email}" required/><br/>
+        <select id="email" name="email" th:field="*{email}" required>
+            <option value="" disabled selected>Select an email</option>
+        </select><br/>
 
+        <!-- Pet Name Dropdown -->
+        <label for="petName">Pet Name:</label>
+        <select id="petName" name="petName" th:field="*{petName}" required disabled>
+            <option value="" disabled selected>Select a pet</option>
+        </select><br/>
+
+        <!-- Medication Name Dropdown -->
         <label for="medicationName">Medication Name:</label>
         <select id="medicationName" name="medicationName" th:field="*{medicationName}" required>
             <option value="" disabled selected>Select a medication</option>
@@ -33,6 +43,7 @@
             <option value="Doxycycline">Doxycycline</option>
         </select><br/>
 
+        <!-- Quantity Dropdown -->
         <label for="quantity">Quantity:</label>
         <select id="quantity" name="quantity" th:field="*{quantity}" required>
             <option value="" disabled selected>Select quantity</option>
@@ -48,9 +59,6 @@
             <option value="50">50</option>
         </select><br/>
 
-        <label for="petName">Pet Name:</label>
-        <input type="text" id="petName" name="petName" th:field="*{petName}" required/><br/>
-
         <label for="vetName">Vet Name:</label>
         <input type="text" id="vetName" name="vetName" th:field="*{vetName}" required/><br/>
 
@@ -60,5 +68,50 @@
     <div th:if="${successMessage}">
         <p th:text="${successMessage}"></p>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+        // Fetch emails and populate the email dropdown
+        fetch('/getEmails')
+            .then(response => response.json())
+            .then(emails => {
+                const emailSelect = document.getElementById('email');
+                emails.forEach(email => {
+                    const option = document.createElement('option');
+                    option.value = email;
+                    option.text = email;
+                    emailSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error fetching emails:', error));
+
+        // Fetch all pets and populate the pet dropdown
+        fetch('/getAllPets')
+            .then(response => response.json())
+            .then(pets => {
+                const petSelect = document.getElementById('petName');
+                petSelect.innerHTML = ''; // Clear existing options
+                const defaultOption = document.createElement('option');
+                defaultOption.value = '';
+                defaultOption.text = 'Select a pet';
+                defaultOption.disabled = true;
+                defaultOption.selected = true;
+                petSelect.appendChild(defaultOption);
+                
+                // Enable the dropdown if pets are available
+                if (pets.length > 0) {
+                    petSelect.disabled = false;
+                }
+
+                pets.forEach(pet => {
+                    const option = document.createElement('option');
+                    option.value = pet.petID; // Ensure this matches your entity's field name
+                    option.text = pet.petName; // Ensure this matches your entity's field name
+                    petSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error fetching pets:', error));
+    });
+    </script>
 </body>
 </html>

@@ -58,6 +58,9 @@
                         <td th:text="${prescription.petName}"></td>
                         <td th:text="${prescription.vetName}"></td>
                     </tr>
+                    <tr th:if="${#lists.isEmpty(prescriptions)}">
+                        <td colspan="5">No prescriptions available yet.</td>
+                    </tr>
                 </tbody>
             </table>
         </section>

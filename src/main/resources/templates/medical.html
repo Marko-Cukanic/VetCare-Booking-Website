@@ -17,25 +17,25 @@
     function checkSessionToken() {
         const sessionToken = localStorage.getItem('sessionToken');
         const currentUrl = window.location.href;
-    
+
         if (sessionToken && !currentUrl.includes('sessionToken')) {
             window.location.href = `/medical?sessionToken=${encodeURIComponent(sessionToken)}`;
         } else if (!sessionToken) {
             document.getElementById('login-prompt').style.display = 'block';
         }
     }
-    
+
     //-------------------------------------- Pet Name Script --------------------------------------
     function onPetChange() {
         const petName = document.getElementById("pet-name").value;
         const sessionToken = localStorage.getItem('sessionToken');
         const currentPetName = new URLSearchParams(window.location.search).get('petName');
-    
+
         if (sessionToken && petName && petName !== currentPetName) {
             window.location.href = `/medical?sessionToken=${encodeURIComponent(sessionToken)}&petName=${encodeURIComponent(petName)}`;
         }
     }
-    
+
     //-------------------------------------- Common PDF Generation Script --------------------------------------
     function generatePdf(sections, callback) {
         const { jsPDF } = window.jspdf;
@@ -44,37 +44,37 @@
         const pageHeight = pdf.internal.pageSize.height;
         const margin = 10;
         let yPosition = margin;
-    
+
         // Function to capture sections and add to PDF
         function captureAndAddSection(index) {
             if (index >= sections.length) {
                 callback(pdf);
                 return;
             }
-    
+
             const { element, scaleFactor } = sections[index];
             html2canvas(element, { scale: 3 }).then(canvas => {
                 const imgWidth = pageWidth - 2 * margin;
                 const scale = imgWidth / canvas.width;
                 const imgHeight = canvas.height * scale;
                 const xPosition = margin;
-    
+
                 if (yPosition + imgHeight > pageHeight) {
                     pdf.addPage();
                     yPosition = margin;
                 }
-    
+
                 pdf.addImage(canvas.toDataURL('image/png'), 'PNG', xPosition, yPosition, imgWidth, imgHeight);
                 yPosition += imgHeight + margin;
-    
+
                 // Continue to next section
                 captureAndAddSection(index + 1);
             });
         }
-    
+
         captureAndAddSection(0);
     }
-    
+
     //-------------------------------------- Add Button Page Script --------------------------------------
     function addReport() {
         const sessionToken = localStorage.getItem('sessionToken');
@@ -85,7 +85,7 @@
             window.location.href = '/login'; 
         }
     }
-    
+
     // ----------------------------- Download report as PDF --------------------------------------
     function downloadReport() {
         const sections = [
@@ -94,10 +94,10 @@
             { element: document.getElementById('medical-conditions') },
             { element: document.getElementById('treatment-plan') }
         ];
-    
+
         generatePdf(sections, pdf => pdf.save('medical_report.pdf'));
     }
-    
+
     // ----------------------------- Share report --------------------------------------
     function shareReport() {
         const email = prompt("Enter the email address to share the medical record:");
@@ -105,20 +105,20 @@
             alert("Email is required to share the report.");
             return;
         }
-    
+
         const sections = [
             { element: document.getElementById('medical-record') },
             { element: document.getElementById('vaccination-history') },
             { element: document.getElementById('medical-conditions') },
             { element: document.getElementById('treatment-plan') }
         ];
-    
+
         generatePdf(sections, pdf => {
             const pdfBlob = pdf.output('blob');
             const formData = new FormData();
             formData.append("email", email);
             formData.append("pdfFile", pdfBlob, 'medical_report.pdf');
-    
+
             fetch('/shareReport', {
                 method: 'POST',
                 body: formData
@@ -132,7 +132,7 @@
         });
     }
 </script>
-    
+
 
 <body onload="checkSessionToken();">
 
@@ -152,6 +152,17 @@
     <section th:if="${isLoggedIn}">
         <div id="action-buttons">
             <button id="add-report" onclick="addReport()">Add Report</button>
+            <script>
+            function addReport() {
+                const sessionToken = localStorage.getItem('sessionToken');
+                if (sessionToken) {
+                    window.location.href = `/addReport?sessionToken=${encodeURIComponent(sessionToken)}`;
+                } else {
+                    alert('Session token not found. Please log in.');
+                    window.location.href = '/login'; 
+                }
+            }
+            </script>
             <button id="download-report" onclick="downloadReport()">Download Report</button>
             <button id="share-report" onclick="shareReport()">Share Report</button>
         </div>
@@ -172,7 +183,7 @@
                         <option th:each="pet : ${petNames}" th:value="${pet}" th:text="${pet}" th:selected="${pet == selectedPetName}"></option>
                     </select>
                 </h2>
-                
+
                 <!-- Show medical record details only if medicalRecord is present -->
                 <div th:if="${medicalRecord != null}">
                     <p><strong>Pet ID:</strong> <span th:text="${medicalRecord.petID ?: 'No data'}"></span></p>
@@ -182,7 +193,7 @@
                     <p><strong>Species:</strong> <span th:text="${medicalRecord.petType ?: 'No data'}"></span></p>
                     <p><strong>Breed:</strong> <span th:text="${medicalRecord.petBreed ?: 'No data'}"></span></p>
                 </div>
-                
+
                 <!-- Message if no medical record is found -->
                 <div th:if="${medicalRecord == null}">
                     <p>No medical records found for the selected pet.</p>
@@ -193,7 +204,7 @@
             <!-- Vaccination History Section -->
             <section id="vaccination-history" th:if="${isLoggedIn}">
                 <h2>Vaccination History for <span th:text="${selectedPetName}">Selected Pet</span></h2>
-                
+
                 <div class="list-container">
                     <!-- Dog Vaccines -->
                     <ul>
