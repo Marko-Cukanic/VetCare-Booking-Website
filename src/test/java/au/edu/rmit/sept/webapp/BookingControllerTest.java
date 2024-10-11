@@ -1,71 +1,127 @@
 package au.edu.rmit.sept.webapp;
 
 import au.edu.rmit.sept.webapp.controller.BookingController;
+import au.edu.rmit.sept.webapp.model.Booking;
 import au.edu.rmit.sept.webapp.service.BookingService;
+import au.edu.rmit.sept.webapp.service.EmailService;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.web.servlet.MockMvc;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.ui.Model;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
 
-@WebMvcTest(BookingController.class)
-public class BookingControllerTest {
+class BookingControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
-
-    @MockBean
+    @Mock
     private BookingService bookingService;
 
+    @Mock
+    private Model model;
+
+    @Mock
+    private EmailService emailService;
+
+    @Mock
+    private RedirectAttributes redirectAttributes;
+
+    @InjectMocks
+    private BookingController bookingController;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
+
+    // Positive Test Case: Test clinic selector page loads successfully
     @Test
-    public void createBooking_ValidData_Success() throws Exception {
-        LocalDate bookingDate = LocalDate.now();
-        String timeSlot = "10:00 AM";
+    void testSelectClinicPageLoad() {
+        String viewName = bookingController.selectClinic();
+        assertEquals("clinicSelector", viewName, "The clinic selector page should load successfully.");
+    }
+
+    // Positive Test Case: Test make booking page loads successfully with valid clinic name
+    @Test
+    void testMakeBookingPageLoadWithValidClinic() {
         String clinicName = "Sunshine Vet Clinic";
-
-        // Mock the service to indicate the time slot is available
-        Mockito.when(bookingService.isTimeSlotAvailable(bookingDate, timeSlot, clinicName)).thenReturn(true);
-
-        // Perform POST request to create a booking
-        mockMvc.perform(post("/createBooking")
-                .param("bookingDate", bookingDate.toString())
-                .param("timeSlot", timeSlot)
-                .param("clinicName", clinicName))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/bookings"));
+        String viewName = bookingController.makeBooking(clinicName, model);
+        verify(model).addAttribute("clinicName", clinicName);
+        assertEquals("makeBooking", viewName, "The make booking page should load successfully with a valid clinic name.");
     }
 
+    // Negative Test Case: Test make booking page with an empty clinic name
     @Test
-    public void cancelBooking_ValidBookingId_Success() throws Exception {
-        Long bookingId = 1L;
-
-        // Mock the service call to delete the booking
-        Mockito.doNothing().when(bookingService).deleteBooking(bookingId);
-
-        // Perform GET request to cancel the booking
-        mockMvc.perform(get("/cancelBooking/" + bookingId))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/bookings"));
+    void testMakeBookingPageLoadWithEmptyClinic() {
+        String clinicName = "";
+        String viewName = bookingController.makeBooking(clinicName, model);
+        verify(model).addAttribute("clinicName", clinicName);
+        assertEquals("makeBooking", viewName, "The make booking page should still load even with an empty clinic name.");
     }
 
+    // Positive Test Case: Test create booking with available time slot
     @Test
-    public void rescheduleBooking_ValidBookingId_Success() throws Exception {
+    void testCreateBookingWithAvailableTimeSlot() {
+        LocalDate bookingDate = LocalDate.now().plusDays(1);
+        String timeSlot = "10:00";
+        String clinicName = "Sunshine Vet Clinic";
+        String userEmail = "testuser@example.com";
+
+        when(bookingService.isTimeSlotAvailable(any(LocalDate.class), anyString(), anyString())).thenReturn(true);
+
+        String viewName = bookingController.createBooking(bookingDate, timeSlot, clinicName, userEmail, redirectAttributes);
+        verify(bookingService).createBooking(bookingDate, timeSlot, clinicName, userEmail);
+        verify(emailService).sendBookingConfirmationEmail(userEmail, clinicName, bookingDate, timeSlot); // Verify email is sent
+        assertEquals("redirect:/bookings", viewName, "Booking should be created successfully when the time slot is available.");
+    }
+
+// Negative Test Case: Test create booking with an already booked time slot
+@Test
+void testCreateBookingWithUnavailableTimeSlot() {
+    LocalDate bookingDate = LocalDate.now().plusDays(1);
+    String timeSlot = "10:00";
+    String clinicName = "Sunshine Vet Clinic";
+    String userEmail = "testuser@example.com";
+
+    when(bookingService.isTimeSlotAvailable(any(LocalDate.class), anyString(), anyString())).thenReturn(false);
+
+    String viewName = bookingController.createBooking(bookingDate, timeSlot, clinicName, userEmail, redirectAttributes);
+    verify(bookingService, never()).createBooking(any(LocalDate.class), anyString(), anyString(), anyString());
+    assertEquals("redirect:/makebooking", viewName, "Booking should fail when the time slot is already booked.");
+}
+
+
+    // Positive Test Case: Test fetching available time slots for a date
+    @Test
+    void testGetAvailableTimeSlots() {
+        LocalDate bookingDate = LocalDate.now().plusDays(1);
+        String clinicName = "Sunshine Vet Clinic";
+        List<String> expectedTimeSlots = List.of("10:00", "10:20", "11:00");
+
+        when(bookingService.getAvailableTimeSlots(any(LocalDate.class), anyString())).thenReturn(expectedTimeSlots);
+
+        List<String> availableTimeSlots = bookingController.getAvailableTimeSlots(bookingDate, clinicName);
+        assertEquals(expectedTimeSlots, availableTimeSlots, "The available time slots should be correctly returned for the given date and clinic.");
+    }
+
+    // Positive Test Case: Test cancel booking with a valid booking ID
+    @Test
+    void testCancelBookingWithValidId() {
         Long bookingId = 1L;
 
-        // Mock the service call to delete the booking
-        Mockito.doNothing().when(bookingService).deleteBookingById(bookingId);
-
-        // Perform GET request to reschedule the booking
-        mockMvc.perform(get("/rescheduleBooking/" + bookingId))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/makebooking"));
+        String viewName = bookingController.cancelBooking(bookingId, redirectAttributes);
+        verify(bookingService).deleteBooking(bookingId);
+        assertEquals("redirect:/bookings", viewName, "Booking should be canceled successfully with a valid booking ID.");
     }
 }
