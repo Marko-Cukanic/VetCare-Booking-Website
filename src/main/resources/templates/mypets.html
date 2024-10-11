@@ -12,6 +12,12 @@
 
     <main>
         <h2>My Pets</h2>
+
+        <!-- Always display the Add Pet link/button -->
+        <div class="add-pet">
+            <a th:href="@{/addPet}" class="button">Add a new pet</a>
+        </div>
+        
         <div class="pet-list" th:if="${pets.size() > 0}">
             <ul>
                 <li th:each="pet : ${pets}">
@@ -27,7 +33,7 @@
             </ul>
         </div>
         <div th:if="${pets.size() == 0}">
-            <p>No pets found. <a th:href="@{/addPet}">Add a new pet</a></p>
+            <p>No pets found. </p>
         </div>
     </main>
 

@@ -76,7 +76,7 @@ public class PetController {
             // Auto-assign a pet ID
             medical.setPetID(generatePetID());
             medicalService.saveMedicalRecord(medical);
-            return "redirect:/mypets"; // Redirect to the pets page after submission
+            return "redirect:/mypets?sessionToken=" + sessionToken; // Redirect to the pets page after submission
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
             return "addPet"; // Return to the form with an error message

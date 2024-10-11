@@ -58,6 +58,27 @@
                 <input type="text" id="petBreed" name="petBreed" required>
 
                 <button type="submit">Save Pet Information</button>
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                const sessionToken = localStorage.getItem('sessionToken');
+                if (!sessionToken) {
+                    alert('Please log in to access your pets.');
+                    window.location.href = '/login';
+                } else {
+                    // Set the session token in relevant links
+                    const myPetsLink = document.querySelector('a[href="/mypets"]');
+                    if (myPetsLink) {
+                        myPetsLink.setAttribute('href', `/mypets?sessionToken=${sessionToken}`);
+                    }
+        
+                    const addPetLink = document.querySelector('a[href="/addPet"]');
+                    if (addPetLink) {
+                        addPetLink.setAttribute('href', `/addPet?sessionToken=${sessionToken}`);
+                    }
+                }
+            });
+            </script>
             </div>
         </form>
     </main>
