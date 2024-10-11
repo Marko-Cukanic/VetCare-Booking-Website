@@ -7,9 +7,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import au.edu.rmit.sept.webapp.model.Medical;
 import au.edu.rmit.sept.webapp.repository.MedicalRepository;
 import au.edu.rmit.sept.webapp.service.MedicalService;
+
+import java.util.stream.Collectors;
+
 
 import java.util.List;
 import java.util.Map;
@@ -101,7 +106,24 @@ public class PetController {
         return email;
     }
 
-    
+            @GetMapping("/getEmails")
+        @ResponseBody
+        public List<String> getEmails() {
+            // Get all medical records and extract distinct emails
+            List<Medical> allRecords = medicalRepository.findAll();
+            return allRecords.stream()
+                            .map(Medical::getEmail)
+                            .distinct()
+                            .collect(Collectors.toList());
+        }
 
     
+
+        @GetMapping("/getAllPets")
+        @ResponseBody
+        public List<Medical> getAllPets() {
+            // Fetch all pets from the database
+            return medicalRepository.findAll();
+        }
+            
 }
