@@ -78,12 +78,20 @@
     //-------------------------------------- Add Button Page Script --------------------------------------
     function addReport() {
         const sessionToken = localStorage.getItem('sessionToken');
-        if (sessionToken) {
-            window.location.href = `/addReport?sessionToken=${encodeURIComponent(sessionToken)}`;
-        } else {
+        const petName = document.getElementById("pet-name").value;
+
+        if (!sessionToken) {
             alert('Session token not found. Please log in.');
-            window.location.href = '/login'; 
+            window.location.href = '/login';
+            return;
         }
+
+        if (!petName) {
+            alert('Please select a pet before adding a report.');
+            return;
+        }
+
+        window.location.href = `/addReport?sessionToken=${encodeURIComponent(sessionToken)}&petName=${encodeURIComponent(petName)}`;
     }
     
     // ----------------------------- Download report as PDF --------------------------------------

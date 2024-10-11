@@ -85,9 +85,9 @@ public class MedicalController {
 
         } else {
             model.addAttribute("medicalRecord", null);  // Handle case when no pet is selected
-           model.addAttribute("vaccinationRecord", null); 
-           model.addAttribute("medicalConditions", null); 
-           model.addAttribute("treatmentPlan", null);
+            model.addAttribute("vaccinationRecord", null); 
+            model.addAttribute("medicalConditions", null); 
+            model.addAttribute("treatmentPlan", null);
         }
         
         model.addAttribute("selectedPetName", petName); // Pass selected pet name to the view
@@ -97,19 +97,16 @@ public class MedicalController {
     
     //------------------------------------------------- Adding/Saving Record Data -------------------------------------------------
     @GetMapping("/addReport")
-    public String showAddReportForm(@RequestParam String sessionToken, Model model) {
+    public String showAddReportForm(@RequestParam String sessionToken, @RequestParam String petName, Model model) {
         // Retrieve the email from the session
         Map<String, String> sessionTokens = loginController.getSessionTokens();
         String email = sessionTokens.get(sessionToken);
 
-        List<Medical> pets = medicalService.getMedicalRecordsByEmail(email);
-        model.addAttribute("pets", pets);
-
-
+        model.addAttribute("petName", petName); // Pass the selected pet name to the view
         model.addAttribute("vaccination", new Vaccination());
         model.addAttribute("medicalCondition", new MedicalCondition());
         model.addAttribute("treatmentPlan", new TreatmentPlan());
-        model.addAttribute("email", email); 
+        model.addAttribute("email", email);
 
         return "addReport";
     }
@@ -126,6 +123,7 @@ public class MedicalController {
 
         // Save the medical record
         try {
+            medical.setPetName(petName); // Set the petName from the request parameter
             medicalService.saveMedicalRecord(medical);
 
             // Save the vaccination record
@@ -184,6 +182,5 @@ public class MedicalController {
 
         return "redirect:/medical"; // Redirect back to medical records page
     }
-
 
 }
