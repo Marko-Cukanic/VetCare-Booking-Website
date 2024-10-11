@@ -11,6 +11,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Service
 public class BookingService {
@@ -81,6 +83,19 @@ public class BookingService {
 
     public List<Booking> getBookingsByUserEmail(String userEmail) {
         return bookingRepository.findByUserEmail(userEmail);
+    }
+
+    // Method to get non-expired bookings for a user
+    public List<Booking> getUpcomingBookings(String userEmail) {
+        List<Booking> allBookings = bookingRepository.findByUserEmail(userEmail);
+
+        // Filter out bookings that have already passed
+        return allBookings.stream()
+                .filter(booking -> {
+                    LocalDateTime bookingDateTime = LocalDateTime.of(booking.getBookingDate(), LocalTime.parse(booking.getTimeSlot()));
+                    return bookingDateTime.isAfter(LocalDateTime.now());
+                })
+                .collect(Collectors.toList());
     }
     
 }

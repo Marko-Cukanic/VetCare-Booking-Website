@@ -3,6 +3,7 @@ package au.edu.rmit.sept.webapp;
 import au.edu.rmit.sept.webapp.controller.PrescriptionOrderController;
 import au.edu.rmit.sept.webapp.model.Prescription;
 import au.edu.rmit.sept.webapp.service.PrescriptionService;
+import au.edu.rmit.sept.webapp.service.EmailService;
 import au.edu.rmit.sept.webapp.service.PrescriptionHistoryService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -29,6 +30,9 @@ public class PrescriptionOrderControllerTest {
 
     @MockBean
     private PrescriptionHistoryService prescriptionHistoryService;
+
+    @MockBean
+    private EmailService emailService;
 
     // Positive test for confirmOrder with valid prescriptionId and quantity
     @Test
