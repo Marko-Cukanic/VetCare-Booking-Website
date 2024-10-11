@@ -102,8 +102,10 @@ public class MedicalController {
         Map<String, String> sessionTokens = loginController.getSessionTokens();
         String email = sessionTokens.get(sessionToken);
 
-        // Initialize the models for the form
-        model.addAttribute("medical", new Medical());
+        List<Medical> pets = medicalService.getMedicalRecordsByEmail(email);
+        model.addAttribute("pets", pets);
+
+
         model.addAttribute("vaccination", new Vaccination());
         model.addAttribute("medicalCondition", new MedicalCondition());
         model.addAttribute("treatmentPlan", new TreatmentPlan());
