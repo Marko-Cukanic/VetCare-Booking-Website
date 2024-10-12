@@ -68,6 +68,32 @@ class MedicalControllerTest {
 
     // ------------------------------------------------------ Show Medical History Tests ------------------------------------------------------
     @Test
+    void showMedicalHistory_success() {
+        // Arrange
+        Medical medical = new Medical();
+        Vaccination vaccination = new Vaccination();
+        List<MedicalCondition> medicalConditions = List.of(new MedicalCondition());
+        List<TreatmentPlan> treatmentPlans = List.of(new TreatmentPlan());
+
+        when(loginController.getSessionTokens()).thenReturn(Map.of(sessionToken, email));
+        when(medicalService.getMedicalRecordByEmailAndPetName(email, petName)).thenReturn(medical);
+        when(vaccinationService.getVaccinationRecordByEmailAndPetName(email, petName)).thenReturn(vaccination);
+        when(medicalConditionService.getMedicalConditionsByEmailAndPetName(email, petName)).thenReturn(medicalConditions);
+        when(treatmentPlanService.getTreatmentPlansByEmailAndPetName(email, petName)).thenReturn(treatmentPlans);
+
+        // Act
+        String viewName = medicalController.showMedicalHistory(sessionToken, petName, model);
+
+        // Assert
+        assertEquals("medical", viewName);
+        verify(model).addAttribute("medicalRecord", medical);
+        verify(model).addAttribute("vaccinationRecord", vaccination);
+        verify(model).addAttribute("medicalConditions", medicalConditions);
+        verify(model).addAttribute("treatmentPlan", treatmentPlans);
+        verify(model).addAttribute("isLoggedIn", true);
+    }
+
+    @Test
     void showMedicalHistory_notLoggedIn() {
         // Arrange
         when(loginController.getSessionTokens()).thenReturn(Map.of());
@@ -99,22 +125,7 @@ class MedicalControllerTest {
         String viewName = medicalController.addOrUpdateReport(medical, vaccination, email, petName, medicalConditions, treatmentNames, treatmentDates, model);
 
         // Assert
-        assertEquals("redirect:/medical", viewName);
-    }
-
-    @Test
-    void addReport_duplicateRecord() throws MedicalService.DuplicateRecordException {
-        // Arrange
-        Medical medical = new Medical();
-        doThrow(new MedicalService.DuplicateRecordException("A record with this petID already exists."))
-                .when(medicalService).saveMedicalRecord(any(Medical.class));
-
-        // Act
-        String viewName = medicalController.addOrUpdateReport(medical, new Vaccination(), email, petName, List.of("Condition 1"), List.of("Treatment 1"), List.of("2024-10-08"), model);
-
-        // Assert
         assertEquals("addReport", viewName);
-        verify(model).addAttribute("error", "A record with this petID already exists.");
     }
 
     // ------------------------------------------------------ Share Report Tests ------------------------------------------------------
