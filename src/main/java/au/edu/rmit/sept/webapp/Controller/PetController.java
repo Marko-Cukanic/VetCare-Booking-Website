@@ -13,6 +13,11 @@ import au.edu.rmit.sept.webapp.model.Medical;
 import au.edu.rmit.sept.webapp.repository.MedicalRepository;
 import au.edu.rmit.sept.webapp.service.MedicalService;
 
+import au.edu.rmit.sept.webapp.service.VaccinationService;
+import au.edu.rmit.sept.webapp.service.MedicalConditionService;
+import au.edu.rmit.sept.webapp.service.TreatmentPlanService;
+
+
 import java.util.stream.Collectors;
 
 
@@ -21,6 +26,15 @@ import java.util.Map;
 
 @Controller
 public class PetController {
+
+    @Autowired
+    private VaccinationService vaccinationService;
+    
+    @Autowired
+    private MedicalConditionService medicalConditionService;
+    
+    @Autowired
+    private TreatmentPlanService treatmentPlanService;
 
     @Autowired
     private MedicalRepository medicalRepository;
@@ -137,14 +151,25 @@ public String deletePet(@RequestParam Long id, Model model) {
             return "redirect:/mypets";
         }
 
-        // Delete the pet
+        // Get the email and pet name
+        String email = petToDelete.getEmail();
+        String petName = petToDelete.getPetName();
+
+        // Delete related records
+        vaccinationService.deleteVaccinationsByEmailAndPetName(email, petName);
+        medicalConditionService.deleteMedicalConditionsByEmailAndPetName(email, petName);
+        treatmentPlanService.deleteTreatmentPlansByEmailAndPetName(email, petName);
+
+        // Delete the pet record itself
         medicalRepository.deleteById(id);
+
         return "redirect:/mypets"; // Redirect to the pets page after deletion
     } catch (Exception e) {
         model.addAttribute("error", e.getMessage());
         return "redirect:/mypets"; // Return to the pets page with an error message
     }
 }
+
 
 
         

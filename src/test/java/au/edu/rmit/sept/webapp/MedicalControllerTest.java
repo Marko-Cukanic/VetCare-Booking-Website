@@ -96,7 +96,7 @@ class MedicalControllerTest {
         doNothing().when(treatmentPlanService).saveTreatmentPlan(any(TreatmentPlan.class));
 
         // Act
-        String viewName = medicalController.addReport(medical, vaccination, email, petName, medicalConditions, treatmentNames, treatmentDates, model);
+        String viewName = medicalController.addOrUpdateReport(medical, vaccination, email, petName, medicalConditions, treatmentNames, treatmentDates, model);
 
         // Assert
         assertEquals("redirect:/medical", viewName);
@@ -110,7 +110,7 @@ class MedicalControllerTest {
                 .when(medicalService).saveMedicalRecord(any(Medical.class));
 
         // Act
-        String viewName = medicalController.addReport(medical, new Vaccination(), email, petName, List.of("Condition 1"), List.of("Treatment 1"), List.of("2024-10-08"), model);
+        String viewName = medicalController.addOrUpdateReport(medical, new Vaccination(), email, petName, List.of("Condition 1"), List.of("Treatment 1"), List.of("2024-10-08"), model);
 
         // Assert
         assertEquals("addReport", viewName);

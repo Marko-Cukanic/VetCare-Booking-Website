@@ -21,4 +21,9 @@ public class TreatmentPlanService {
     public void saveTreatmentPlan(TreatmentPlan treatmentPlan){
         treatmentPlanRepository.save(treatmentPlan);
     }
+
+    public void deleteTreatmentPlansByEmailAndPetName(String email, String petName) {
+        List<TreatmentPlan> plans = treatmentPlanRepository.findByEmailAndPetName(email, petName);
+        treatmentPlanRepository.deleteAll(plans);  // Delete all found records
+    }
 }

@@ -5,6 +5,7 @@ import au.edu.rmit.sept.webapp.repository.VaccinationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 @Service
 public class VaccinationService {
 
@@ -19,5 +20,12 @@ public class VaccinationService {
     //Saving/adding records
     public void saveVaccinationRecord(Vaccination vaccinationRecord) {
         vaccinationRepository.save(vaccinationRecord);
+    }
+
+    public void deleteVaccinationsByEmailAndPetName(String email, String petName) {
+        Vaccination vaccination = vaccinationRepository.findByEmailAndPetName(email, petName);
+        if (vaccination != null) {
+            vaccinationRepository.delete(vaccination);  // Delete the record if found
+        }
     }
 }

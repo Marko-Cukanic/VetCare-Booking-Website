@@ -20,4 +20,9 @@ public class MedicalConditionService {
     public void saveMedicalCondition(MedicalCondition medicalCondition) {
         medicalConditionRepository.save(medicalCondition);
     }
+
+    public void deleteMedicalConditionsByEmailAndPetName(String email, String petName) {
+        List<MedicalCondition> conditions = medicalConditionRepository.findByEmailAndPetName(email, petName);
+        medicalConditionRepository.deleteAll(conditions);  // Delete all found records
+    }
 }

@@ -119,14 +119,14 @@ public String showMedicalHistory(@RequestParam(required = false) String sessionT
     }
 
     @PostMapping("/addReport")
-public String addReport(@ModelAttribute Medical medical, 
-                        @ModelAttribute Vaccination vaccination,
-                        @RequestParam String email,
-                        @RequestParam String petName,
-                        @RequestParam List<String> medical_condition,
-                        @RequestParam List<String> treatmentName, 
-                        @RequestParam List<String> treatmentDate,
-                        Model model) {
+public String addOrUpdateReport(@ModelAttribute Medical medical, 
+                                @ModelAttribute Vaccination vaccination,
+                                @RequestParam String email,
+                                @RequestParam String petName,
+                                @RequestParam List<String> medical_condition,
+                                @RequestParam List<String> treatmentName, 
+                                @RequestParam List<String> treatmentDate,
+                                Model model) {
 
     // Fetch the existing pet's details
     Medical existingPet = medicalService.getMedicalRecordByEmailAndPetName(email, petName);
@@ -138,23 +138,39 @@ public String addReport(@ModelAttribute Medical medical,
     }
 
     try {
-        // Save the vaccination record
-        vaccination.setEmail(email);
-        vaccination.setPetName(existingPet.getPetName());
-        vaccinationService.saveVaccinationRecord(vaccination);
 
-        // Save each medical condition from the form
+
+        // Update or save the vaccination record
+        Vaccination existingVaccination = vaccinationService.getVaccinationRecordByEmailAndPetName(email, petName);
+        if (existingVaccination != null) {
+            existingVaccination.setDistemper(vaccination.isDistemper());
+            existingVaccination.setCanineParvovirus(vaccination.isCanineParvovirus());
+            existingVaccination.setBordetella(vaccination.isBordetella());
+            existingVaccination.setLymeDisease(vaccination.isLymeDisease());
+            existingVaccination.setRabies(vaccination.isRabies());
+            // update other vaccination fields if necessary
+            vaccinationService.saveVaccinationRecord(existingVaccination);
+        } else {
+            vaccination.setEmail(email);
+            vaccination.setPetName(existingPet.getPetName());
+            vaccinationService.saveVaccinationRecord(vaccination);
+        }
+
+        // Update or save medical conditions
+        List<MedicalCondition> existingConditions = medicalConditionService.getMedicalConditionsByEmailAndPetName(email, petName);
+        medicalConditionService.deleteMedicalConditionsByEmailAndPetName(email, petName); // Delete existing ones to replace with new
         for (String condition : medical_condition) {
             if (!condition.isEmpty()) {  
-                MedicalCondition medicalCondition = new MedicalCondition();
-                medicalCondition.setEmail(email);
-                medicalCondition.setPetName(petName);
-                medicalCondition.setCondition(condition);
-                medicalConditionService.saveMedicalCondition(medicalCondition);
+                MedicalCondition newCondition = new MedicalCondition();
+                newCondition.setEmail(email);
+                newCondition.setPetName(petName);
+                newCondition.setCondition(condition);
+                medicalConditionService.saveMedicalCondition(newCondition);
             }
         }
 
-        // Save treatment plans
+        // Update or save treatment plans
+        treatmentPlanService.deleteTreatmentPlansByEmailAndPetName(email, petName); // Delete existing to replace with new
         for (int i = 0; i < treatmentName.size(); i++) {
             if (!treatmentName.get(i).isEmpty() && !treatmentDate.get(i).isEmpty()) {
                 TreatmentPlan treatmentPlan = new TreatmentPlan();
@@ -174,6 +190,7 @@ public String addReport(@ModelAttribute Medical medical,
         return "addReport"; // Return to the form with an error message
     }
 }
+
 
 
     //------------------------------------------------- Sharing Record Data -------------------------------------------------
