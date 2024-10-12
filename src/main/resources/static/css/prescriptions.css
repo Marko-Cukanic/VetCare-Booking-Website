@@ -1,6 +1,6 @@
 /* General body styles */
 body {
-    font-family: 'Arial', sans-serif;/* Consistent font across the application */
+    font-family: 'Arial', sans-serif; /* Consistent font across the application */
     margin: 0;
     padding: 0;
     background-color: #f0f8ff; /* Light blue background */
@@ -33,7 +33,6 @@ body {
 #banner p {
     font-size: 1.4em;
     margin: 10px 0;
-
 }
 
 /* Main content styling */
@@ -64,6 +63,7 @@ section h2 {
     border-bottom: 2px solid #FFD700;
     padding-bottom: 10px;
     margin-bottom: 20px;
+    text-align: center; /* Aligns section title centrally */
 }
 
 /* Table styles */
@@ -101,10 +101,18 @@ form {
     border: 2px solid #FFD700;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 100%;
+    max-width: 600px; /* Ensures the form doesn't exceed this width */
+    margin: 0 auto; /* Centers the form horizontally */
     font-family: 'Arial', sans-serif; /* Ensure form uses the same font */
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Adds space between form fields */
 }
 
 .form-group {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
     margin-bottom: 20px;
 }
 
@@ -112,8 +120,7 @@ label {
     font-size: 1em;
     font-weight: bold;
     color: #555;
-    display: block;
-    margin-bottom: 8px;
+    margin-bottom: 5px;
     font-family: 'Arial', sans-serif; /* Consistent label font */
 }
 
@@ -137,9 +144,7 @@ button {
     cursor: pointer;
     border-radius: 5px;
     transition: background-color 0.3s;
-    display: block;
-    width: 100%;
-    font-family: 'Arial', sans-serif; /* Ensure button text matches */
+    width: 100%; /* Makes the button full width */
 }
 
 button:hover {
