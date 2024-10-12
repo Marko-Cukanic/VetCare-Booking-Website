@@ -3,17 +3,22 @@ body {
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f8f8f8;
+    background-color: #f0f8ff; /* Light blue background */
     color: #333;
 }
 
-/* Banner section */
+/* Banner section */    
 #banner {
-    background-color: #4CAF50;  
+    background-color: #5C9EAD;
     color: white;
     text-align: center;
-    padding: 50px 0;
-    margin-top: 20px;
+    padding: 40px 0;
+    border-bottom: 4px solid #FFD700;
+    width: 100%;
+    margin: 0;
+    margin-top: 60px; /* Adjust margin to prevent overlap with navbar */
+    position: relative;
+    z-index: 1;
 }
 
 #banner h2 {
@@ -26,42 +31,67 @@ body {
     margin: 10px 0;
 }
 
-/*Duplicate errror message*/
+/* Duplicate error message */
 .duplicate-error {
     color: red;              
     font-weight: bold;       
     font-size: 1.5em;        
     margin-bottom: 20px;
     text-align: center;
-    }
+}
 
 /* Main content area */
 main {
-    padding: 20px;
+    display: flex;
+    justify-content: center;
+    width: 80%;
+    margin: 0 auto;
 }
 
 /* Form section */
 .form-section {
-    background-color: #eee;
+    background-color: #ffffff;
     padding: 20px;
     margin: 10px 0px 50px 0px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 2px solid #5C9EAD; /* Blue-green border */
     border-radius: 8px;
 }
 
-.form-section h3 {
-    margin-top: 0;
+/* Action Buttons */
+#action-buttons {
+    text-align: center;
+    margin: 20px 0;
 }
 
-.form-section label {
-    display: block;
-    margin-top: 10px;
-    font-weight: bold;
+button {
+    background-color: #FFD700; /* Yellow button */
+    color: #333;
+    border: none;
+    padding: 10px 20px;
+    margin: 0 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #FFC107; /* Slightly darker yellow */
+}
+
+.cancel-button {
+    background-color: #f44336; 
+}
+
+.cancel-button:hover {
+    background-color: #d32f2f;
 }
 
 /* Input styles */
 .form-section input[type="text"],
 .form-section input[type="number"],
+.form-section input[type="date"],
 .form-section select {
     width: 100%;
     padding: 10px;
@@ -96,13 +126,7 @@ main {
     margin-right: 5px;
 }
 
-.new-line {
-    clear: both;
-    display: block;
-    margin-top: 15px;
-}
-
-/* vaccine checkboxes */
+/* Vaccine checkboxes */
 .vaccine-section {
     display: grid;
     grid-template-columns: repeat(2, 1fr); 
@@ -114,28 +138,110 @@ main {
     align-items: center;
 }
 
-/* Button styles */
-button {
-    background-color: #4CAF50;
+/* Left column: Medical Record */
+#medical-record {
+    flex: 1 1 30%;
+    background-color: white;
+    border: 2px solid #5C9EAD; /* Blue-green border */
+    padding: 20px;
+    margin: 0px 20px 10px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center;
+    height: fit-content;
+}
+
+/* Right column: Vaccination, Medical Conditions, Treatment Plan */
+.right-column {
+    flex: 1 1 70%;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+/* Vaccination History Section */
+#vaccination-history {
+    background-color: white;
+    border: 2px solid #5C9EAD; /* Blue-green border */
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center;
+}
+
+#vaccination-history ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    width: 45%;
+}
+
+#vaccination-history li {
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+}
+
+#vaccination-history input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+/* Medical Conditions Section */
+#medical-conditions {
+    background-color: white;
+    border: 2px solid #5C9EAD; /* Blue-green border */
+    padding: 20px;
+    margin: 20px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center;
+}
+
+#medical-conditions ul {
+    padding-left: 20px;
+    text-align: left;
+    list-style-type: disc;
+}
+
+#medical-conditions ul li {
+    margin: 10px 0;
+    font-size: 1.1em;
+}
+
+/* Treatment Plan Section */
+#treatment-plan {
+    background-color: white;
+    border: 2px solid #5C9EAD; /* Blue-green border */
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center;
+}
+
+#treatment-plan table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px auto;
+}
+
+#treatment-plan th,
+#treatment-plan td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+}
+
+#treatment-plan th {
+    background-color: #5C9EAD; /* Blue-green background */
     color: white;
-    border: none;
-    padding: 10px 20px;
-    margin: 20px 10px 20px 0;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
 }
 
-button:hover {
-    background-color: #45a049;
+#treatment-plan tr:nth-child(even) {
+    background-color: #f2f2f2;
 }
 
-.cancel-button {
-    background-color: #f44336; 
-}
-
-.cancel-button:hover {
-    background-color: #d32f2f;
+#treatment-plan tr:hover {
+    background-color: #ddd;
 }
 
 /* Footer section */
@@ -143,8 +249,24 @@ footer {
     background-color: #333;
     color: #fff;
     text-align: center;
-    padding: 10px;
-    position: relative;
-    bottom: 0;
+    margin-top: 40px;
+    padding: 30px 0;
     width: 100%;
+}
+
+/* Responsive styling for smaller screens */
+@media (max-width: 768px) {
+    main {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    #medical-record {
+        flex: 1 1 100%;
+        margin-bottom: 10px;
+    }
+
+    .right-column {
+        flex: 1 1 100%;
+    }
 }
