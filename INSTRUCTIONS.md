@@ -23,18 +23,19 @@ docker-compose up --build
 
 - Open in your browser [http://localhost:8080](http://localhost:8080)
 
+Run with 
+docker-compose up
+if you make changes to code
+docker-compose up --build
+
 database details:
 docker exec -it team-project-group-p08-07-db-1 mysql -u vetuser -p
 use vetcaredb
 username vetuser
 password for mysql 1234
 
-To assign Prescriptions as a vet
-Sign in with admin account 
-username admin@vetcare.com
-password admin
-Then go to prescription page and assign prescription should appear
-
+To assign prescriptions log in with admin account and go to prescriptions page and press assign prescriptions at the bottom of the page
+Add pet first by hovering over profile and pressing add new pet
 
 
 
