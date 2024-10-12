@@ -9,15 +9,14 @@ body {
 
 /* Banner section */    
 #banner {
-    background-color: #5C9EAD; /* Blue-green banner */
+    background-color: #5C9EAD;
     color: white;
     text-align: center;
-    padding: 50px 0;
-    margin-top: 0; /* Removed margin to eliminate the gap */
-    border-bottom: 4px solid #FFD700; /* Yellow accent */
-}
-
-nav {
+    padding: 40px 0;
+    border-bottom: 4px solid #FFD700;
+    width: 100%;
+    margin: 0;
+    margin-top: 60px; /* Adjust margin to prevent overlap with navbar */
     position: relative;
     z-index: 1;
 }
@@ -25,11 +24,13 @@ nav {
 #banner h2 {
     font-size: 3em;
     margin: 0;
+    font-family: 'Arial', sans-serif; /* Ensure consistency with main font */
 }
 
 #banner p {
-    font-size: 1.5em;
+    font-size: 1.4em;
     margin: 10px 0;
+
 }
 
 /* Login prompt */

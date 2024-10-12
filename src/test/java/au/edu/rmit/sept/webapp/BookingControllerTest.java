@@ -1,7 +1,6 @@
 package au.edu.rmit.sept.webapp;
 
 import au.edu.rmit.sept.webapp.controller.BookingController;
-import au.edu.rmit.sept.webapp.model.Booking;
 import au.edu.rmit.sept.webapp.service.BookingService;
 import au.edu.rmit.sept.webapp.service.EmailService;
 
@@ -14,12 +13,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
