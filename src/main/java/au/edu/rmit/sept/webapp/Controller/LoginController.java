@@ -32,6 +32,11 @@ public class LoginController {
     @PostMapping("/login")
     @ResponseBody
     public String loginUser(@RequestParam String email, @RequestParam String password, HttpSession session) {
+
+        // Check if the user is already logged in
+        if (session.getAttribute("loggedIn") != null && (boolean) session.getAttribute("loggedIn")) {
+            return "You are already logged in!";
+        }
         // Find the user by email
         User user = userRepository.findByEmail(email);
 

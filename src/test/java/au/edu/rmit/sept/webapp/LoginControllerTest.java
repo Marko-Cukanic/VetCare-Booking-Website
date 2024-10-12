@@ -54,17 +54,19 @@ public class LoginControllerTest {
     }
 
     @Test
-    public void loginUser_AlreadyLoggedIn_Message() throws Exception {
-        // Simulate a user already logged in by adding a session token to the sessionTokens map
-        String sessionToken = "mock-session-token";
-        loginController.getSessionTokens().put(sessionToken, "test@example.com");
+public void loginUser_AlreadyLoggedIn_Message() throws Exception {
+    // Simulate a user already logged in by setting session attributes
+    String sessionToken = "mock-session-token";
+    loginController.getSessionTokens().put(sessionToken, "test@example.com");
 
-        // Perform a POST request simulating an already logged-in user
-        mockMvc.perform(post("/login")
-                .param("email", "newuser@example.com")
-                .param("password", "password123")
-                .param("sessionToken", sessionToken))
-                .andExpect(status().isOk())
-                .andExpect(content().string("You are already logged in!"));
-    }
+    // Mock HTTP session attributes
+    mockMvc.perform(post("/login")
+            .sessionAttr("loggedIn", true)
+            .sessionAttr("userEmail", "test@example.com")
+            .param("email", "newuser@example.com")
+            .param("password", "password123"))
+            .andExpect(status().isOk())
+            .andExpect(content().string("You are already logged in!"));
+}
+
 }
