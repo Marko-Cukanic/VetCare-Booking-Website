@@ -137,17 +137,7 @@ public String addReport(@ModelAttribute Medical medical,
         return "addReport";
     }
 
-    // Update the existing record with new information if necessary
-    existingPet.setPetAge(medical.getPetAge());
-    existingPet.setPetWeight(medical.getPetWeight());
-    existingPet.setPetType(medical.getPetType());
-    existingPet.setPetBreed(medical.getPetBreed());
-    existingPet.setPetSex(medical.getPetSex());
-
     try {
-        // Save the updated medical record
-        medicalService.saveMedicalRecord(existingPet);
-
         // Save the vaccination record
         vaccination.setEmail(email);
         vaccination.setPetName(existingPet.getPetName());
