@@ -1,158 +1,163 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Guides</title>
-    <link rel="stylesheet" th:href="@{/css/guides.css}">
-    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+   <meta charset="UTF-8">
+   <title>Guides</title>
+   <link rel="stylesheet" th:href="@{/css/guides.css}">
+   <link rel="stylesheet" th:href="@{/css/navbar.css}">
 </head>
 <body>
 <div th:insert="~{fragments/navbar :: navbar}"></div>
 
+<!-- Banner Section -->
+<div id="banner">
+   <h2>Educational Resources</h2>
+</div>
+
 <!-- Search Bar Section -->
 <div class="search-bar">
-    <input type="text" id="search-input" placeholder="Search Guides..." oninput="filterContent()">
+   <input type="text" id="search-input" placeholder="Search Guides..." oninput="filterContent()">
 </div>
 
 <!-- Filter Bar Section -->
 <div class="filter-bar">
-    <label for="topic-select">Filter by Topic:</label>
-    <select id="topic-select" onchange="filterGuides()">
-        <option value="all">All Topics</option>
-        <option value="Nutrition/Diet">Nutrition/Diet</option>
-        <option value="Pet Breeds">Pet Breeds</option>
-        <option value="General Care">General Care</option>
-    </select>
+   <label for="topic-select">Filter by Topic:</label>
+   <select id="topic-select" onchange="filterGuides()">
+       <option value="all">All Topics</option>
+       <option value="Nutrition/Diet">Nutrition/Diet</option>
+       <option value="Pet Breeds">Pet Breeds</option>
+       <option value="General Care">General Care</option>
+   </select>
 
-    <label for="time-select">Filter by Estimated Reading Time:</label>
-    <select id="time-select" onchange="filterGuides()">
-        <option value="all">All Times</option>
-        <option value="5-10">5-10 minutes</option>
-        <option value="10-15">10-15 minutes</option>
-        <option value="15-20">15-20 minutes</option>
-    </select>
+   <label for="time-select">Filter by Estimated Reading Time:</label>
+   <select id="time-select" onchange="filterGuides()">
+       <option value="all">All Times</option>
+       <option value="5-10">5-10 minutes</option>
+       <option value="10-15">10-15 minutes</option>
+       <option value="15-20">15-20 minutes</option>
+   </select>
 </div>
 
 <nav class="tabs">
-    <ul>
-        <li><a th:href="@{/resources}">Articles</a></li>
-        <li><a th:href="@{/guides}" class="active">Guides</a></li>
-        <li><a th:href="@{/videos}">Videos</a></li>
-        <li><a th:href="@{/trends}">Trends</a></li>
-    </ul>
+   <ul>
+       <li><a th:href="@{/resources}">Articles</a></li>
+       <li><a th:href="@{/guides}" class="active">Guides</a></li>
+       <li><a th:href="@{/videos}">Videos</a></li>
+       <li><a th:href="@{/trends}">Trends</a></li>
+   </ul>
 </nav>
 
 <main>
-    <section id="content-list">
-        <h2>Guides</h2>
-        <p>Access detailed guides on various topics related to pet care.</p>
+   <section id="content-list">
+       <h2>Guides</h2>
+       <p>Access detailed guides on various topics related to pet care.</p>
 
-        <!-- Guide 1: Importance of Good Nutrition -->
-        <div class="guide-preview content-item" data-title="Importance of Good Nutrition" data-topic="Nutrition/Diet" data-time="11">
-            <h3>Importance of Good Nitrition</h3>
-            <p><strong>Description:</strong> Learn about the Importance of Good Nutrition for Pets.</p>
-            <p><strong>Estimated Reading Time:</strong> 10 minutes</p>
-            <iframe id="guide1" src="https://healthypetguide.com/the-importance-of-good-nutrition-for-dogs-e" title="Importance of Good Nutrition"></iframe>
-            <button class="full-screen-btn" onclick="openFullScreen('guide1')">View Full Screen</button>
-        </div>
+       <!-- Guide 1: Importance of Good Nutrition -->
+       <div class="guide-preview content-item" data-title="Importance of Good Nutrition" data-topic="Nutrition/Diet" data-time="11">
+           <h3>Importance of Good Nutrition</h3>
+           <p><strong>Description:</strong> Learn about the Importance of Good Nutrition for Pets.</p>
+           <p><strong>Estimated Reading Time:</strong> 10 minutes</p>
+           <iframe id="guide1" src="https://healthypetguide.com/the-importance-of-good-nutrition-for-dogs-e" title="Importance of Good Nutrition"></iframe>
+           <button class="full-screen-btn" onclick="openFullScreen('guide1')">View Full Screen</button>
+       </div>
 
-        <!-- Guide 2: Pet Breeds Guide -->
-        <div class="guide-preview content-item" data-title="Pet Breeds Guide" data-topic="Pet Breeds" data-time="5">
-            <h3>Pet Breeds Guide</h3>
-            <p><strong>Description:</strong> A comprehensive guide on Pet Breeds.</p>
-            <p><strong>Estimated Reading Time:</strong> 5 minutes</p>
-            <iframe id="guide2" src="https://www.webmd.com/pets/dogs/ss/slideshow-long-living-dog-breeds" title="Pet Breeds Guide"></iframe>
-            <button class="full-screen-btn" onclick="openFullScreen('guide2')">View Full Screen</button>
-        </div>
+       <!-- Guide 2: Pet Breeds Guide -->
+       <div class="guide-preview content-item" data-title="Pet Breeds Guide" data-topic="Pet Breeds" data-time="5">
+           <h3>Pet Breeds Guide</h3>
+           <p><strong>Description:</strong> A comprehensive guide on Pet Breeds.</p>
+           <p><strong>Estimated Reading Time:</strong> 5 minutes</p>
+           <iframe id="guide2" src="https://www.webmd.com/pets/dogs/ss/slideshow-long-living-dog-breeds" title="Pet Breeds Guide"></iframe>
+           <button class="full-screen-btn" onclick="openFullScreen('guide2')">View Full Screen</button>
+       </div>
 
-        <!-- Guide 3: Pet Responsibilities Guide -->
-        <div class="guide-preview content-item" data-title="Pet Responsibilities Guide" data-topic="General Care" data-time="5">
-            <h3>Pet Responsibilities Guide</h3>
-            <p><strong>Description:</strong> Learn how to responsibly take care of your Pets Guide.</p>
-            <p><strong>Estimated Reading Time:</strong> 5 minutes</p>
-            <iframe id="guide3" src="https://animalemergencyservice.com.au/blog/the-essential-guide-to-responsible-pet-ownership/" title="Pet Responsibilities Guide"></iframe>
-            <button class="full-screen-btn" onclick="openFullScreen('guide3')">View Full Screen</button>
-        </div>
+       <!-- Guide 3: Pet Responsibilities Guide -->
+       <div class="guide-preview content-item" data-title="Pet Responsibilities Guide" data-topic="General Care" data-time="5">
+           <h3>Pet Responsibilities Guide</h3>
+           <p><strong>Description:</strong> Learn how to responsibly take care of your Pets Guide.</p>
+           <p><strong>Estimated Reading Time:</strong> 5 minutes</p>
+           <iframe id="guide3" src="https://animalemergencyservice.com.au/blog/the-essential-guide-to-responsible-pet-ownership/" title="Pet Responsibilities Guide"></iframe>
+           <button class="full-screen-btn" onclick="openFullScreen('guide3')">View Full Screen</button>
+       </div>
 
-        <!-- Guide 4: Things You Learn from Your Pet -->
-        <div class="guide-preview content-item" data-title="Things You Learn from Your Pet" data-topic="General Care" data-time="16">
-            <h3>Things You Learn from Your Pet</h3>
-            <p><strong>Description:</strong> A guide on how to understand your pets better.</p>
-            <p><strong>Estimated Reading Time:</strong> 15 minutes</p>
-            <iframe id="guide4" src="https://www.webmd.com/pets/ss/slideshow-things-you-learn-from-your-pet" title="Things You Learn from Your Pet"></iframe>
-            <button class="full-screen-btn" onclick="openFullScreen('guide4')">View Full Screen</button>
-        </div>
-    </section>
+       <!-- Guide 4: Things You Learn from Your Pet -->
+       <div class="guide-preview content-item" data-title="Things You Learn from Your Pet" data-topic="General Care" data-time="16">
+           <h3>Things You Learn from Your Pet</h3>
+           <p><strong>Description:</strong> A guide on how to understand your pets better.</p>
+           <p><strong>Estimated Reading Time:</strong> 15 minutes</p>
+           <iframe id="guide4" src="https://www.webmd.com/pets/ss/slideshow-things-you-learn-from-your-pet" title="Things You Learn from Your Pet"></iframe>
+           <button class="full-screen-btn" onclick="openFullScreen('guide4')">View Full Screen</button>
+       </div>
+   </section>
 </main>
 
 <footer>
-    <p>&copy; 2024 VetCare. All rights reserved.</p>
+   <p>&copy; 2024 VetCare. All rights reserved.</p>
 </footer>
 
 <script>
-    // Full-screen function
-    function openFullScreen(iframeId) {
-        const iframe = document.getElementById(iframeId);
-        const fullScreenIframe = document.createElement('iframe');
-        fullScreenIframe.src = iframe.src;
-        fullScreenIframe.className = 'fullscreen-iframe';
+   // Full-screen function
+   function openFullScreen(iframeId) {
+       const iframe = document.getElementById(iframeId);
+       const fullScreenIframe = document.createElement('iframe');
+       fullScreenIframe.src = iframe.src;
+       fullScreenIframe.className = 'fullscreen-iframe';
 
-        const exitButton = document.createElement('button');
-        exitButton.className = 'exit-fullscreen-btn';
-        exitButton.textContent = 'Exit Full Screen';
-        exitButton.onclick = function() {
-            fullScreenIframe.remove();
-            exitButton.remove();
-        };
+       const exitButton = document.createElement('button');
+       exitButton.className = 'exit-fullscreen-btn';
+       exitButton.textContent = 'Exit Full Screen';
+       exitButton.onclick = function() {
+           fullScreenIframe.remove();
+           exitButton.remove();
+       };
 
-        document.body.appendChild(fullScreenIframe);
-        document.body.appendChild(exitButton);
-    }
+       document.body.appendChild(fullScreenIframe);
+       document.body.appendChild(exitButton);
+   }
 
-    // Search Filter Functionality
-    function filterContent() {
-        const searchValue = document.getElementById('search-input').value.toLowerCase();
-        const items = document.querySelectorAll('.content-item');
-        items.forEach(item => {
-            const title = item.getAttribute('data-title').toLowerCase();
-            if (title.includes(searchValue)) {
-                item.style.display = 'block';
-            } else {
-                item.style.display = 'none';
-            }
-        });
-    }
+   // Search Filter Functionality
+   function filterContent() {
+       const searchValue = document.getElementById('search-input').value.toLowerCase();
+       const items = document.querySelectorAll('.content-item');
+       items.forEach(item => {
+           const title = item.getAttribute('data-title').toLowerCase();
+           if (title.includes(searchValue)) {
+               item.style.display = 'block';
+           } else {
+               item.style.display = 'none';
+           }
+       });
+   }
 
-    // Filter guides by topic and reading time
-    function filterGuides() {
-        const topicFilter = document.getElementById('topic-select').value;
-        const timeFilter = document.getElementById('time-select').value;
+   // Filter guides by topic and reading time
+   function filterGuides() {
+       const topicFilter = document.getElementById('topic-select').value;
+       const timeFilter = document.getElementById('time-select').value;
 
-        const items = document.querySelectorAll('.content-item');
-        items.forEach(item => {
-            const topic = item.getAttribute('data-topic');
-            const time = parseInt(item.getAttribute('data-time'));
+       const items = document.querySelectorAll('.content-item');
+       items.forEach(item => {
+           const topic = item.getAttribute('data-topic');
+           const time = parseInt(item.getAttribute('data-time'));
 
-            let timeMatches = false;
-            if (timeFilter === "all") {
-                timeMatches = true;
-            } else if (timeFilter === "5-10" && time >= 5 && time <= 10) {
-                timeMatches = true;
-            } else if (timeFilter === "10-15" && time > 10 && time <= 15) {
-                timeMatches = true;
-            } else if (timeFilter === "15-20" && time > 15 && time <= 20) {
-                timeMatches = true;
-            }
+           let timeMatches = false;
+           if (timeFilter === "all") {
+               timeMatches = true;
+           } else if (timeFilter === "5-10" && time >= 5 && time <= 10) {
+               timeMatches = true;
+           } else if (timeFilter === "10-15" && time > 10 && time <= 15) {
+               timeMatches = true;
+           } else if (timeFilter === "15-20" && time > 15 && time <= 20) {
+               timeMatches = true;
+           }
 
-            const topicMatches = topicFilter === "all" || topic === topicFilter;
+           const topicMatches = topicFilter === "all" || topic === topicFilter;
 
-            if (timeMatches && topicMatches) {
-                item.style.display = 'block';
-            } else {
-                item.style.display = 'none';
-            }
-        });
-    }
+           if (timeMatches && topicMatches) {
+               item.style.display = 'block';
+           } else {
+               item.style.display = 'none';
+           }
+       });
+   }
 </script>
 </body>
 </html>

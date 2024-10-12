@@ -82,19 +82,28 @@ nav.main-nav ul li .dropdown-content a:hover {
    background-color: #ddd;
 }
 
-/* Header Styles */
-header {
-   background-color: #343a40;
+/* Banner Styles */
+#banner {
+   background-color: #5C9EAD;
    color: white;
-   padding: 20px 0;
    text-align: center;
-   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+   padding: 40px 0;
+   border-bottom: 4px solid #FFD700;
+   width: 100%;
+   margin: 0;
+   position: relative;
+   z-index: 1;
 }
 
-header h1 {
-   font-size: 2.5rem;
+#banner h2 {
+   font-size: 3em;
    margin: 0;
-   font-family: 'Cursive', sans-serif;
+   font-family: 'Arial', sans-serif;
+}
+
+#banner p {
+   font-size: 1.4em;
+   margin: 10px 0;
 }
 
 /* Tabs Section */
@@ -233,7 +242,6 @@ footer {
    background-color: white;
 }
 
-
 .exit-fullscreen-btn {
    position: fixed;
    top: 20px;
@@ -247,41 +255,38 @@ footer {
    cursor: pointer;
    z-index: 10000;
  }
- 
- .exit-fullscreen-btn:hover {
-   background-color: #0056b3;
- }
- 
 
- /* Search Bar Styles */
+.exit-fullscreen-btn:hover {
+   background-color: #0056b3;
+}
+
+/* Search Bar Styles */
 .search-bar {
    text-align: center;
    margin: 20px 0;
- }
- 
- .search-bar input[type="text"] {
+}
+
+.search-bar input[type="text"] {
    width: 50%;
    padding: 10px;
    font-size: 1.1rem;
    border: 2px solid #007bff;
    border-radius: 5px;
- }
- 
- .search-bar input[type="text"]:focus {
+}
+
+.search-bar input[type="text"]:focus {
    outline: none;
    border-color: #0056b3;
- }
+}
 
- .filter-bar {
+.filter-bar {
    text-align: center;
    margin: 20px 0;
- }
- 
- .filter-bar select {
+}
+
+.filter-bar select {
    padding: 10px;
    font-size: 1.1rem;
    border: 2px solid #007bff;
    border-radius: 5px;
- }
- 
- 
+}
