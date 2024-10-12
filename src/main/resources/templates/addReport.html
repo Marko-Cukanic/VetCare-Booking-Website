@@ -3,83 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Add Report</title>
-    <link rel="stylesheet" th:href="@{/css/addReport.css}">
     <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/addReport.css}">
 </head>
-
-<script>
-    // -------------------------- Dynamically Add Medical Condition ---------------------------
-    function addCondition() {
-        var container = document.getElementById("medicalConditions");
-        var div = document.createElement("div");
-        div.className = "condition-group";  // Add class to wrap each condition input 
-
-        var input = document.createElement("input");
-        input.type = "text";
-        input.name = "medical_condition";
-        input.placeholder = "Enter medical condition";
-
-        var removeBtn = document.createElement("button");
-        removeBtn.type = "button";
-        removeBtn.className = "remove-btn";
-        removeBtn.textContent = "Remove";
-        removeBtn.onclick = function() {
-            removeMedicalCondition(this);  // Attach remove functionality
-        };
-
-        div.appendChild(input);
-        div.appendChild(removeBtn);
-        container.appendChild(div);
-    }
-
-    function removeMedicalCondition(button) {
-        const conditionDiv = button.parentElement;
-        conditionDiv.remove();
-    }
-
-    // -------------------------- Dynamically Add Treatment Plan ---------------------------
-    function addTreatmentPlan() {
-        var container = document.getElementById("treatmentPlans");
-        var div = document.createElement("div");
-        div.className = "treatment-group";  // Class to wrap each treatment input
-
-        // Treatment name input
-        var treatmentInput = document.createElement("input");
-        treatmentInput.type = "text";
-        treatmentInput.name = "treatmentName";  
-        treatmentInput.placeholder = "Enter treatment name";
-
-        // Treatment date input
-        var dateInput = document.createElement("input");
-        dateInput.type = "date";
-        dateInput.name = "treatmentDate";  
-
-        // Remove button
-        var removeBtn = document.createElement("button");
-        removeBtn.type = "button";
-        removeBtn.className = "remove-btn";
-        removeBtn.textContent = "Remove";
-        removeBtn.onclick = function() {
-            removeTreatment(this);  // Attach remove functionality
-        };
-
-        // Append inputs and button to div
-        div.appendChild(treatmentInput);
-        div.appendChild(dateInput);
-        div.appendChild(removeBtn);
-        container.appendChild(div);
-    }
-
-    function removeTreatment(button) {
-        const treatmentDiv = button.parentElement;
-        treatmentDiv.remove();
-    }
-</script>
 
 <body>
 
     <div th:insert="~{fragments/navbar :: navbar}"></div>
-    <link rel="stylesheet" th:href="@{/css/addReport.css}">
 
     <div id="banner">
         <h2>Add Medical and Vaccination Report</h2>
@@ -92,106 +22,189 @@
 
     <main>
         <form th:action="@{/addReport}" th:method="post">
+            <!-- Display Selected Pet -->
             <div class="form-section">
-                <h3>Medical Report</h3>
-                
-                <!-- Email Row -->
-                <div class="form-row">
-                    <label for="email">Email:</label>
-                    <span id="email" th:text="${email}" class="value-text"></span> <!-- Display email -->
-                    <input type="hidden" name="email" th:value="${email}" /> <!-- Hidden input for email -->
-                </div>
-                
-                <!-- Pet Selection Row -->
-                <div class="form-row">
-                    <label for="pet">Select Pet:</label>
-                    <select id="pet" name="petName" required>
-                        <option value="">Select a Pet</option>
-                        <th:block th:each="pet : ${pets}">
-                            <option th:value="${pet.petName}" th:text="${pet.petName}"></option>
-                        </th:block>
-                    </select>
-                </div>
+                <h3>Adding Report for <span th:text="${petName}"></span></h3>
+                <input type="hidden" name="petName" th:value="${petName}" />
+                <input type="hidden" name="email" th:value="${email}" />
             </div>
-    
 
-            <!-- Add Vaccination History Section -->
+            <!-- Medical Details Section -->
+            <div class="form-section">
+                <h3>Medical Details</h3>
+                <label for="petAge">Pet Age:</label>
+                <input type="number" id="petAge" name="medical.petAge" placeholder="Enter pet age">
+
+                <label for="petSex">Pet Sex:</label>
+                <input type="text" id="petSex" name="medical.petSex" placeholder="Enter pet sex">
+
+                <label for="petWeight">Pet Weight (kg):</label>
+                <input type="number" id="petWeight" name="medical.petWeight" placeholder="Enter pet weight">
+
+                <label for="petType">Pet Type:</label>
+                <input type="text" id="petType" name="medical.petType" placeholder="Enter pet type (e.g., Dog, Cat)">
+
+                <label for="petBreed">Pet Breed:</label>
+                <input type="text" id="petBreed" name="medical.petBreed" placeholder="Enter pet breed">
+            </div>
+
+            <!-- Vaccination Report Section -->
             <div class="form-section">
                 <h3>Vaccination Report</h3>
-                <div class="vaccine-section">
-                    <label for="distemper">
-                        <input type="checkbox" id="distemper" name="distemper">
-                        Distemper
-                    </label>
+                <!-- Hidden fields for email and petName -->
+<input type="hidden" name="vaccination.email" th:value="${email}" />
+<input type="hidden" name="vaccination.petName" th:value="${petName}" />
 
-                    <label for="canineParvovirus">
-                        <input type="checkbox" id="canineParvovirus" name="canineParvovirus">
-                        Canine Parvovirus
-                    </label>
+<!-- Vaccination checkboxes -->
+<div class="vaccine-section">
+    <label for="distemper">
+        <input type="checkbox" id="distemper" name="vaccination.distemper" th:checked="${vaccination.distemper == 1}">
+        Distemper
+    </label>
 
-                    <label for="bordetella">
-                        <input type="checkbox" id="bordetella" name="bordetella">
-                        Bordetella
-                    </label>
-                    <label for="lymeDisease">
-                        <input type="checkbox" id="lymeDisease" name="lymeDisease">
-                        Lyme Disease
-                    </label>
-                    <label for="rabies">
-                        <input type="checkbox" id="rabies" name="rabies">
-                        Rabies
-                    </label>
-                    <label for="panleukopenia">
-                        <input type="checkbox" id="panleukopenia" name="panleukopenia">
-                        Panleukopenia
-                    </label>
-                    <label for="caliciVirus">
-                        <input type="checkbox" id="caliciVirus" name="caliciVirus">
-                        Calicivirus
-                    </label>
-                    <label for="immunodeficiencyVirus">
-                        <input type="checkbox" id="immunodeficiencyVirus" name="immunodeficiencyVirus">
-                        Immunodeficiency Virus
-                    </label>
-                    <label for="chlamydiaFelis">
-                        <input type="checkbox" id="chlamydiaFelis" name="chlamydiaFelis">
-                        Chlamydia felis
-                    </label>
-                    <label for="leukemiaVirus">
-                        <input type="checkbox" id="leukemiaVirus" name="leukemiaVirus">
-                        Leukemia Virus
-                    </label>
-                </div>
-            </div>
-            <!-- Add Medical Condition Section -->
+    <label for="canineParvovirus">
+        <input type="checkbox" id="canineParvovirus" name="vaccination.canineParvovirus" th:checked="${vaccination.canineParvovirus == 1}">
+        Canine Parvovirus
+    </label>
+
+    <label for="bordetella">
+        <input type="checkbox" id="bordetella" name="vaccination.bordetella" th:checked="${vaccination.bordetella == 1}">
+        Bordetella
+    </label>
+
+    <label for="lymeDisease">
+        <input type="checkbox" id="lymeDisease" name="vaccination.lymeDisease" th:checked="${vaccination.lymeDisease == 1}">
+        Lyme Disease
+    </label>
+
+    <label for="rabies">
+        <input type="checkbox" id="rabies" name="vaccination.rabies" th:checked="${vaccination.rabies == 1}">
+        Rabies
+    </label>
+
+    <label for="panleukopenia">
+        <input type="checkbox" id="panleukopenia" name="vaccination.panleukopenia" th:checked="${vaccination.panleukopenia == 1}">
+        Panleukopenia
+    </label>
+
+    <label for="caliciVirus">
+        <input type="checkbox" id="caliciVirus" name="vaccination.caliciVirus" th:checked="${vaccination.caliciVirus == 1}">
+        Calicivirus
+    </label>
+
+    <label for="immunodeficiencyVirus">
+        <input type="checkbox" id="immunodeficiencyVirus" name="vaccination.immunodeficiencyVirus" th:checked="${vaccination.immunodeficiencyVirus == 1}">
+        Immunodeficiency Virus
+    </label>
+
+    <label for="chlamydiaFelis">
+        <input type="checkbox" id="chlamydiaFelis" name="vaccination.chlamydiaFelis" th:checked="${vaccination.chlamydiaFelis == 1}">
+        Chlamydia felis
+    </label>
+
+    <label for="leukemiaVirus">
+        <input type="checkbox" id="leukemiaVirus" name="vaccination.leukemiaVirus" th:checked="${vaccination.leukemiaVirus == 1}">
+        Leukemia Virus
+    </label>
+</div>
+
+
+            <!-- Medical Condition Section -->
             <div class="form-section">
                 <h3>Add Medical Condition</h3>
-                
-                <!-- Medical Conditions Input -->
                 <div id="medicalConditions">
                     <input type="text" name="medical_condition" placeholder="Enter medical condition">
-                    <span class="new-line"></span> 
                 </div>
                 <button type="button" onclick="addCondition()">Add Another Condition</button>
             </div>
-             <!-- Add Treatment Plan Section -->
-             <div class="form-section">
+
+            <!-- Treatment Plan Section -->
+            <div class="form-section">
                 <h3>Add Treatment Plan</h3>
-                
-                
                 <div id="treatmentPlans">
                     <input type="text" name="treatmentName" placeholder="Treatment Name" required>
                     <input type="date" name="treatmentDate" placeholder="DD/MM/YYYY" required>
-                    
                 </div>
                 <button type="button" onclick="addTreatmentPlan()">Add Another Treatment Plan</button>
             </div>
+
             <button type="button" class="cancel-button" onclick="window.location.href='/medical'">Cancel</button>
             <button type="submit">Save Report</button>
         </form>
     </main>
+
     <footer>
         <p>&copy; 2024 VetCare. All rights reserved.</p>
     </footer>
+
+    <!-- JavaScript Functions -->
+    <script>
+        // -------------------------- Dynamically Add Medical Condition ---------------------------
+        function addCondition() {
+            var container = document.getElementById("medicalConditions");
+            var div = document.createElement("div");
+            div.className = "condition-group";  // Add class to wrap each condition input 
+
+            var input = document.createElement("input");
+            input.type = "text";
+            input.name = "medical_condition";
+            input.placeholder = "Enter medical condition";
+
+            var removeBtn = document.createElement("button");
+            removeBtn.type = "button";
+            removeBtn.className = "remove-btn";
+            removeBtn.textContent = "Remove";
+            removeBtn.onclick = function() {
+                removeMedicalCondition(this);  // Attach remove functionality
+            };
+
+            div.appendChild(input);
+            div.appendChild(removeBtn);
+            container.appendChild(div);
+        }
+
+        function removeMedicalCondition(button) {
+            const conditionDiv = button.parentElement;
+            conditionDiv.remove();
+        }
+
+        // -------------------------- Dynamically Add Treatment Plan ---------------------------
+        function addTreatmentPlan() {
+            var container = document.getElementById("treatmentPlans");
+            var div = document.createElement("div");
+            div.className = "treatment-group";  // Class to wrap each treatment input
+
+            // Treatment name input
+            var treatmentInput = document.createElement("input");
+            treatmentInput.type = "text";
+            treatmentInput.name = "treatmentName";
+            treatmentInput.placeholder = "Enter treatment name";
+
+            // Treatment date input
+            var dateInput = document.createElement("input");
+            dateInput.type = "date";
+            dateInput.name = "treatmentDate";
+
+            // Remove button
+            var removeBtn = document.createElement("button");
+            removeBtn.type = "button";
+            removeBtn.className = "remove-btn";
+            removeBtn.textContent = "Remove";
+            removeBtn.onclick = function() {
+                removeTreatment(this);  // Attach remove functionality
+            };
+
+            // Append inputs and button to div
+            div.appendChild(treatmentInput);
+            div.appendChild(dateInput);
+            div.appendChild(removeBtn);
+            container.appendChild(div);
+        }
+
+        function removeTreatment(button) {
+            const treatmentDiv = button.parentElement;
+            treatmentDiv.remove();
+        }
+    </script>
 </body>
 </html>
