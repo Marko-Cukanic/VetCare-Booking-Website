@@ -91,6 +91,20 @@ button:hover {
     background-color: #FFC107; /* Slightly darker yellow on hover */
 }
 
+.delete-button {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.delete-button:hover {
+    background-color: #e60000;
+}
+
+
 /* Responsive design */
 @media (max-width: 768px) {
     main {

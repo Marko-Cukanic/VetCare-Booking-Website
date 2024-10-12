@@ -11,13 +11,13 @@ public class Medical {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String email;
+    private Long id; // Primary key
 
-    private String petName; 
+    private String email;
+    private String petName;
 
     @Column(unique = true) 
-    private Long petID;
+    private Long petID; // Optional, if you need a separate unique identifier for pets
     
     private int petAge;
     private String petSex;
@@ -26,6 +26,10 @@ public class Medical {
     private String petBreed;
 
     // Getters
+    public Long getId() {
+        return id;
+    }
+
     public String getEmail() {
         return email;
     }

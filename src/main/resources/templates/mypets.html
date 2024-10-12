@@ -5,7 +5,6 @@
     <title>My Pets - VetCare</title>
     <link rel="stylesheet" th:href="@{/css/pets.css}" />
     <link rel="stylesheet" th:href="@{/css/navbar.css}">
-
 </head>
 <body>
     <div th:replace="~{fragments/navbar :: navbar}"></div>
@@ -28,34 +27,40 @@
                         <p><strong>Type:</strong> <span th:text="${pet.petType}">Type</span></p>
                         <p><strong>Weight:</strong> <span th:text="${pet.petWeight}">Weight</span> kg</p>
                         <p><strong>Sex:</strong> <span th:text="${pet.petSex}">Sex</span></p>
+
+                        <!-- Delete form placed inside the pet card for grouping -->
+                        <form th:action="@{/deletePet}" method="post">
+                            <input type="hidden" name="id" th:value="${pet.id}"/>
+                            <button type="submit" class="delete-button">Delete</button>
+                        </form>
                     </div>
                 </li>
             </ul>
         </div>
         <div th:if="${pets.size() == 0}">
-            <p>No pets found. </p>
+            <p>No pets found.</p>
         </div>
     </main>
 
     <script>
-            document.addEventListener('DOMContentLoaded', function() {
-        const sessionToken = localStorage.getItem('sessionToken');
-        if (!sessionToken) {
-            alert('Please log in to access your pets.');
-            window.location.href = '/login';
-        } else {
-            // Set the session token in relevant links
-            const myPetsLink = document.querySelector('a[href="/mypets"]');
-            if (myPetsLink) {
-                myPetsLink.setAttribute('href', `/mypets?sessionToken=${sessionToken}`);
-            }
+        document.addEventListener('DOMContentLoaded', function() {
+            const sessionToken = localStorage.getItem('sessionToken');
+            if (!sessionToken) {
+                alert('Please log in to access your pets.');
+                window.location.href = '/login';
+            } else {
+                // Set the session token in relevant links
+                const myPetsLink = document.querySelector('a[href="/mypets"]');
+                if (myPetsLink) {
+                    myPetsLink.setAttribute('href', `/mypets?sessionToken=${sessionToken}`);
+                }
 
-            const addPetLink = document.querySelector('a[href="/addPet"]');
-            if (addPetLink) {
-                addPetLink.setAttribute('href', `/addPet?sessionToken=${sessionToken}`);
+                const addPetLink = document.querySelector('a[href="/addPet"]');
+                if (addPetLink) {
+                    addPetLink.setAttribute('href', `/addPet?sessionToken=${sessionToken}`);
+                }
             }
-        }
-    });
+        });
     </script>
 </body>
 </html>
