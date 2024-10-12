@@ -25,7 +25,7 @@
         }
     }
 
-    //-------------------------------------- Pet Name Script --------------------------------------
+    //-------------------------------------- Pet Name Script ----------------------------------------
     function onPetChange() {
         const petName = document.getElementById("pet-name").value;
         const sessionToken = localStorage.getItem('sessionToken');
@@ -151,7 +151,7 @@
     <!------------------------------ Action Buttons -------------------------->
     <section th:if="${isLoggedIn}">
         <div id="action-buttons">
-            <button id="add-report" onclick="addReport()">Add Report</button>
+            <button id="add-report" onclick="addReport()">Add/Edit Report</button>
             <script>
             function addReport() {
                 const sessionToken = localStorage.getItem('sessionToken');

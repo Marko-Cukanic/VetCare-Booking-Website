@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -97,77 +96,95 @@ public String showMedicalHistory(@RequestParam(required = false) String sessionT
 
 
     //------------------------------------------------- Adding/Saving Record Data -------------------------------------------------
-        @GetMapping("/addReport")
+    @GetMapping("/addReport")
     public String showAddReportForm(@RequestParam String sessionToken, Model model) {
-        Map<String, String> sessionTokens = loginController.getSessionTokens();
-        String email = sessionTokens.get(sessionToken);
-
+        String email = getEmailFromSessionToken(sessionToken);
+    
         if (email == null) {
             model.addAttribute("isLoggedIn", false);
             return "redirect:/login";
         }
-
+    
         model.addAttribute("isLoggedIn", true);
-        
+    
+        // Fetch pets for the logged-in user
         List<Medical> pets = medicalService.getMedicalRecordsByEmail(email);
         model.addAttribute("pets", pets);
         model.addAttribute("vaccination", new Vaccination());
         model.addAttribute("medicalCondition", new MedicalCondition());
         model.addAttribute("treatmentPlan", new TreatmentPlan());
         model.addAttribute("email", email);
-
+    
         return "addReport";
     }
 
     @PostMapping("/addReport")
-    public String addReport(@ModelAttribute Medical medical, 
-                            @ModelAttribute Vaccination vaccination,
-                            @RequestParam String email,
-                            @RequestParam String petName,
-                            @RequestParam List<String> medical_condition,
-                            @RequestParam List<String> treatmentName, 
-                            @RequestParam List<String> treatmentDate,
-                            Model model) {
+public String addReport(@ModelAttribute Medical medical, 
+                        @ModelAttribute Vaccination vaccination,
+                        @RequestParam String email,
+                        @RequestParam String petName,
+                        @RequestParam List<String> medical_condition,
+                        @RequestParam List<String> treatmentName, 
+                        @RequestParam List<String> treatmentDate,
+                        Model model) {
 
-        // Save the medical record
-        try {
-            medicalService.saveMedicalRecord(medical);
+    // Fetch the existing pet's details
+    Medical existingPet = medicalService.getMedicalRecordByEmailAndPetName(email, petName);
 
-            // Save the vaccination record
-            vaccination.setEmail(medical.getEmail());
-            vaccination.setPetName(medical.getPetName());
-            vaccinationService.saveVaccinationRecord(vaccination);
-
-            // Save each medical condition from the form
-            for (String condition : medical_condition) {
-                if (!condition.isEmpty()) {  
-                    MedicalCondition medicalCondition = new MedicalCondition();
-                    medicalCondition.setEmail(email);
-                    medicalCondition.setPetName(petName);
-                    medicalCondition.setCondition(condition);
-                    medicalConditionService.saveMedicalCondition(medicalCondition);
-                }
-            }
-
-            // Save treatment plans
-            for (int i = 0; i < treatmentName.size(); i++) {
-                if (!treatmentName.get(i).isEmpty() && !treatmentDate.get(i).isEmpty()) {
-                    TreatmentPlan treatmentPlan = new TreatmentPlan();
-                    treatmentPlan.setEmail(email);
-                    treatmentPlan.setPetName(petName);
-                    treatmentPlan.setTreatmentName(treatmentName.get(i));
-                    treatmentPlan.setTreatmentDate(LocalDate.parse(treatmentDate.get(i))); 
-                    treatmentPlanService.saveTreatmentPlan(treatmentPlan);
-                }
-            }
-            return "redirect:/medical"; // Redirect to medical records page after submission
-
-        } catch (MedicalService.DuplicateRecordException e){
-            model.addAttribute("error", e.getMessage());
-            model.addAttribute("email", email);
-            return "addReport"; // Return to the form with error message
-        } 
+    if (existingPet == null) {
+        model.addAttribute("error", "Selected pet not found.");
+        model.addAttribute("email", email);
+        return "addReport";
     }
+
+    // Update the existing record with new information if necessary
+    existingPet.setPetAge(medical.getPetAge());
+    existingPet.setPetWeight(medical.getPetWeight());
+    existingPet.setPetType(medical.getPetType());
+    existingPet.setPetBreed(medical.getPetBreed());
+    existingPet.setPetSex(medical.getPetSex());
+
+    try {
+        // Save the updated medical record
+        medicalService.saveMedicalRecord(existingPet);
+
+        // Save the vaccination record
+        vaccination.setEmail(email);
+        vaccination.setPetName(existingPet.getPetName());
+        vaccinationService.saveVaccinationRecord(vaccination);
+
+        // Save each medical condition from the form
+        for (String condition : medical_condition) {
+            if (!condition.isEmpty()) {  
+                MedicalCondition medicalCondition = new MedicalCondition();
+                medicalCondition.setEmail(email);
+                medicalCondition.setPetName(petName);
+                medicalCondition.setCondition(condition);
+                medicalConditionService.saveMedicalCondition(medicalCondition);
+            }
+        }
+
+        // Save treatment plans
+        for (int i = 0; i < treatmentName.size(); i++) {
+            if (!treatmentName.get(i).isEmpty() && !treatmentDate.get(i).isEmpty()) {
+                TreatmentPlan treatmentPlan = new TreatmentPlan();
+                treatmentPlan.setEmail(email);
+                treatmentPlan.setPetName(petName);
+                treatmentPlan.setTreatmentName(treatmentName.get(i));
+                treatmentPlan.setTreatmentDate(LocalDate.parse(treatmentDate.get(i))); 
+                treatmentPlanService.saveTreatmentPlan(treatmentPlan);
+            }
+        }
+
+        return "redirect:/medical"; // Redirect to the medical records page after submission
+
+    } catch (Exception e) {
+        model.addAttribute("error", e.getMessage());
+        model.addAttribute("email", email);
+        return "addReport"; // Return to the form with an error message
+    }
+}
+
 
     //------------------------------------------------- Sharing Record Data -------------------------------------------------
     @PostMapping("/shareReport")

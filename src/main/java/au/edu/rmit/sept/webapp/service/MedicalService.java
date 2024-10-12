@@ -37,15 +37,9 @@ public class MedicalService {
             throw new IllegalArgumentException("Email cannot be null or empty.");
         }
     
-        // Check for duplicate pet ID
-        if (medicalRepository.existsByPetID(medicalRecord.getPetID())) {
-            throw new DuplicateRecordException("A record with this petID already exists.");
-        } 
+     
     
-        // Check for duplicate pet name associated with the email
-        if (medicalRepository.existsByEmailAndPetName(medicalRecord.getEmail(), medicalRecord.getPetName())) {
-            throw new DuplicateRecordException("A record with this pet name already exists.");
-        } 
+
     
         // Save the medical record if all checks pass
         medicalRepository.save(medicalRecord);  

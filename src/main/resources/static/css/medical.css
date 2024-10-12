@@ -33,6 +33,7 @@ body {
 
 }
 
+
 /* Login prompt */
 #login-prompt {
     background-color: #FFD700;
@@ -41,24 +42,21 @@ body {
     margin: 20px;
     text-align: center;
     font-family: 'Arial', sans-serif;
-    border: 2px solid #333; /* Add a border for emphasis */
+    position: absolute;
+    top: 120px; /* Position below the navbar and banner */
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 40px); /* Responsive width */
+    z-index: 2;
+    display: none; /* Initially hidden, shown via JavaScript */
 }
 
-#login-prompt a {
-    color: #333;
-    font-weight: bold;
-    text-decoration: none;
-}
-
-#login-prompt a:hover {
-    text-decoration: underline;
-}
-
-/* Not Logged In message */
 #not-logged-in-message {
     text-align: center;
     margin: 20px 0;
+    z-index: 1;
 }
+
 
 /* Action Buttons Section */
 #action-buttons {

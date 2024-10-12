@@ -92,51 +92,28 @@
 
     <main>
         <form th:action="@{/addReport}" th:method="post">
-            <!-- Add Medical Details Section -->
             <div class="form-section">
                 <h3>Medical Report</h3>
-                <label>Email:</label>
-                <span th:text="${email}"></span> <!-- Display email with Thymeleaf -->
-                <input type="hidden" name="email" th:value="${email}" /> <!-- Hidden input for email -->
-                <span class="new-line"></span> 
-                <label for="petName">Pet Name:</label>
-                <input type="text" id="petName" name="petName" required>
-                <label for="petID">Pet ID (Must be 15 Digits):</label>
-                <input type="text" id="petID" name="petID" pattern="^\d{15}$" maxlength="15" required
-                    title="Pet ID must be exactly 15 digits.">
-        
-                <label for="petAge">Age:</label>
-                <select id="petAge" name="petAge" required>
-                    <option value="">Select Age</option>
-                    <th:block th:each="age : ${#numbers.sequence(0, 20)}">
-                        <option th:value="${age}" th:text="${age}">0</option>
-                    </th:block>
-                </select>
-                <label>Sex:</label>
-                <label for="male">
-                    <input type="radio" id="male" name="petSex" value="Male">
-                    Male
-                </label>
-                <label for="female">
-                    <input type="radio" id="female" name="petSex" value="Female">
-                    Female
-                </label>
-                <span class="new-line"></span> 
-                <label for="petType">Species:</label>
-                <label for="cat">
-                    <input type="radio" id="cat" name="petType" value="Cat">
-                    Cat
-                </label>
-                <label for="dog">
-                    <input type="radio" id="dog" name="petType" value="Dog">
-                    Dog
-                </label>
-                <span class="new-line"></span> 
-                <label for="petWeight">Weight (KG):</label>
-                <input type="number" id="petWeight" name="petWeight" required>
-                <label for="petBreed">Breed:</label>
-                <input type="text" id="petBreed" name="petBreed" required>
+                
+                <!-- Email Row -->
+                <div class="form-row">
+                    <label for="email">Email:</label>
+                    <span id="email" th:text="${email}" class="value-text"></span> <!-- Display email -->
+                    <input type="hidden" name="email" th:value="${email}" /> <!-- Hidden input for email -->
+                </div>
+                
+                <!-- Pet Selection Row -->
+                <div class="form-row">
+                    <label for="pet">Select Pet:</label>
+                    <select id="pet" name="petName" required>
+                        <option value="">Select a Pet</option>
+                        <th:block th:each="pet : ${pets}">
+                            <option th:value="${pet.petName}" th:text="${pet.petName}"></option>
+                        </th:block>
+                    </select>
+                </div>
             </div>
+    
 
             <!-- Add Vaccination History Section -->
             <div class="form-section">
