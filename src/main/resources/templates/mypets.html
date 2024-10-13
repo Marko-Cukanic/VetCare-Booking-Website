@@ -31,6 +31,7 @@
                         <!-- Delete form placed inside the pet card for grouping -->
                         <form th:action="@{/deletePet}" method="post">
                             <input type="hidden" name="id" th:value="${pet.id}"/>
+                            <input type="hidden" name="sessionToken" th:value="${sessionToken}"/> <!-- Pass the session token -->
                             <button type="submit" class="delete-button">Delete</button>
                         </form>
                     </div>
@@ -44,23 +45,40 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const sessionToken = localStorage.getItem('sessionToken');
-            if (!sessionToken) {
-                alert('Please log in to access your pets.');
-                window.location.href = '/login';
-            } else {
-                // Set the session token in relevant links
-                const myPetsLink = document.querySelector('a[href="/mypets"]');
-                if (myPetsLink) {
-                    myPetsLink.setAttribute('href', `/mypets?sessionToken=${sessionToken}`);
-                }
+    let sessionToken = localStorage.getItem('sessionToken');
+    if (!sessionToken) {
+        alert('Please log in to access your pets.');
+        window.location.href = '/login';
+    } else {
+        // Ensure there are no leading commas or unnecessary characters in the session token
+        sessionToken = sessionToken.replace(/^,/, ''); // Remove any leading commas
 
-                const addPetLink = document.querySelector('a[href="/addPet"]');
-                if (addPetLink) {
-                    addPetLink.setAttribute('href', `/addPet?sessionToken=${sessionToken}`);
-                }
+        // Set the session token in relevant links
+        const myPetsLink = document.querySelector('a[href="/mypets"]');
+        if (myPetsLink) {
+            myPetsLink.setAttribute('href', `/mypets?sessionToken=${sessionToken}`);
+        }
+
+        const addPetLink = document.querySelector('a[href="/addPet"]');
+        if (addPetLink) {
+            addPetLink.setAttribute('href', `/addPet?sessionToken=${sessionToken}`);
+        }
+
+        const deleteForms = document.querySelectorAll('form[action="/deletePet"]');
+        deleteForms.forEach(function(form) {
+            let sessionInput = form.querySelector('input[name="sessionToken"]');
+            if (!sessionInput) {
+                sessionInput = document.createElement('input');
+                sessionInput.type = 'hidden';
+                sessionInput.name = 'sessionToken';
+                form.appendChild(sessionInput);
             }
+            sessionInput.value = sessionToken;
         });
+    }
+});
+
+
     </script>
 </body>
 </html>

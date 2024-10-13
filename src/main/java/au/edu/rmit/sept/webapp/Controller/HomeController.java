@@ -42,7 +42,7 @@ public class HomeController {
             model.addAttribute("isLoggedIn", true);
 
             // Fetch the list of bookings for the logged-in user
-            List<Booking> bookings = bookingService.getBookingsByUserEmail(userEmail);
+            List<Booking> bookings = bookingService.getUpcomingBookings(userEmail);
             model.addAttribute("bookings", bookings);  // Pass bookings to the home page
         }
 

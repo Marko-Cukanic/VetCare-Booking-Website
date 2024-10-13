@@ -141,14 +141,16 @@ public class PetController {
         }
 
         @PostMapping("/deletePet")
-public String deletePet(@RequestParam Long id, Model model) {
+public String deletePet(@RequestParam Long id, 
+                        @RequestParam String sessionToken, 
+                        Model model) {
     try {
         // Fetch the pet record by the primary key 'id'
         Medical petToDelete = medicalRepository.findById(id).orElse(null);
 
         if (petToDelete == null) {
             model.addAttribute("error", "Pet not found.");
-            return "redirect:/mypets";
+            return "redirect:/mypets?sessionToken=" + sessionToken;
         }
 
         // Get the email and pet name
@@ -163,12 +165,13 @@ public String deletePet(@RequestParam Long id, Model model) {
         // Delete the pet record itself
         medicalRepository.deleteById(id);
 
-        return "redirect:/mypets"; // Redirect to the pets page after deletion
+        return "redirect:/mypets?sessionToken=" + sessionToken; // Redirect with session token
     } catch (Exception e) {
         model.addAttribute("error", e.getMessage());
-        return "redirect:/mypets"; // Return to the pets page with an error message
+        return "redirect:/mypets?sessionToken=" + sessionToken; // Return with error and session token
     }
 }
+
 
 
 

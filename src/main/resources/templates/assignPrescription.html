@@ -105,7 +105,7 @@
 
                 pets.forEach(pet => {
                     const option = document.createElement('option');
-                    option.value = pet.petID; // Ensure this matches your entity's field name
+                    option.value = pet.petName; // Ensure this matches your entity's field name
                     option.text = pet.petName; // Ensure this matches your entity's field name
                     petSelect.appendChild(option);
                 });
